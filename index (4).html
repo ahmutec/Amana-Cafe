@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>አማና ካፌ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f2efe9; --card:#fffdf9; --ink:#2a1f1a; --muted:#7a6a60;
+  --line:#d9cfc4; --accent:#1f5c4a; --accent-ink:#fff; --err:#b3261e; --ok:#1f5c4a; --soft:#e8f3ee;
+  --t1:#1f5c4a; --t2:#c27a1c;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#171210; --card:#221b18; --ink:#f1e9e0; --muted:#a8998d; --line:#3b3029; --accent:#5cc3a0; --accent-ink:#0f241c; --err:#ff8a80; --ok:#5cc3a0; --soft:#1d2b26; --t1:#5cc3a0; --t2:#f2b45c;}
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;min-height:100dvh;
+  padding:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));
+  font-size:16px;-webkit-text-size-adjust:100%}
+@media (min-width:900px){body{padding-top:28px;font-size:17px}}
+.wrap{width:100%;max-width:1100px;margin:0 auto}
+
+/* መግቢያ */
+.screen{min-height:calc(100dvh - 40px);display:flex;align-items:center;justify-content:center}
+.card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 22px;display:grid;gap:16px}
+.card h1{margin:0;text-align:center}
+.card p{margin:0;color:var(--muted);text-align:center;font-size:.95rem}
+.pw{position:relative}
+.pw input{padding-right:84px}
+.pw button{position:absolute;right:4px;top:4px;bottom:4px;min-width:72px;border:0;border-radius:8px;background:var(--soft);color:var(--ink);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer}
+
+/* ራስጌ */
+.top{position:relative;text-align:center;padding:6px 2px 14px;max-width:680px;margin:0 auto}
+.card h1,.top h1{font-size:2rem;font-weight:800;margin:0;line-height:1.25;letter-spacing:.5px;
+  background:linear-gradient(90deg,var(--t1),var(--t2));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;display:inline-block}
+.card h1::after,.top h1::after{content:"";display:block;width:56px;height:3px;margin:6px auto 0;border-radius:3px;background:linear-gradient(90deg,var(--t1),var(--t2))}
+.top p{margin:6px 0 0;color:var(--muted);font-size:.9rem}
+.top .out{position:absolute;right:0;top:8px}
+.out{font:inherit;font-weight:600;min-height:44px;padding:0 16px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;cursor:pointer;white-space:nowrap}
+@media (min-width:900px){.card h1,.top h1{font-size:2.4rem}}
+
+.tabs{display:flex;gap:6px;max-width:680px;margin:0 auto 14px}
+.tabs button{flex:1;font:inherit;font-weight:600;font-size:.92rem;min-height:48px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;cursor:pointer;padding:4px 2px}
+.tabs button[aria-selected=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:800}
+@media (min-width:900px){.tabs button{font-size:1rem}}
+
+form.fm,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+@media (min-width:600px){form.fm,.panel{padding:22px}}
+form.fm{display:grid;gap:16px;max-width:680px;margin:0 auto}
+label{display:block;font-weight:600;margin-bottom:6px;font-size:.95rem}
+select,input,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:10px;padding:12px;min-height:48px}
+textarea{min-height:84px;resize:vertical}
+select:focus,input:focus,textarea:focus,button:focus-visible{outline:3px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.row2{display:grid;gap:16px}
+@media (min-width:600px){.row2{grid-template-columns:1fr 1fr}}
+.cat{border-top:2px solid var(--accent);padding-top:16px}
+.submit{background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;font:inherit;font-weight:800;font-size:1.1rem;padding:14px;cursor:pointer;min-height:54px}
+.submit[disabled]{opacity:.6;cursor:wait}
+.msg{min-height:1.4em;font-weight:600;text-align:center}
+.msg.err{color:var(--err)} .msg.ok{color:var(--ok)}
+.cal{position:relative}
+.dbtn{width:100%;text-align:left;font:inherit;font-weight:600;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:10px;padding:12px;min-height:48px;cursor:pointer}
+.pop{position:absolute;left:0;top:calc(100% + 6px);z-index:20;width:min(320px,calc(100vw - 28px));background:var(--card);border:1.5px solid var(--accent);border-radius:12px;padding:10px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ph button{width:44px;height:44px;border:0;background:transparent;color:var(--ink);font-size:1.6rem;cursor:pointer;border-radius:10px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.grid .wd{font-size:.72rem;color:var(--muted);padding:4px 0}
+.grid button{height:40px;border:0;border-radius:10px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+.grid button.sel{background:var(--accent);color:var(--accent-ink);font-weight:800}
+.grid button.now{outline:1.5px solid var(--accent)}
+.todaybtn{width:100%;margin-top:6px;min-height:40px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;font:inherit;cursor:pointer}
+.items{display:grid;gap:8px}
+@media (min-width:600px){.items{grid-template-columns:1fr 1fr}}
+.it{display:grid;grid-template-columns:auto 1fr 84px;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;min-height:52px;margin:0}
+.it.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.it input[type=checkbox]{width:24px;height:24px;min-height:0;accent-color:var(--accent);padding:0}
+.it span{font-weight:600}
+.it small{display:block;color:var(--muted);font-weight:400}
+.it .q{min-height:40px;padding:4px 6px;text-align:center;font-weight:800}
+.it .q:disabled{opacity:.35}
+.hint{color:var(--muted);font-size:.9rem;padding:6px 0}
+.hint.err{color:var(--err)}
+.ts{font-size:.8rem;color:var(--muted);text-align:center}
+
+/* ሪፖርት */
+.panel{max-width:680px;margin:0 auto}
+.panel.wide{max-width:1100px}
+.rh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.rh strong{font-size:1.05rem;line-height:1.35}
+.rh button{font:inherit;font-weight:600;min-height:44px;padding:0 14px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;cursor:pointer;white-space:nowrap}
+.sum{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sum div{background:var(--soft);border-radius:10px;padding:10px 12px}
+.sum small{display:block;color:var(--muted);font-size:.8rem}
+.sum b{font-size:1.35rem;font-weight:800}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{background:var(--accent);color:var(--accent-ink)}
+tfoot td{font-weight:800;background:var(--soft);border-bottom:0}
+td.n{font-variant-numeric:tabular-nums}
+td small{display:block;color:var(--muted);font-weight:400;font-size:.75rem}
+.rk{width:34px;color:var(--muted);text-align:center!important}
+.mt th,.mt td{padding:8px 7px;text-align:center}
+.mt th{min-width:74px}
+.mt th:first-child,.mt td:first-child{position:sticky;left:0;background:var(--card);z-index:1;border-right:1px solid var(--line);min-width:48px;text-align:center}
+.mt thead th:first-child,.mt thead th:last-child{background:var(--accent);z-index:2}
+.mt th:last-child,.mt td:last-child{position:sticky;right:0;background:var(--card);z-index:1;border-left:1px solid var(--line);font-weight:800}
+.mt tfoot td:first-child,.mt tfoot td:last-child{background:var(--soft)}
+.mt td.z{color:var(--muted);opacity:.5}
+.gen{font-size:.78rem;color:var(--muted);text-align:center;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- መግቢያ ገጽ -->
+  <div id="login" class="screen" hidden>
+    <form id="lf" class="card" novalidate>
+      <h1>አማና ካፌ</h1>
+      <p>ለመግባት ኮድዎን እና የይለፍ ቃልዎን ያስገቡ</p>
+      <div>
+        <label for="lcode">ኮድ</label>
+        <input id="lcode" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false">
+      </div>
+      <div>
+        <label for="lpass">የይለፍ ቃል</label>
+        <div class="pw">
+          <input id="lpass" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false">
+          <button type="button" id="lshow" aria-label="የይለፍ ቃል አሳይ">አሳይ</button>
+        </div>
+      </div>
+      <div class="msg" id="lmsg" role="status" aria-live="polite"></div>
+      <button class="submit" id="lbtn" type="submit">ግባ</button>
+    </form>
+  </div>
+
+  <!-- ዋናው መተግበሪያ -->
+  <div id="app" hidden>
+    <header class="top">
+      <div>
+        <h1>አማና ካፌ</h1>
+        <p id="who"></p>
+      </div>
+      <button type="button" class="out" id="logout">ውጣ</button>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="ገጾች">
+      <button role="tab" data-tab="rec" aria-selected="false">መመዝገቢያ</button>
+      <button role="tab" data-tab="daily" aria-selected="false">ዕለታዊ</button>
+      <button role="tab" data-tab="weekly" aria-selected="false">ሳምንታዊ</button>
+      <button role="tab" data-tab="monthly" aria-selected="false">ወርሃዊ</button>
+    </nav>
+
+    <form id="f" class="fm" novalidate hidden>
+      <div class="row2">
+        <div>
+          <label for="waiter">የወይተር ስም</label>
+          <select id="waiter" required></select>
+        </div>
+        <div>
+          <label>የተመዘገበበት ቀን <span style="color:var(--muted);font-weight:400">(ዓ.ም.)</span></label>
+          <div class="cal">
+            <button type="button" id="dbtn" class="dbtn" aria-haspopup="dialog"></button>
+            <div id="pop" class="pop" hidden role="dialog" aria-label="የኢትዮጵያ ቀን መምረጫ">
+              <div class="ph">
+                <button type="button" id="pm" aria-label="ያለፈው ወር">‹</button>
+                <strong id="pt"></strong>
+                <button type="button" id="nm" aria-label="ቀጣይ ወር">›</button>
+              </div>
+              <div class="grid" id="gr"></div>
+              <button type="button" id="tod" class="todaybtn">ዛሬ</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cat">
+        <label for="category">የምግቡ መደብ</label>
+        <select id="category" required></select>
+      </div>
+
+      <div>
+        <label>የምግቡ አይነት <span style="color:var(--muted);font-weight:400">(ብዙ መምረጥ ይቻላል)</span></label>
+        <div class="items" id="items"><div class="hint">መጀመሪያ መደብ ይምረጡ</div></div>
+      </div>
+
+      <div>
+        <label for="note">አስተያየት</label>
+        <textarea id="note" placeholder="ካለ ብቻ ይጻፉ"></textarea>
+      </div>
+
+      <div class="msg" id="msg" role="status" aria-live="polite"></div>
+      <button class="submit" id="send" type="submit">Submit</button>
+      <div class="ts" id="ts"></div>
+    </form>
+
+    <section class="panel" id="rep" hidden aria-live="polite">
+      <div class="rh"><strong id="rt"></strong><button type="button" id="rf">↻ አድስ</button></div>
+      <div id="rb"></div>
+      <div class="gen" id="rg"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+/* ============ ማስተካከያ ============ */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZROYPvzzMIClQgvdYcS8YYB99vVdO6vtH9CrU4yhH4FK-tfVcy2sG9BO3LHUxVXYP/exec";
+const WAITERS = Array.from({length: 10}, (_, i) => "ኮድ " + (i + 1));
+/* ================================== */
+
+const $ = id => document.getElementById(id);
+const fmt = n => Number(n || 0).toLocaleString("en-US", {maximumFractionDigits: 2});
+function el(tag, text, cls) {
+  const e = document.createElement(tag);
+  if (text !== undefined && text !== null) e.textContent = text;
+  if (cls) e.className = cls;
+  return e;
+}
+const fill = (sel, list, ph) => {
+  sel.innerHTML = "";
+  const o = new Option(ph, ""); o.disabled = true; o.selected = true; sel.add(o);
+  list.forEach(v => sel.add(new Option(v, v)));
+};
+const msg = (t, c) => { $("msg").textContent = t; $("msg").className = "msg " + (c || ""); };
+const lmsg = (t, c) => { $("lmsg").textContent = t; $("lmsg").className = "msg " + (c || ""); };
+
+let AUTH = null, MENU = [], REPORT = null, TAB = "";
+try { AUTH = JSON.parse(localStorage.getItem("amana_auth") || "null"); } catch (_) {}
+
+/* ===== ከሰርቨር ጋር መገናኛ ===== */
+async function api(action, payload) {
+  const body = JSON.stringify(Object.assign({action, token: AUTH ? AUTH.token : ""}, payload || {}));
+  const r = await fetch(SCRIPT_URL, {method: "POST", headers: {"Content-Type": "text/plain;charset=utf-8"}, body});
+  const j = await r.json();
+  if (!j.ok && j.error === "AUTH") { logout("ጊዜው አልፏል፤ እንደገና ይግቡ"); throw new Error("AUTH"); }
+  return j;
+}
+
+/* ===== መግቢያ / መውጫ ===== */
+$("lshow").addEventListener("click", () => {
+  const p = $("lpass"), show = p.type === "password";
+  p.type = show ? "text" : "password";
+  $("lshow").textContent = show ? "ደብቅ" : "አሳይ";
+});
+
+$("lf").addEventListener("submit", async e => {
+  e.preventDefault();
+  const code = $("lcode").value.trim(), password = $("lpass").value;
+  if (!code || !password) { lmsg("ኮድ እና የይለፍ ቃል ያስገቡ", "err"); return; }
+  $("lbtn").disabled = true; lmsg("በመግባት ላይ...");
+  try {
+    const j = await api("login", {code, password});
+    if (!j.ok) { lmsg(j.error || "መግባት አልተቻለም", "err"); return; }
+    AUTH = {token: j.token, role: j.role, code: j.code, canRecord: !!j.canRecord};
+    localStorage.setItem("amana_auth", JSON.stringify(AUTH));
+    $("lpass").value = ""; lmsg("");
+    enterApp();
+  } catch (err) {
+    if (err.message !== "AUTH") lmsg("መግባት አልተቻለም። ኢንተርኔት ያረጋግጡ እና እንደገና ይሞክሩ", "err");
+  } finally {
+    $("lbtn").disabled = false;
+  }
+});
+
+function showLogin(message) {
+  $("app").hidden = true; $("login").hidden = false;
+  lmsg(message || "", message ? "err" : "");
+  $("lpass").type = "password"; $("lshow").textContent = "አሳይ";
+  setTimeout(() => $("lcode").focus(), 50);
+}
+
+function logout(message) {
+  AUTH = null; MENU = []; REPORT = null; TAB = "";
+  localStorage.removeItem("amana_auth");
+  localStorage.removeItem("amana_menu");
+  showLogin(typeof message === "string" ? message : "");
+}
+$("logout").addEventListener("click", () => logout());
+
+function enterApp() {
+  $("login").hidden = true; $("app").hidden = false;
+  $("who").textContent = AUTH.role + " · " + AUTH.code;
+  document.querySelector('.tabs [data-tab="rec"]').hidden = !AUTH.canRecord;   // መመዝገቢያ ለ Manager ብቻ
+  REPORT = null;
+  if (AUTH.canRecord) loadMenu();
+  showTab(AUTH.canRecord ? "rec" : "daily");
+}
+
+/* ===== የኢትዮጵያ ቀን አቆጣጠር ===== */
+const E_MONTHS = ["መስከረም","ጥቅምት","ኅዳር","ታኅሣሥ","ጥር","የካቲት","መጋቢት","ሚያዝያ","ግንቦት","ሰኔ","ሐምሌ","ነሐሴ","ጳጉሜ"];
+const ETH_EPOCH = 1723856;
+function gregToEth(y, m, d) {
+  const a = Math.floor((14 - m) / 12), yy = y + 4800 - a, mm = m + 12 * a - 3;
+  const jdn = d + Math.floor((153 * mm + 2) / 5) + 365 * yy + Math.floor(yy / 4) - Math.floor(yy / 100) + Math.floor(yy / 400) - 32045;
+  const r = (jdn - ETH_EPOCH) % 1461;
+  const n = (r % 365) + 365 * Math.floor(r / 1460);
+  return {
+    y: 4 * Math.floor((jdn - ETH_EPOCH) / 1461) + Math.floor(r / 365) - Math.floor(r / 1460),
+    m: Math.floor(n / 30) + 1,
+    d: (n % 30) + 1
+  };
+}
+const daysIn = (m, y) => m < 13 ? 30 : (y % 4 === 3 ? 6 : 5);
+const ethJdn = (y, m, d) => ETH_EPOCH + 365 * (y - 1) + Math.floor(y / 4) + 30 * m + d - 31;
+const weekday = (y, m, d) => (ethJdn(y, m, d) + 2) % 7;   // 0 = እሑድ
+const WD = ["እሑ","ሰኞ","ማክ","ረቡ","ሐሙ","አር","ቅዳ"];
+
+const n0 = new Date();
+const TODAY = gregToEth(n0.getFullYear(), n0.getMonth() + 1, n0.getDate());
+let sel = {...TODAY}, view = {y: TODAY.y, m: TODAY.m};
+
+const ethDateText = () => sel.d + " " + E_MONTHS[sel.m - 1] + " " + sel.y;
+const showSel = () => $("dbtn").textContent = ethDateText() + " ዓ.ም.";
+
+function renderCal() {
+  $("pt").textContent = E_MONTHS[view.m - 1] + " " + view.y;
+  const g = $("gr"); g.innerHTML = "";
+  WD.forEach(w => g.appendChild(el("div", w, "wd")));
+  for (let i = 0; i < weekday(view.y, view.m, 1); i++) g.appendChild(document.createElement("div"));
+  for (let d = 1; d <= daysIn(view.m, view.y); d++) {
+    const b = el("button", d); b.type = "button";
+    if (sel.y === view.y && sel.m === view.m && sel.d === d) b.classList.add("sel");
+    if (TODAY.y === view.y && TODAY.m === view.m && TODAY.d === d) b.classList.add("now");
+    b.onclick = () => { sel = {y: view.y, m: view.m, d}; showSel(); $("pop").hidden = true; };
+    g.appendChild(b);
+  }
+}
+const shift = k => { view.m += k; if (view.m > 13) { view.m = 1; view.y++; } if (view.m < 1) { view.m = 13; view.y--; } renderCal(); };
+$("pm").onclick = () => shift(-1);
+$("nm").onclick = () => shift(1);
+$("tod").onclick = () => { sel = {...TODAY}; showSel(); $("pop").hidden = true; };
+$("dbtn").onclick = () => { view = {y: sel.y, m: sel.m}; renderCal(); $("pop").hidden = !$("pop").hidden; };
+document.addEventListener("click", e => { if (!e.target.closest(".cal")) $("pop").hidden = true; });
+showSel();
+
+/* ===== ምናሌ ===== */
+async function loadMenu() {
+  fill($("category"), [], "ምናሌ በመጫን ላይ...");
+  try {
+    const j = await api("menu");
+    if (!j.ok) throw new Error(j.error);
+    MENU = j.menu;
+    localStorage.setItem("amana_menu", JSON.stringify(MENU));
+  } catch (e) {
+    if (!AUTH) return;
+    try { MENU = JSON.parse(localStorage.getItem("amana_menu") || "[]"); } catch (_) {}
+    if (!MENU.length) msg("ምናሌ መጫን አልተቻለም። ገጹን እንደገና ይጫኑ", "err");
+  }
+  fill($("category"), MENU.map(c => c.category), "መደብ ይምረጡ");
+}
+
+const normItem = it => typeof it === "string" ? {name: it, price: 0} : it;
+
+function renderItems(cat) {
+  const box = $("items"); box.innerHTML = "";
+  const c = MENU.find(x => x.category === cat);
+  if (!c || !c.items.length) { box.appendChild(el("div", "በዚህ መደብ ስር እቃ የለም", "hint")); return; }
+  c.items.map(normItem).forEach(({name, price}) => {
+    const row = document.createElement("label"); row.className = "it";
+    row.innerHTML = '<input type="checkbox"><span></span>' +
+      '<input class="q" type="number" inputmode="numeric" min="1" step="1" value="1" disabled aria-label="ብዛት">';
+    const sp = row.querySelector("span");
+    sp.textContent = name;
+    if (price) sp.appendChild(el("small", fmt(price) + " ብር"));
+    row.dataset.name = name;
+    const cb = row.querySelector("[type=checkbox]"), q = row.querySelector(".q");
+    cb.addEventListener("change", () => { q.disabled = !cb.checked; row.classList.toggle("on", cb.checked); if (cb.checked) { q.focus(); q.select(); } });
+    box.appendChild(row);
+  });
+}
+$("category").addEventListener("change", e => renderItems(e.target.value));
+
+const tick = () => $("ts").textContent = new Date().toLocaleString("en-GB");
+tick(); setInterval(tick, 1000);
+
+fill($("waiter"), WAITERS, "ይምረጡ");
+fill($("category"), [], "ምናሌ በመጫን ላይ...");
+
+/* ===== መመዝገብ ===== */
+$("f").addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!AUTH || !AUTH.canRecord) return;
+  const need = [["waiter","የወይተር ስም"],["category","የምግብ መደብ"]];
+  for (const [id, name] of need) {
+    if (!$(id).value) { msg(name + " ይምረጡ", "err"); $(id).focus(); return; }
+  }
+  const items = [];
+  for (const row of document.querySelectorAll("#items .it")) {
+    if (!row.querySelector("[type=checkbox]").checked) continue;
+    const q = parseInt(row.querySelector(".q").value, 10);
+    if (!q || q < 1) { msg(row.dataset.name + ": ብዛት ከ 1 ያላነሰ መሆን አለበት", "err"); row.querySelector(".q").focus(); return; }
+    items.push({name: row.dataset.name, qty: q});
+  }
+  if (!items.length) { msg("ቢያንስ አንድ የምግብ አይነት ይምረጡ", "err"); return; }
+
+  const data = {
+    timestamp: new Date().toLocaleString("en-GB"),
+    waiter: $("waiter").value,
+    category: $("category").value,
+    date: ethDateText(),
+    note: $("note").value.trim(),
+    items
+  };
+
+  $("send").disabled = true; msg("በመላክ ላይ...");
+  try {
+    const j = await api("submit", data);
+    if (!j.ok) { msg(j.error || "መመዝገብ አልተቻለም", "err"); return; }
+    msg("✓ " + items.length + " እቃ ተመዝግቧል", "ok");
+    REPORT = null;
+    $("category").selectedIndex = 0;
+    $("items").innerHTML = '<div class="hint">መጀመሪያ መደብ ይምረጡ</div>';
+    $("note").value = "";
+  } catch (err) {
+    if (err.message !== "AUTH") msg("መላክ አልተቻለም። ኢንተርኔት ያረጋግጡ እና እንደገና ይሞክሩ", "err");
+  } finally {
+    $("send").disabled = false;
+  }
+});
+
+/* ===== ታቦች እና ሪፖርቶች ===== */
+document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
+$("rf").addEventListener("click", () => { REPORT = null; showTab(TAB); });
+
+async function showTab(t) {
+  if (!AUTH) return;
+  if (t === "rec" && !AUTH.canRecord) t = "daily";
+  TAB = t;
+  document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
+  $("f").hidden = t !== "rec";
+  $("rep").hidden = t === "rec";
+  $("rep").classList.toggle("wide", t === "monthly");
+  if (t === "rec") return;
+  if (!REPORT) {
+    $("rb").innerHTML = ""; $("rb").appendChild(el("div", "በመጫን ላይ...", "hint"));
+    $("rt").textContent = ""; $("rg").textContent = "";
+    try {
+      const j = await api("report");
+      if (!j.ok) throw new Error(j.error);
+      REPORT = j.report;
+    } catch (err) {
+      if (err.message === "AUTH") return;
+      $("rb").innerHTML = ""; $("rb").appendChild(el("div", "ሪፖርት መጫን አልተቻለም። ኢንተርኔት ያረጋግጡ እና «አድስ» ይጫኑ", "hint err"));
+      return;
+    }
+  }
+  if (TAB !== t) return;
+  t === "monthly" ? renderMonthly(REPORT.monthly) : renderRanked(REPORT[t]);
+  $("rg").textContent = "የተሰላበት: " + REPORT.generated;
+}
+
+function summary(total, money) {
+  const s = el("div", null, "sum");
+  [["ጠቅላላ ብዛት", fmt(total)], ["ጠቅላላ ገንዘብ (ብር)", fmt(money)]].forEach(([k, v]) => {
+    const d = el("div"); d.appendChild(el("small", k)); d.appendChild(el("b", v)); s.appendChild(d);
+  });
+  return s;
+}
+
+function renderRanked(rep) {
+  $("rt").textContent = rep.title;
+  const box = $("rb"); box.innerHTML = "";
+  box.appendChild(summary(rep.total, rep.totalMoney));
+  if (!rep.rows.length) { box.appendChild(el("div", "በዚህ ጊዜ የተመዘገበ ሽያጭ የለም", "hint")); return; }
+
+  const wrap = el("div", null, "tw"), tb = document.createElement("table");
+  const th = tb.createTHead().insertRow();
+  ["#", "የምግብ አይነት", "ብዛት", "ብር"].forEach((h, i) => { const c = el("th", h); if (i === 0) c.className = "rk"; th.appendChild(c); });
+  const body = tb.createTBody();
+  rep.rows.forEach((x, i) => {
+    const r = body.insertRow();
+    r.appendChild(el("td", i + 1, "rk"));
+    const nm = el("td", x.item); nm.appendChild(el("small", x.category)); r.appendChild(nm);
+    r.appendChild(el("td", fmt(x.qty), "n"));
+    r.appendChild(el("td", fmt(x.amount), "n"));
+  });
+  const f = tb.createTFoot().insertRow();
+  f.appendChild(el("td", "")); f.appendChild(el("td", "ድምር"));
+  f.appendChild(el("td", fmt(rep.total), "n")); f.appendChild(el("td", fmt(rep.totalMoney), "n"));
+  wrap.appendChild(tb); box.appendChild(wrap);
+}
+
+function renderMonthly(rep) {
+  $("rt").textContent = rep.title;
+  const box = $("rb"); box.innerHTML = "";
+  const s = el("div", null, "sum"); s.style.gridTemplateColumns = "1fr";
+  const d0 = el("div"); d0.appendChild(el("small", "የዓመቱ ጠቅላላ ገንዘብ (ብር)")); d0.appendChild(el("b", fmt(rep.totalMoney)));
+  s.appendChild(d0); box.appendChild(s);
+
+  const wrap = el("div", null, "tw"), tb = document.createElement("table"); tb.className = "mt";
+  const th = tb.createTHead().insertRow();
+  th.appendChild(el("th", "ቀን"));
+  rep.months.forEach(m => th.appendChild(el("th", m)));
+  th.appendChild(el("th", "ጠቅላላ"));
+
+  const body = tb.createTBody();
+  rep.grid.forEach((line, i) => {
+    const r = body.insertRow();
+    r.appendChild(el("td", i + 1));
+    line.forEach(v => {
+      if (v === null) r.appendChild(el("td", "", "n z"));
+      else r.appendChild(el("td", v ? fmt(v) : "·", v ? "n" : "n z"));
+    });
+    r.appendChild(el("td", rep.rowTotals[i] ? fmt(rep.rowTotals[i]) : "·", "n"));
+  });
+  const f = tb.createTFoot().insertRow();
+  f.appendChild(el("td", "ድምር"));
+  rep.monthTotals.forEach(v => f.appendChild(el("td", v ? fmt(v) : "·", "n")));
+  f.appendChild(el("td", fmt(rep.totalMoney), "n"));
+  wrap.appendChild(tb); box.appendChild(wrap);
+}
+
+/* ===== ጅምር ===== */
+if (AUTH && AUTH.token) enterApp(); else showLogin();
+</script>
+</body>
+</html>
