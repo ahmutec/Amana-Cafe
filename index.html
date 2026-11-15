@@ -43,7 +43,7 @@ body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:var(--bg);
 .lk{background:none;border:0;color:var(--accent);font:inherit;font-weight:600;cursor:pointer;padding:6px 2px;min-height:40px;text-decoration:underline}
 
 /* ራስጌ */
-.top{position:relative;text-align:center;padding:6px 2px 14px;max-width:680px;margin:0 auto}
+.top{position:relative;text-align:center;padding:6px 2px 14px;margin:0 auto}
 .card h1,.top h1{font-size:2rem;font-weight:800;margin:0;line-height:1.25;letter-spacing:.5px;
   background:linear-gradient(90deg,var(--t1),var(--t2));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;display:inline-block}
 .card h1::after,.top h1::after{content:"";display:block;width:56px;height:3px;margin:6px auto 0;border-radius:3px;background:linear-gradient(90deg,var(--t1),var(--t2))}
@@ -52,15 +52,32 @@ body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:var(--bg);
 .out{font:inherit;font-weight:600;min-height:44px;padding:0 16px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;cursor:pointer;white-space:nowrap}
 @media (min-width:900px){.card h1,.top h1{font-size:2.4rem}}
 
-.tabs{display:flex;flex-wrap:wrap;gap:6px;max-width:900px;margin:0 auto 12px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
 .tabs button{flex:1 1 auto;min-width:84px;font:inherit;font-weight:600;font-size:.92rem;min-height:46px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;cursor:pointer;padding:4px 8px}
 .tabs button[aria-selected=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:800}
 .tabs.sub button{min-height:40px;font-size:.86rem;font-weight:600;background:transparent}
 .tabs.sub button[aria-selected=true]{background:var(--soft);color:var(--ink);border-color:var(--accent)}
 
+/* ገጽ አቀማመጥ: ይዘት + ቀኝ ጎን ምናሌ */
+.layout{display:grid;gap:14px;align-items:start}
+.main{min-width:0}
+.pgtitle{margin:0 0 12px;font-size:1.5rem;font-weight:800;background:linear-gradient(90deg,var(--t1),var(--t2));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;display:inline-block}
+.side{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.side button{flex:0 0 auto;display:flex;align-items:center;gap:10px;font:inherit;font-weight:600;min-height:50px;padding:0 16px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;cursor:pointer;white-space:nowrap;text-align:left}
+.side button .ic{font-size:1.25rem}
+.side button[aria-current=page]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:800}
+@media (min-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr) 230px}
+  .layout.solo{grid-template-columns:minmax(0,1fr)}
+  .main{order:1}
+  .side{order:2;flex-direction:column;overflow:visible;position:sticky;top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px}
+  .side button{width:100%;border-color:transparent;background:transparent}
+  .side button[aria-current=page]{border-color:var(--accent)}
+}
+@media (max-width:899px){.side{order:-1}}
 form.fm,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
 @media (min-width:600px){form.fm,.panel{padding:22px}}
-form.fm{display:grid;gap:16px;max-width:680px;margin:0 auto}
+form.fm{display:grid;gap:16px}
 label{display:block;font-weight:600;margin-bottom:6px;font-size:.95rem}
 select,input,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:10px;padding:12px;min-height:48px}
 select option{color:#000}
@@ -99,8 +116,7 @@ select:focus,input:focus,textarea:focus,button:focus-visible{outline:3px solid v
 .ts{font-size:.8rem;color:var(--muted);text-align:center}
 
 /* ሪፖርት */
-.panel{max-width:680px;margin:0 auto}
-.panel.wide{max-width:1100px}
+.panel{margin:0}
 .rh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .rh strong{font-size:1.05rem;line-height:1.35}
 .rh button,.mini{font:inherit;font-weight:600;min-height:44px;padding:0 14px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;cursor:pointer;white-space:nowrap}
@@ -149,7 +165,7 @@ h3.sh{margin:6px 0 8px;font-size:1rem}
 .acts{display:flex;gap:6px}
 .acts button{font:inherit;font-weight:600;min-height:38px;padding:0 10px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:8px;cursor:pointer}
 .acts button.del{color:var(--err);border-color:var(--err)}
-dialog{border:1.5px solid var(--accent);border-radius:14px;background:var(--card);color:var(--ink);padding:18px;width:min(460px,calc(100vw - 24px));overflow:visible}
+dialog{border:1.5px solid var(--accent);border-radius:14px;background:var(--card);color:var(--ink);padding:18px;width:min(520px,calc(100vw - 24px));overflow:auto;max-height:92dvh}
 dialog::backdrop{background:rgba(0,0,0,.5)}
 dialog form{display:grid;gap:14px}
 dialog .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -159,6 +175,7 @@ dialog .btns .mini{min-height:50px}
   :root{--bg:#fff;--card:#fff;--ink:#000;--line:#999;--muted:#444;--soft:#eee;--accent:#1f5c4a;--accent-ink:#fff;--err:#b00}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body{padding:0;font-size:12px}
+  .layout{display:block}
   .noprint,.lang{display:none!important}
   .panel{border:0;max-width:none;padding:0}
   .tw{overflow:visible;border:0}
@@ -207,13 +224,9 @@ dialog .btns .mini{min-height:50px}
           <label for="srole" data-i="role"></label>
           <select id="srole"></select>
         </div>
-        <div id="skeybox" hidden>
-          <label for="skey" data-i="mgr_key"></label>
-          <input id="skey" type="password" autocomplete="off">
-        </div>
         <div>
           <label for="scode" data-i="code"></label>
-          <input id="scode" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false">
+          <select id="scode"></select>
         </div>
         <div>
           <label for="semail" data-i="email"></label>
@@ -275,7 +288,9 @@ dialog .btns .mini{min-height:50px}
       <button type="button" class="out" id="logout" data-i="logout"></button>
     </header>
 
-    <nav class="tabs noprint" id="secs" role="tablist"></nav>
+    <div class="layout" id="layout">
+    <main class="main">
+    <h2 class="pgtitle noprint" id="pgt"></h2>
     <nav class="tabs sub noprint" id="subs" role="tablist"></nav>
 
     <!-- ሽያጭ መመዝገቢያ -->
@@ -435,6 +450,9 @@ dialog .btns .mini{min-height:50px}
       <div id="rlist"></div>
       <div class="gen" data-i="rec_note"></div>
     </section>
+    </main>
+    <aside class="side noprint" id="secs" role="navigation"></aside>
+    </div>
   </div>
 </div>
 
@@ -453,7 +471,7 @@ dialog .btns .mini{min-height:50px}
 <script>
 /* ============ ማስተካከያ ============ */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZROYPvzzMIClQgvdYcS8YYB99vVdO6vtH9CrU4yhH4FK-tfVcy2sG9BO3LHUxVXYP/exec";
-const WAITERS = Array.from({length: 10}, (_, i) => "ኮድ " + (i + 1));
+let WAITERS = [];   // ከ Roles ሺት (J = ስም, K = ኮድ) ይጫናል
 /* ================================== */
 
 const $ = id => document.getElementById(id);
@@ -469,11 +487,14 @@ function el(tag, text, cls) {
 const L = {am: {}, en: {}};
 const TR = [
  ["app","አማና ካፌ","Amana Cafe"],
+ ["pg_sales","አማና ካፌ ሽያጭ","Amana Cafe Sales"],["pg_stock","አማና ካፌ ስቶክ","Amana Cafe Inventory"],["pg_payroll","አማና ካፌ ፔይሮል","Amana Cafe Payroll"],
+ ["pg_opex","አማና ካፌ ወጪዎች","Amana Cafe Expenses"],["pg_summary","አማና ካፌ የወር ሪፖርት","Amana Cafe Monthly Summary"],["pg_records","አማና ካፌ ማስተካከያ","Amana Cafe Edit / Delete"],
+ ["pick_code","ኮድ ይምረጡ","Choose a code"],["no_codes","የይለፍ ቃል የሚጠብቅ ኮድ የለም። ማናጀርዎን ያነጋግሩ","No codes are waiting for a password. Ask your manager"],
  ["login_sub","ለመግባት ኮድዎን እና የይለፍ ቃልዎን ያስገቡ","Enter your code and password to sign in"],
  ["code","ኮድ","Code"],["password","የይለፍ ቃል","Password"],["show","አሳይ","Show"],["hide","ደብቅ","Hide"],
  ["login","ግባ","Sign in"],["logout","ውጣ","Sign out"],
  ["create_pw","የይለፍ ቃል ፍጠር","Create password"],["forgot","የይለፍ ቃል ረሳሁ","Forgot password"],
- ["signup_sub","አዲስ የይለፍ ቃል ለመፍጠር መረጃዎን ይሙሉ","Fill in your details to create a password"],
+ ["signup_sub","Role እና ኮድዎን ከዝርዝሩ ይምረጡ፣ ከዚያ የይለፍ ቃል ይፍጠሩ","Choose your role and code from the list, then create a password"],
  ["forgot_sub","ኮድዎን እና ኢሜይልዎን ያስገቡ፤ የመቀየሪያ ቁጥር ይላክልዎታል","Enter your code and email; a reset code will be sent"],
  ["role","Role (ሚና)","Role"],["choose_role","Role ይምረጡ","Choose a role"],["mgr_key","የማናጀር ሚስጥር ቁልፍ","Manager secret key"],
  ["email","ኢሜይል","Email"],["new_pass","አዲስ የይለፍ ቃል","New password"],["confirm_pass","የይለፍ ቃል አረጋግጥ","Confirm password"],
@@ -523,8 +544,8 @@ const TR = [
  ["edit_title","መዝገብ አስተካክል","Edit record"],["no_perm","ፈቃድ የለዎትም","Not allowed"],["actions","ተግባር","Actions"],
  ["e_NET","ኢንተርኔት ያረጋግጡ እና እንደገና ይሞክሩ","Check your connection and try again"],["e_AUTH","ጊዜው አልፏል፤ እንደገና ይግቡ","Session expired; please sign in again"],
  ["e_MISSING","ሁሉንም መስኮች ይሙሉ","Please fill in all fields"],["e_BAD_LOGIN","ኮድ ወይም የይለፍ ቃል ትክክል አይደለም","Wrong code or password"],["e_LOCKED","ብዙ ጊዜ ተሳስተዋል። ከ 5 ደቂቃ በኋላ ይሞክሩ","Too many attempts. Try again in 5 minutes"],
- ["e_NO_ROLES_SHEET","Roles ሺት አልተገኘም","Roles sheet not found"],["e_BAD_EMAIL","ኢሜይሉ ትክክል አይደለም","Invalid email"],["e_SHORT_PASS","የይለፍ ቃል ቢያንስ 6 ቁምፊ መሆን አለበት","Password must be at least 6 characters"],
- ["e_BAD_ROLE","ይህ Role አይፈቀድም","This role is not allowed"],["e_BAD_KEY","የማናጀር ሚስጥር ቁልፍ ትክክል አይደለም","Wrong manager key"],["e_CODE_EXISTS","ይህ ኮድ አስቀድሞ የይለፍ ቃል አለው","This code already has a password"],
+ ["e_NO_ROLES_SHEET","Roles ሺት አልተገኘም","Roles sheet not found"],["e_BAD_EMAIL","ኢሜይሉ ትክክል አይደለም","Invalid email"],["e_SHORT_PASS","የይለፍ ቃል ቢያንስ 4 ቁምፊ መሆን አለበት","Password must be at least 4 characters"],
+ ["e_BAD_ROLE","ይህ Role/ኮድ በ Roles ሺት ላይ የለም","This role/code is not in the Roles sheet"],["e_BAD_KEY","የማናጀር ሚስጥር ቁልፍ ትክክል አይደለም","Wrong manager key"],["e_CODE_EXISTS","ይህ ኮድ አስቀድሞ የይለፍ ቃል አለው","This code already has a password"],
  ["e_ROLE_MISMATCH","Role ከተመዘገበው ጋር አይመሳሰልም","Role does not match the registered one"],["e_SIGNUP_CLOSED","ኮዱ በማናጀር አስቀድሞ መመዝገብ አለበት","Your code must be registered by the manager first"],
  ["e_TOO_MANY","ብዙ ሙከራ ተደርጓል። ቆይተው ይሞክሩ","Too many attempts. Try again later"],["e_BAD_RESET","ቁጥሩ ትክክል አይደለም ወይም ጊዜው አልፏል","Wrong or expired code"],["e_MAIL_FAIL","ኢሜይል መላክ አልተቻለም","Could not send the email"],
  ["e_FORBIDDEN","ይህን ለማድረግ ፈቃድ የለዎትም","You are not allowed to do this"],["e_BAD_DATE","ቀኑ ትክክል አይደለም","Invalid date"],["e_BAD_QTY","ብዛት ከ 0 በላይ መሆን አለበት","Quantity must be greater than 0"],
@@ -539,7 +560,7 @@ function t(k, ...a) { let s = L[lang][k]; if (s === undefined) s = k; a.forEach(
 const errText = c => { const k = "e_" + c; return L[lang][k] !== undefined ? L[lang][k] : String(c); };
 
 const E_AM = ["መስከረም","ጥቅምት","ኅዳር","ታኅሣሥ","ጥር","የካቲት","መጋቢት","ሚያዝያ","ግንቦት","ሰኔ","ሐምሌ","ነሐሴ","ጳጉሜ"];
-const E_EN = ["Meskerem","Tikimt","Hidar","Tahsas","Tir","Yekatit","Megabit","Miazia","Ginbot","Sene","Hamle","Nehase","Pagume"];
+const E_EN = ["September","October","November","December","January","February","March","April","May","June","July","August","Pagume"];
 const WD_AM = ["እሑ","ሰኞ","ማክ","ረቡ","ሐሙ","አር","ቅዳ"], WD_EN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const mName = m => (lang === "am" ? E_AM : E_EN)[m - 1];
 const WDN = i => (lang === "am" ? WD_AM : WD_EN)[i];
@@ -663,16 +684,21 @@ $("lf").addEventListener("submit", async e => {
   } finally { $("lbtn").disabled = false; }
 });
 
-let KEYROLES = [];
+let ROLEDATA = [];
 async function loadRoles() {
-  const s = $("srole"); s.innerHTML = "";
-  const o = new Option(t("choose_role"), ""); o.disabled = true; o.selected = true; s.add(o);
+  const s = $("srole"); fill(s, [], t("choose_role")); fill($("scode"), [], t("pick_code"));
   try {
     const j = await api("roles");
-    if (j.ok) { KEYROLES = j.keyRoles || []; j.roles.forEach(r => s.add(new Option(r, r))); }
+    if (!j.ok) { setMsg("smsg", errText(j.error), "err"); return; }
+    ROLEDATA = j.roles;
+    ROLEDATA.forEach(r => s.add(new Option(r.role, r.role)));
+    if (!ROLEDATA.length) setMsg("smsg", t("no_codes"), "err");
   } catch (_) { setMsg("smsg", t("e_NET"), "err"); }
 }
-$("srole").addEventListener("change", () => { $("skeybox").hidden = KEYROLES.indexOf($("srole").value) < 0; });
+$("srole").addEventListener("change", () => {
+  const r = ROLEDATA.find(x => x.role === $("srole").value);
+  fill($("scode"), r ? r.codes : [], t("pick_code"));
+});
 
 $("sf").addEventListener("submit", async e => {
   e.preventDefault();
@@ -681,9 +707,9 @@ $("sf").addEventListener("submit", async e => {
   if (password !== $("spass2").value) { setMsg("smsg", t("pass_mismatch"), "err"); return; }
   $("sbtn").disabled = true; setMsg("smsg", t("sending"));
   try {
-    const j = await api("signup", {role, code, email, password, key: $("skey").value});
+    const j = await api("signup", {role, code, email, password});
     if (!j.ok) { setMsg("smsg", errText(j.error), "err"); return; }
-    $("lcode").value = code; $("spass").value = ""; $("spass2").value = ""; $("skey").value = "";
+    $("lcode").value = code; $("spass").value = ""; $("spass2").value = "";
     showAuth("lf"); setMsg("lmsg", t("created"), "ok");
   } catch (err) { setMsg("smsg", t("e_NET"), "err"); }
   finally { $("sbtn").disabled = false; }
@@ -740,12 +766,16 @@ function perms() {
 const FORMS = {"sales/rec": "f", "stock/rec": "fs", "payroll/emp": "fe", "payroll/pay": "fp", "opex/rec": "fo"};
 const subLabel = (sec, sub) => (sec === "opex" && sub === "rec") ? t("c_reason") : t("s_" + sub);
 
+const ICONS = {sales: "💰", stock: "📦", payroll: "👥", opex: "🧾", summary: "📊", records: "✏️"};
 function buildNav() {
   const P = perms(), secs = Object.keys(P);
+  $("layout").classList.toggle("solo", secs.length < 2);
+  $("pgt").textContent = t("pg_" + SEC);
   const sn = $("secs"); sn.innerHTML = ""; sn.hidden = secs.length < 2;
   secs.forEach(s => {
-    const b = el("button", t("sec_" + s)); b.type = "button"; b.setAttribute("role", "tab");
-    b.setAttribute("aria-selected", String(s === SEC));
+    const b = document.createElement("button"); b.type = "button";
+    b.appendChild(el("span", ICONS[s], "ic")); b.appendChild(el("span", t("sec_" + s)));
+    if (s === SEC) b.setAttribute("aria-current", "page");
     b.onclick = () => showView(s, P[s][0]);
     sn.appendChild(b);
   });
@@ -779,7 +809,7 @@ function showView(sec, sub) {
   $("recs").hidden = !isRec;
   $("rep").hidden = !!form || isRec;
   if (form) {
-    if (form === "f") { if (!MENU.length) loadMenu(); }
+    if (form === "f") { if (!MENU.length) loadMenu(); loadWaiters(); }
     if (form === "fs") loadNames();
     if (form === "fp") loadEmps();
   } else if (isRec) loadRecs();
@@ -800,6 +830,17 @@ calStock = makeCal($("c_stock"));
 calPay   = makeCal($("c_pay"));
 calOpex  = makeCal($("c_opex"));
 
+const wLabel = w => w.code ? w.name + " (" + w.code + ")" : w.name;
+async function loadWaiters() {
+  try {
+    const j = await api("waiters");
+    if (!j.ok) return;
+    WAITERS = j.waiters.map(wLabel);
+    const keep = $("waiter").value;
+    fill($("waiter"), WAITERS, t("choose"));
+    if (keep && WAITERS.indexOf(keep) >= 0) $("waiter").value = keep;
+  } catch (_) {}
+}
 async function loadMenu() {
   fill($("category"), [], t("menu_loading"));
   try {
@@ -833,7 +874,7 @@ function renderItems(cat) {
 $("category").addEventListener("change", e => renderItems(e.target.value));
 const tick = () => $("ts").textContent = new Date().toLocaleString("en-GB");
 tick(); setInterval(tick, 1000);
-fill($("waiter"), WAITERS, t("choose"));
+fill($("waiter"), [], t("choose"));
 fill($("category"), [], t("menu_loading"));
 
 $("f").addEventListener("submit", async e => {
@@ -1151,8 +1192,9 @@ function renderSummary(box, rep) {
 
 /* ===== ማስተካከያ / መሰረዝ ===== */
 const RECDEF = {
-  sales: {cols: [[0, "c_time"], [2, "c_waiter"], [3, "c_cat"], [4, "c_item"], [5, "c_qty"], [6, "c_date"], [9, "c_totalb"], [7, "c_note"]],
-    fields: [{k: "waiter", i: 2, ty: "text", lb: "c_waiter"}, {k: "date", i: 6, ty: "date", lb: "c_date"}, {k: "qty", i: 5, ty: "num", lb: "c_qty"}, {k: "note", i: 7, ty: "text", lb: "c_note"}]},
+  sales: {cols: [[0, "c_time"], [2, "c_waiter"], [3, "c_cat"], [4, "c_item"], [5, "c_qty"], [8, "c_price"], [6, "c_date"], [9, "c_totalb"], [7, "c_note"]],
+    fields: [{k: "waiter", i: 2, ty: "wt", lb: "c_waiter"}, {k: "category", i: 3, ty: "cat", lb: "c_cat"}, {k: "item", i: 4, ty: "item", lb: "c_item"},
+      {k: "qty", i: 5, ty: "num", lb: "c_qty"}, {k: "price", i: 8, ty: "num", lb: "unit_price"}, {k: "date", i: 6, ty: "date", lb: "c_date"}, {k: "note", i: 7, ty: "text", lb: "c_note"}]},
   stock: {cols: [[0, "c_time"], [1, "item_name"], [2, "c_type"], [3, "qty"], [4, "unit_price"], [5, "total_price"], [6, "c_date"]],
     fields: [{k: "name", i: 1, ty: "text", lb: "item_name"}, {k: "type", i: 2, ty: "io", lb: "inout"}, {k: "qty", i: 3, ty: "num", lb: "qty"}, {k: "price", i: 4, ty: "num", lb: "unit_price"}, {k: "date", i: 6, ty: "date", lb: "buy_date"}]},
   emp: {cols: [[1, "emp_name"], [2, "emp_pos"], [3, "emp_salary"]],
@@ -1215,10 +1257,21 @@ async function delRec(ds, r) {
   } catch (err) { if (err.message !== "AUTH") setMsg("m_rec", t("e_NET"), "err"); }
 }
 let EDIT = null;
-function openEdit(ds, r) {
-  const def = RECDEF[ds], box = $("dfields"); box.innerHTML = "";
+async function openEdit(ds, r) {
+  const def = RECDEF[ds];
+  if (ds === "sales") { if (!MENU.length) await loadMenu(); if (!WAITERS.length) await loadWaiters(); }
+  const box = $("dfields"); box.innerHTML = "";
   $("dtitle").textContent = t("edit_title"); setMsg("dmsg", "");
   EDIT = {ds, r, ctl: {}};
+  const S = {};
+  const withCur = (list, cur) => (cur && list.indexOf(cur) < 0) ? [cur].concat(list) : list;
+  const mkSel = (list, cur) => { const sl = document.createElement("select"); list.forEach(o => sl.add(new Option(o, o))); if (cur) sl.value = cur; return sl; };
+  const itemNames = cat => { const c = MENU.find(x => x.category === cat); return c ? c.items.map(i => i.name) : []; };
+  const fillItem = keep => { S.item.innerHTML = ""; withCur(itemNames(S.cat.value), keep).forEach(n => S.item.add(new Option(n, n))); if (keep) S.item.value = keep; };
+  const priceFromMenu = () => {
+    const c = MENU.find(x => x.category === S.cat.value), it = c && c.items.find(i => i.name === S.item.value);
+    if (it && it.price && S.price) S.price.value = it.price;
+  };
   def.fields.forEach(f => {
     const wrap = el("div"); wrap.appendChild(el("label", t(f.lb)));
     const cur = r.v[f.i];
@@ -1226,14 +1279,24 @@ function openEdit(ds, r) {
       const m = document.createElement("div"); wrap.appendChild(m);
       EDIT.ctl[f.k] = makeCal(m, null, parseEthTxt(cur));
     } else if (f.ty === "io" || f.ty === "ft") {
-      const s = document.createElement("select");
+      const sl = document.createElement("select");
       const opts = f.ty === "io" ? [["in", "in"], ["out", "out"]] : [["fixed", "fixed"], ["temp", "temp"]];
-      opts.forEach(([v, k]) => s.add(new Option(t(k), v)));
-      s.value = f.ty === "io" ? (/^(ወጪ|out)/i.test(cur) ? "out" : "in") : (/^(ጊዜያዊ|temp)/i.test(cur) ? "temp" : "fixed");
-      wrap.appendChild(s); EDIT.ctl[f.k] = {get: () => s.value};
+      opts.forEach(([v, k]) => sl.add(new Option(t(k), v)));
+      sl.value = f.ty === "io" ? (/^(ወጪ|out)/i.test(cur) ? "out" : "in") : (/^(ጊዜያዊ|temp)/i.test(cur) ? "temp" : "fixed");
+      wrap.appendChild(sl); EDIT.ctl[f.k] = {get: () => sl.value};
+    } else if (f.ty === "wt") {
+      const sl = mkSel(withCur(WAITERS, cur), cur); wrap.appendChild(sl); EDIT.ctl[f.k] = {get: () => sl.value};
+    } else if (f.ty === "cat") {
+      const sl = mkSel(withCur(MENU.map(c => c.category), cur), cur); S.cat = sl;
+      sl.onchange = () => { fillItem(null); priceFromMenu(); };
+      wrap.appendChild(sl); EDIT.ctl[f.k] = {get: () => sl.value};
+    } else if (f.ty === "item") {
+      S.item = document.createElement("select"); fillItem(cur);
+      S.item.onchange = priceFromMenu;
+      wrap.appendChild(S.item); EDIT.ctl[f.k] = {get: () => S.item.value};
     } else {
       const i = document.createElement("input");
-      if (f.ty === "num") { i.type = "number"; i.step = "any"; i.min = "0"; i.inputMode = "decimal"; i.value = String(cur).replace(/,/g, ""); } else i.value = cur;
+      if (f.ty === "num") { i.type = "number"; i.step = "any"; i.min = "0"; i.inputMode = "decimal"; i.value = String(cur).replace(/,/g, ""); if (f.k === "price") S.price = i; } else i.value = cur;
       wrap.appendChild(i); EDIT.ctl[f.k] = {get: () => i.value};
     }
     box.appendChild(wrap);
@@ -1262,7 +1325,7 @@ function applyLang() {
   document.querySelectorAll("[data-ph]").forEach(n => { n.placeholder = t(n.dataset.ph); });
   document.querySelectorAll("#lang span").forEach(s => s.classList.toggle("on", s.dataset.l === lang));
   $("lshow").textContent = $("lpass").type === "password" ? t("show") : t("hide");
-  setPh("waiter", "choose"); setPh("category", MENU.length ? "choose_cat" : "menu_loading"); setPh("pa_emp", "choose"); setPh("srole", "choose_role");
+  setPh("waiter", "choose"); setPh("category", MENU.length ? "choose_cat" : "menu_loading"); setPh("pa_emp", "choose"); setPh("srole", "choose_role"); setPh("scode", "pick_code");
   if (!$("category").value && !$("items").querySelector(".it")) { $("items").innerHTML = ""; $("items").appendChild(el("div", t("choose_cat_first"), "hint")); }
   fillTypes();
   const keepDs = $("rds").value; if ($("rds").options.length) fillRds(); else fillRds();
