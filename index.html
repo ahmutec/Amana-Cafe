@@ -6,6 +6,7 @@
 <title>አማና ካፌ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;600;800&display=swap" rel="stylesheet">
+<style id="pg"></style>
 <style>
 :root{
   --bg:#f2efe9; --card:#fffdf9; --ink:#2a1f1a; --muted:#7a6a60;
@@ -19,19 +20,27 @@
 [hidden]{display:none!important}
 html,body{margin:0}
 body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;min-height:100dvh;
-  padding:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));
+  padding:max(58px,calc(env(safe-area-inset-top) + 48px)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));
   font-size:16px;-webkit-text-size-adjust:100%}
-@media (min-width:900px){body{padding-top:28px;font-size:17px}}
+@media (min-width:900px){body{padding-top:64px;font-size:17px}}
 .wrap{width:100%;max-width:1100px;margin:0 auto}
 
+/* ቋንቋ መቀየሪያ (ግራ ጥግ) */
+.lang{position:fixed;left:max(10px,env(safe-area-inset-left));top:max(10px,env(safe-area-inset-top));z-index:50;display:flex;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;overflow:hidden;font:inherit;cursor:pointer;padding:0;min-height:40px}
+.lang span{padding:8px 12px;font-weight:600;font-size:.9rem;color:var(--muted)}
+.lang span.on{background:var(--accent);color:var(--accent-ink);font-weight:800}
+
 /* መግቢያ */
-.screen{min-height:calc(100dvh - 40px);display:flex;align-items:center;justify-content:center}
-.card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 22px;display:grid;gap:16px}
+.screen{min-height:calc(100dvh - 90px);display:flex;align-items:center;justify-content:center}
+.card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 22px;display:grid;gap:16px}
+.card form{display:grid;gap:14px}
 .card h1{margin:0;text-align:center}
 .card p{margin:0;color:var(--muted);text-align:center;font-size:.95rem}
 .pw{position:relative}
 .pw input{padding-right:84px}
 .pw button{position:absolute;right:4px;top:4px;bottom:4px;min-width:72px;border:0;border-radius:8px;background:var(--soft);color:var(--ink);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer}
+.links{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.lk{background:none;border:0;color:var(--accent);font:inherit;font-weight:600;cursor:pointer;padding:6px 2px;min-height:40px;text-decoration:underline}
 
 /* ራስጌ */
 .top{position:relative;text-align:center;padding:6px 2px 14px;max-width:680px;margin:0 auto}
@@ -43,16 +52,19 @@ body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:var(--bg);
 .out{font:inherit;font-weight:600;min-height:44px;padding:0 16px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;cursor:pointer;white-space:nowrap}
 @media (min-width:900px){.card h1,.top h1{font-size:2.4rem}}
 
-.tabs{display:flex;gap:6px;max-width:680px;margin:0 auto 14px}
-.tabs button{flex:1;font:inherit;font-weight:600;font-size:.92rem;min-height:48px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;cursor:pointer;padding:4px 2px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;max-width:900px;margin:0 auto 12px}
+.tabs button{flex:1 1 auto;min-width:84px;font:inherit;font-weight:600;font-size:.92rem;min-height:46px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;cursor:pointer;padding:4px 8px}
 .tabs button[aria-selected=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:800}
-@media (min-width:900px){.tabs button{font-size:1rem}}
+.tabs.sub button{min-height:40px;font-size:.86rem;font-weight:600;background:transparent}
+.tabs.sub button[aria-selected=true]{background:var(--soft);color:var(--ink);border-color:var(--accent)}
 
 form.fm,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
 @media (min-width:600px){form.fm,.panel{padding:22px}}
 form.fm{display:grid;gap:16px;max-width:680px;margin:0 auto}
 label{display:block;font-weight:600;margin-bottom:6px;font-size:.95rem}
 select,input,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:10px;padding:12px;min-height:48px}
+select option{color:#000}
+input[readonly]{opacity:.75}
 textarea{min-height:84px;resize:vertical}
 select:focus,input:focus,textarea:focus,button:focus-visible{outline:3px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
 .row2{display:grid;gap:16px}
@@ -91,120 +103,352 @@ select:focus,input:focus,textarea:focus,button:focus-visible{outline:3px solid v
 .panel.wide{max-width:1100px}
 .rh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .rh strong{font-size:1.05rem;line-height:1.35}
-.rh button{font:inherit;font-weight:600;min-height:44px;padding:0 14px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;cursor:pointer;white-space:nowrap}
+.rh button,.mini{font:inherit;font-weight:600;min-height:44px;padding:0 14px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;cursor:pointer;white-space:nowrap}
+.rc{display:grid;gap:10px;margin-bottom:14px}
+.ynav{display:flex;align-items:center;justify-content:center;gap:8px}
+.ynav strong{min-width:150px;text-align:center}
+.ynav button{width:46px;height:46px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;font-size:1.4rem;cursor:pointer}
+.weeks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.weeks button{font:inherit;font-weight:600;min-height:48px;padding:4px 12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;cursor:pointer}
+.weeks button small{display:block;font-weight:400;font-size:.72rem;color:inherit;opacity:.8}
+.weeks button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.seg{display:flex;gap:6px;margin-bottom:12px}
+.seg button{flex:1;font:inherit;font-weight:600;min-height:44px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .sum{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .sum div{background:var(--soft);border-radius:10px;padding:10px 12px}
 .sum small{display:block;color:var(--muted);font-size:.8rem}
 .sum b{font-size:1.35rem;font-weight:800}
-.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;-webkit-overflow-scrolling:touch}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;-webkit-overflow-scrolling:touch;margin-bottom:14px}
 table{border-collapse:collapse;width:100%;font-size:.92rem}
-th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-th:first-child,td:first-child{text-align:left}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th.n,td.n{text-align:right}
+th.c,td.c{text-align:center}
 thead th{background:var(--accent);color:var(--accent-ink)}
 tfoot td{font-weight:800;background:var(--soft);border-bottom:0}
 td.n{font-variant-numeric:tabular-nums}
 td small{display:block;color:var(--muted);font-weight:400;font-size:.75rem}
+td.neg{color:var(--err);font-weight:700}
 .rk{width:34px;color:var(--muted);text-align:center!important}
-.mt th,.mt td{padding:8px 7px;text-align:center}
+.mt th,.mt td{padding:8px 7px;text-align:right}
 .mt th{min-width:74px}
 .mt th:first-child,.mt td:first-child{position:sticky;left:0;background:var(--card);z-index:1;border-right:1px solid var(--line);min-width:48px;text-align:center}
 .mt thead th:first-child,.mt thead th:last-child{background:var(--accent);z-index:2}
 .mt th:last-child,.mt td:last-child{position:sticky;right:0;background:var(--card);z-index:1;border-left:1px solid var(--line);font-weight:800}
 .mt tfoot td:first-child,.mt tfoot td:last-child{background:var(--soft)}
 .mt td.z{color:var(--muted);opacity:.5}
-.gen{font-size:.78rem;color:var(--muted);text-align:center;margin-top:10px}
+.mt td.l,.mt th.l{text-align:left;min-width:140px}
+.gen{font-size:.78rem;color:var(--muted);text-align:center;margin:10px 0}
+h3.sh{margin:6px 0 8px;font-size:1rem}
+.pronly{display:none}
+#pr{width:100%;margin-top:6px}
+
+/* ማስተካከያ */
+.recbar{display:grid;gap:10px;margin-bottom:12px}
+@media (min-width:600px){.recbar{grid-template-columns:1fr 1fr auto}}
+.acts{display:flex;gap:6px}
+.acts button{font:inherit;font-weight:600;min-height:38px;padding:0 10px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:8px;cursor:pointer}
+.acts button.del{color:var(--err);border-color:var(--err)}
+dialog{border:1.5px solid var(--accent);border-radius:14px;background:var(--card);color:var(--ink);padding:18px;width:min(460px,calc(100vw - 24px));overflow:visible}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+dialog form{display:grid;gap:14px}
+dialog .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+dialog .btns .mini{min-height:50px}
+
+@media print{
+  :root{--bg:#fff;--card:#fff;--ink:#000;--line:#999;--muted:#444;--soft:#eee;--accent:#1f5c4a;--accent-ink:#fff;--err:#b00}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{padding:0;font-size:12px}
+  .noprint,.lang{display:none!important}
+  .panel{border:0;max-width:none;padding:0}
+  .tw{overflow:visible;border:0}
+  .pronly{display:block;text-align:center;font-size:1.4rem;font-weight:800;margin-bottom:6px}
+  table{font-size:11px}
+  .mt th:first-child,.mt td:first-child,.mt th:last-child,.mt td:last-child{position:static}
+  th,td{padding:4px 5px}
+}
 </style>
 </head>
 <body>
+<button type="button" class="lang noprint" id="lang" aria-label="Language"><span data-l="en">En</span><span data-l="am">አማ</span></button>
 <div class="wrap">
+
   <!-- መግቢያ ገጽ -->
   <div id="login" class="screen" hidden>
-    <form id="lf" class="card" novalidate>
-      <h1>አማና ካፌ</h1>
-      <p>ለመግባት ኮድዎን እና የይለፍ ቃልዎን ያስገቡ</p>
-      <div>
-        <label for="lcode">ኮድ</label>
-        <input id="lcode" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false">
-      </div>
-      <div>
-        <label for="lpass">የይለፍ ቃል</label>
-        <div class="pw">
-          <input id="lpass" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false">
-          <button type="button" id="lshow" aria-label="የይለፍ ቃል አሳይ">አሳይ</button>
+    <div class="card">
+      <h1 data-i="app"></h1>
+
+      <!-- Login -->
+      <form id="lf" novalidate>
+        <p data-i="login_sub"></p>
+        <div>
+          <label for="lcode" data-i="code"></label>
+          <input id="lcode" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false">
         </div>
-      </div>
-      <div class="msg" id="lmsg" role="status" aria-live="polite"></div>
-      <button class="submit" id="lbtn" type="submit">ግባ</button>
-    </form>
+        <div>
+          <label for="lpass" data-i="password"></label>
+          <div class="pw">
+            <input id="lpass" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false">
+            <button type="button" id="lshow"></button>
+          </div>
+        </div>
+        <div class="msg" id="lmsg" role="status" aria-live="polite"></div>
+        <button class="submit" id="lbtn" type="submit" data-i="login"></button>
+        <div class="links">
+          <button type="button" class="lk" id="go_signup" data-i="create_pw"></button>
+          <button type="button" class="lk" id="go_forgot" data-i="forgot"></button>
+        </div>
+      </form>
+
+      <!-- Create password -->
+      <form id="sf" novalidate hidden>
+        <p data-i="signup_sub"></p>
+        <div>
+          <label for="srole" data-i="role"></label>
+          <select id="srole"></select>
+        </div>
+        <div id="skeybox" hidden>
+          <label for="skey" data-i="mgr_key"></label>
+          <input id="skey" type="password" autocomplete="off">
+        </div>
+        <div>
+          <label for="scode" data-i="code"></label>
+          <input id="scode" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false">
+        </div>
+        <div>
+          <label for="semail" data-i="email"></label>
+          <input id="semail" type="email" autocomplete="email" autocapitalize="none" spellcheck="false">
+        </div>
+        <div>
+          <label for="spass" data-i="new_pass"></label>
+          <input id="spass" type="password" autocomplete="new-password">
+        </div>
+        <div>
+          <label for="spass2" data-i="confirm_pass"></label>
+          <input id="spass2" type="password" autocomplete="new-password">
+        </div>
+        <div class="msg" id="smsg" role="status" aria-live="polite"></div>
+        <button class="submit" id="sbtn" type="submit" data-i="create_btn"></button>
+        <button type="button" class="lk" data-back data-i="back"></button>
+      </form>
+
+      <!-- Forgot password -->
+      <form id="ff" novalidate hidden>
+        <p data-i="forgot_sub"></p>
+        <div>
+          <label for="fcode" data-i="code"></label>
+          <input id="fcode" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false">
+        </div>
+        <div>
+          <label for="femail" data-i="email"></label>
+          <input id="femail" type="email" autocomplete="email" autocapitalize="none" spellcheck="false">
+        </div>
+        <button class="submit" id="fsend" type="button" data-i="send_code"></button>
+        <div id="fstep2" hidden style="display:grid;gap:14px">
+          <div>
+            <label for="frc" data-i="reset_code"></label>
+            <input id="frc" inputmode="numeric" autocomplete="one-time-code">
+          </div>
+          <div>
+            <label for="fpass" data-i="new_pass"></label>
+            <input id="fpass" type="password" autocomplete="new-password">
+          </div>
+          <div>
+            <label for="fpass2" data-i="confirm_pass"></label>
+            <input id="fpass2" type="password" autocomplete="new-password">
+          </div>
+          <button class="submit" id="freset" type="submit" data-i="reset_btn"></button>
+        </div>
+        <div class="msg" id="fmsg" role="status" aria-live="polite"></div>
+        <button type="button" class="lk" data-back data-i="back"></button>
+      </form>
+    </div>
   </div>
 
   <!-- ዋናው መተግበሪያ -->
   <div id="app" hidden>
-    <header class="top">
+    <header class="top noprint">
       <div>
-        <h1>አማና ካፌ</h1>
+        <h1 data-i="app"></h1>
         <p id="who"></p>
       </div>
-      <button type="button" class="out" id="logout">ውጣ</button>
+      <button type="button" class="out" id="logout" data-i="logout"></button>
     </header>
 
-    <nav class="tabs" role="tablist" aria-label="ገጾች">
-      <button role="tab" data-tab="rec" aria-selected="false">መመዝገቢያ</button>
-      <button role="tab" data-tab="daily" aria-selected="false">ዕለታዊ</button>
-      <button role="tab" data-tab="weekly" aria-selected="false">ሳምንታዊ</button>
-      <button role="tab" data-tab="monthly" aria-selected="false">ወርሃዊ</button>
-    </nav>
+    <nav class="tabs noprint" id="secs" role="tablist"></nav>
+    <nav class="tabs sub noprint" id="subs" role="tablist"></nav>
 
-    <form id="f" class="fm" novalidate hidden>
+    <!-- ሽያጭ መመዝገቢያ -->
+    <form id="f" class="fm noprint" novalidate hidden>
       <div class="row2">
         <div>
-          <label for="waiter">የወይተር ስም</label>
+          <label for="waiter" data-i="waiter"></label>
           <select id="waiter" required></select>
         </div>
         <div>
-          <label>የተመዘገበበት ቀን <span style="color:var(--muted);font-weight:400">(ዓ.ም.)</span></label>
-          <div class="cal">
-            <button type="button" id="dbtn" class="dbtn" aria-haspopup="dialog"></button>
-            <div id="pop" class="pop" hidden role="dialog" aria-label="የኢትዮጵያ ቀን መምረጫ">
-              <div class="ph">
-                <button type="button" id="pm" aria-label="ያለፈው ወር">‹</button>
-                <strong id="pt"></strong>
-                <button type="button" id="nm" aria-label="ቀጣይ ወር">›</button>
-              </div>
-              <div class="grid" id="gr"></div>
-              <button type="button" id="tod" class="todaybtn">ዛሬ</button>
-            </div>
-          </div>
+          <label data-i="rec_date"></label>
+          <div id="c_sales"></div>
         </div>
       </div>
-
       <div class="cat">
-        <label for="category">የምግቡ መደብ</label>
+        <label for="category" data-i="category"></label>
         <select id="category" required></select>
       </div>
-
       <div>
-        <label>የምግቡ አይነት <span style="color:var(--muted);font-weight:400">(ብዙ መምረጥ ይቻላል)</span></label>
-        <div class="items" id="items"><div class="hint">መጀመሪያ መደብ ይምረጡ</div></div>
+        <label><span data-i="item"></span> <span style="color:var(--muted);font-weight:400" data-i="multi"></span></label>
+        <div class="items" id="items"><div class="hint" data-i="choose_cat_first"></div></div>
       </div>
-
       <div>
-        <label for="note">አስተያየት</label>
-        <textarea id="note" placeholder="ካለ ብቻ ይጻፉ"></textarea>
+        <label for="note" data-i="note"></label>
+        <textarea id="note" data-ph="note_ph"></textarea>
       </div>
-
       <div class="msg" id="msg" role="status" aria-live="polite"></div>
-      <button class="submit" id="send" type="submit">Submit</button>
+      <button class="submit" id="send" type="submit" data-i="submit"></button>
       <div class="ts" id="ts"></div>
     </form>
 
+    <!-- ስቶክ መመዝገቢያ -->
+    <form id="fs" class="fm noprint" novalidate hidden>
+      <div>
+        <label for="st_name" data-i="item_name"></label>
+        <input id="st_name" list="names" autocomplete="off">
+        <datalist id="names"></datalist>
+      </div>
+      <div class="row2">
+        <div>
+          <label for="st_type" data-i="inout"></label>
+          <select id="st_type"></select>
+        </div>
+        <div>
+          <label for="st_qty" data-i="qty"></label>
+          <input id="st_qty" type="number" inputmode="decimal" min="0" step="any">
+        </div>
+      </div>
+      <div class="row2">
+        <div>
+          <label for="st_price" data-i="unit_price"></label>
+          <input id="st_price" type="number" inputmode="decimal" min="0" step="any">
+        </div>
+        <div>
+          <label for="st_total" data-i="total_price"></label>
+          <input id="st_total" readonly>
+        </div>
+      </div>
+      <div>
+        <label data-i="buy_date"></label>
+        <div id="c_stock"></div>
+      </div>
+      <div class="msg" id="m_stock" role="status" aria-live="polite"></div>
+      <button class="submit" id="b_stock" type="submit" data-i="submit"></button>
+    </form>
+
+    <!-- ሰራተኛ መመዝገቢያ -->
+    <form id="fe" class="fm noprint" novalidate hidden>
+      <div>
+        <label for="em_name" data-i="emp_name"></label>
+        <input id="em_name" autocomplete="off">
+      </div>
+      <div>
+        <label for="em_pos" data-i="emp_pos"></label>
+        <input id="em_pos" autocomplete="off">
+      </div>
+      <div>
+        <label for="em_sal" data-i="emp_salary"></label>
+        <input id="em_sal" type="number" inputmode="decimal" min="0" step="any">
+      </div>
+      <div class="msg" id="m_emp" role="status" aria-live="polite"></div>
+      <button class="submit" id="b_emp" type="submit" data-i="submit"></button>
+    </form>
+
+    <!-- ደመወዝ መክፈያ -->
+    <form id="fp" class="fm noprint" novalidate hidden>
+      <div>
+        <label for="pa_emp" data-i="c_emp"></label>
+        <select id="pa_emp"></select>
+      </div>
+      <div class="row2">
+        <div>
+          <label for="pa_sal" data-i="emp_salary"></label>
+          <input id="pa_sal" type="number" inputmode="decimal" min="0" step="any">
+        </div>
+        <div>
+          <label data-i="paid_date"></label>
+          <div id="c_pay"></div>
+        </div>
+      </div>
+      <div class="row2">
+        <div>
+          <label for="pa_bon" data-i="c_bonus"></label>
+          <input id="pa_bon" type="number" inputmode="decimal" min="0" step="any" placeholder="0">
+        </div>
+        <div>
+          <label for="pa_note" data-i="c_bonus_note"></label>
+          <input id="pa_note" autocomplete="off">
+        </div>
+      </div>
+      <div class="msg" id="m_pay" role="status" aria-live="polite"></div>
+      <button class="submit" id="b_pay" type="submit" data-i="submit"></button>
+    </form>
+
+    <!-- ወጪ መመዝገቢያ -->
+    <form id="fo" class="fm noprint" novalidate hidden>
+      <div>
+        <label for="op_reason" data-i="c_reason"></label>
+        <input id="op_reason" autocomplete="off">
+      </div>
+      <div class="row2">
+        <div>
+          <label for="op_type" data-i="c_type"></label>
+          <select id="op_type"></select>
+        </div>
+        <div>
+          <label for="op_amt" data-i="c_amount"></label>
+          <input id="op_amt" type="number" inputmode="decimal" min="0" step="any">
+        </div>
+      </div>
+      <div>
+        <label data-i="c_date"></label>
+        <div id="c_opex"></div>
+      </div>
+      <div class="msg" id="m_opex" role="status" aria-live="polite"></div>
+      <button class="submit" id="b_opex" type="submit" data-i="submit"></button>
+    </form>
+
+    <!-- ሪፖርት -->
     <section class="panel" id="rep" hidden aria-live="polite">
-      <div class="rh"><strong id="rt"></strong><button type="button" id="rf">↻ አድስ</button></div>
+      <div class="pronly" id="rbrand"></div>
+      <div class="rh"><strong id="rt"></strong><button type="button" id="rf" class="noprint" data-i="refresh"></button></div>
+      <div id="rc" class="rc noprint"></div>
       <div id="rb"></div>
       <div class="gen" id="rg"></div>
+      <button type="button" class="submit noprint" id="pr" hidden></button>
+    </section>
+
+    <!-- ማስተካከያ / መሰረዝ -->
+    <section class="panel wide noprint" id="recs" hidden>
+      <div class="recbar">
+        <div><label for="rds" data-i="rec_what"></label><select id="rds"></select></div>
+        <div><label for="rfilter" data-i="search"></label><input id="rfilter" autocomplete="off"></div>
+        <div style="align-self:end"><button type="button" class="mini" id="rrefresh" data-i="refresh" style="width:100%"></button></div>
+      </div>
+      <div class="msg" id="m_rec" role="status" aria-live="polite"></div>
+      <div id="rlist"></div>
+      <div class="gen" data-i="rec_note"></div>
     </section>
   </div>
 </div>
+
+<dialog id="dlg">
+  <form id="dform" method="dialog" novalidate>
+    <strong id="dtitle"></strong>
+    <div id="dfields" style="display:grid;gap:12px"></div>
+    <div class="msg" id="dmsg"></div>
+    <div class="btns">
+      <button type="button" class="mini" id="dcancel" data-i="cancel"></button>
+      <button type="submit" class="submit" id="dsave" data-i="save" style="min-height:50px;font-size:1rem"></button>
+    </div>
+  </form>
+</dialog>
 
 <script>
 /* ============ ማስተካከያ ============ */
@@ -220,126 +464,344 @@ function el(tag, text, cls) {
   if (cls) e.className = cls;
   return e;
 }
-const fill = (sel, list, ph) => {
-  sel.innerHTML = "";
-  const o = new Option(ph, ""); o.disabled = true; o.selected = true; sel.add(o);
-  list.forEach(v => sel.add(new Option(v, v)));
-};
-const msg = (t, c) => { $("msg").textContent = t; $("msg").className = "msg " + (c || ""); };
-const lmsg = (t, c) => { $("lmsg").textContent = t; $("lmsg").className = "msg " + (c || ""); };
 
-let AUTH = null, MENU = [], REPORT = null, TAB = "";
-try { AUTH = JSON.parse(localStorage.getItem("amana_auth") || "null"); } catch (_) {}
+/* ===== ቋንቋ ===== */
+const L = {am: {}, en: {}};
+const TR = [
+ ["app","አማና ካፌ","Amana Cafe"],
+ ["login_sub","ለመግባት ኮድዎን እና የይለፍ ቃልዎን ያስገቡ","Enter your code and password to sign in"],
+ ["code","ኮድ","Code"],["password","የይለፍ ቃል","Password"],["show","አሳይ","Show"],["hide","ደብቅ","Hide"],
+ ["login","ግባ","Sign in"],["logout","ውጣ","Sign out"],
+ ["create_pw","የይለፍ ቃል ፍጠር","Create password"],["forgot","የይለፍ ቃል ረሳሁ","Forgot password"],
+ ["signup_sub","አዲስ የይለፍ ቃል ለመፍጠር መረጃዎን ይሙሉ","Fill in your details to create a password"],
+ ["forgot_sub","ኮድዎን እና ኢሜይልዎን ያስገቡ፤ የመቀየሪያ ቁጥር ይላክልዎታል","Enter your code and email; a reset code will be sent"],
+ ["role","Role (ሚና)","Role"],["choose_role","Role ይምረጡ","Choose a role"],["mgr_key","የማናጀር ሚስጥር ቁልፍ","Manager secret key"],
+ ["email","ኢሜይል","Email"],["new_pass","አዲስ የይለፍ ቃል","New password"],["confirm_pass","የይለፍ ቃል አረጋግጥ","Confirm password"],
+ ["create_btn","አካውንት ፍጠር","Create account"],["back","← ወደ መግቢያ ተመለስ","← Back to sign in"],
+ ["send_code","ኮድ ላክ","Send code"],["reset_code","በኢሜይል የደረሰዎት ቁጥር","Code received by email"],["reset_btn","የይለፍ ቃል ቀይር","Reset password"],
+ ["created","✓ ተፈጥሯል። አሁን መግባት ይችላሉ","✓ Account created. You can sign in now"],
+ ["code_sent","ኮዱ ከተመሳሰለ ቁጥሩ ወደ ኢሜይልዎ ተልኳል (15 ደቂቃ ይሰራል)","If the details match, a code was sent to your email (valid 15 min)"],
+ ["pass_changed","✓ የይለፍ ቃል ተቀይሯል። አሁን ይግቡ","✓ Password changed. Please sign in"],
+ ["pass_mismatch","የይለፍ ቃሎቹ አይመሳሰሉም","Passwords do not match"],
+ ["signing","በመግባት ላይ...","Signing in..."],["sending","በመላክ ላይ...","Sending..."],["loading","በመጫን ላይ...","Loading..."],
+ ["sec_sales","ሽያጭ","Sales"],["sec_stock","ስቶክ","Inventory"],["sec_payroll","ፔይሮል","Payroll"],["sec_opex","ወጪዎች","Expenses"],
+ ["sec_summary","የወር ሪፖርት","Monthly Summary"],["sec_records","ማስተካከያ","Edit / Delete"],
+ ["s_rec","መመዝገቢያ","Record"],["s_daily","ዕለታዊ","Daily"],["s_weekly","ሳምንታዊ","Weekly"],["s_monthly","ወርሃዊ","Monthly"],
+ ["s_cur","አሁን ስቶክ","Current Stock"],["s_total","Total Purchase","Total Purchase"],
+ ["s_emp","ሰራተኛ መመዝገቢያ","Register Staff"],["s_pay","ደመወዝ መክፈያ","Pay Salary"],["s_rep","ሪፖርት","Report"],
+ ["waiter","የወይተር ስም","Waiter"],["rec_date","የተመዘገበበት ቀን (ዓ.ም.)","Date (E.C.)"],["category","የምግቡ መደብ","Category"],
+ ["item","የምግቡ አይነት","Item"],["multi","(ብዙ መምረጥ ይቻላል)","(select several)"],["choose_cat_first","መጀመሪያ መደብ ይምረጡ","Choose a category first"],
+ ["note","አስተያየት","Note"],["note_ph","ካለ ብቻ ይጻፉ","Optional"],["submit","Submit","Submit"],["choose","ይምረጡ","Choose"],
+ ["choose_cat","መደብ ይምረጡ","Choose category"],["menu_loading","ምናሌ በመጫን ላይ...","Loading menu..."],
+ ["no_items","በዚህ መደብ ስር እቃ የለም","No items in this category"],["birr","ብር","Birr"],["ec","ዓ.ም.","E.C."],["today","ዛሬ","Today"],
+ ["pick_one","ቢያንስ አንድ የምግብ አይነት ይምረጡ","Select at least one item"],["pick_waiter","የወይተር ስም ይምረጡ","Choose a waiter"],["pick_category","የምግብ መደብ ይምረጡ","Choose a category"],
+ ["qty_min","ብዛት ከ 1 ያላነሰ መሆን አለበት","Quantity must be at least 1"],["saved","ተመዝግቧል","Saved"],["items_saved","እቃ ተመዝግቧል","item(s) saved"],
+ ["item_name","የእቃው ስም","Item name"],["inout","አይነት (ገቢ/ወጪ)","Type (In/Out)"],["in","ገቢ","In"],["out","ወጪ","Out"],
+ ["qty","ብዛት","Quantity"],["unit_price","የአንዱ ዋጋ","Unit price"],["total_price","ጠቅላላ ዋጋ","Total price"],["buy_date","የተገዛበት ቀን","Purchase date"],
+ ["emp_name","የሰራተኛው ስም","Employee name"],["emp_pos","የስራ ድርሻ","Position"],["emp_salary","የደመወዝ መጠን","Salary"],
+ ["c_emp","ሰራተኛ","Employee"],["paid_date","የተከፈለበት ቀን","Payment date"],["c_bonus","ኮሚሽን / ቦነስ","Commission / Bonus"],["c_bonus_note","የኮሚሽን/ቦነስ ማስታወሻ","Bonus note"],
+ ["c_reason","የወጣበት ምክንያት","Reason"],["c_type","አይነት","Type"],["fixed","ቋሚ","Fixed"],["temp","ጊዜያዊ","Temporary"],["c_amount","የብር መጠን","Amount (Birr)"],["c_date","ቀን","Date"],
+ ["refresh","↻ አድስ","↻ Refresh"],["print","🖨 Print","🖨 Print"],["pick_date","ቀን ይምረጡ","Pick a date"],["week","ሳምንት","Week"],["week_n","ሳምንት {0}","Week {0}"],
+ ["gen","የተሰላበት: ","Generated: "],["none","በዚህ ጊዜ የተመዘገበ የለም","Nothing recorded for this period"],
+ ["total_qty","ጠቅላላ ብዛት","Total quantity"],["total_money","ጠቅላላ ገንዘብ (ብር)","Total amount (Birr)"],["sum","ድምር","Total"],
+ ["daily_sales","የዕለቱ ሽያጭ","Daily sales"],["weekly_sales","የሳምንቱ ሽያጭ","Weekly sales"],["sales_year","የ{0} ዓ.ም. ሽያጭ (ብር)","Sales for {0} E.C. (Birr)"],
+ ["daily_stock","ዕለታዊ ስቶክ ገቢ/ወጪ","Daily inventory in/out"],["weekly_stock","ሳምንታዊ ስቶክ ገቢ/ወጪ","Weekly inventory in/out"],["stock_year","የ{0} ዓ.ም. ስቶክ (ብር)","Inventory for {0} E.C. (Birr)"],
+ ["in_total","ገቢ ጠቅላላ (ብር)","Total in (Birr)"],["out_total","ወጪ ጠቅላላ (ብር)","Total out (Birr)"],["in_grid","ገቢ (የተገዛ)","In (purchased)"],["out_grid","ወጪ (የወጣ)","Out (used)"],
+ ["cur_title","አሁን ስቶክ ላይ ያሉ እቃዎች","Current stock"],["total_title","ጠቅላላ የተገዙ እቃዎች (Total Purchase)","Total Purchase"],
+ ["stock_value","የስቶኩ ጠቅላላ ዋጋ (ብር)","Stock value (Birr)"],["items_count","የእቃ አይነቶች","Item types"],
+ ["c_no","ተ.ቁ","No."],["c_total_in","ጠቅላላ የገባ ብዛት","Total quantity in"],["c_spent","ጠቅላላ የወጣ ወጪ (ብር)","Total spent (Birr)"],["c_total_val","ጠቅላላ ድምር (ብር)","Total value (Birr)"],
+ ["day","ቀን","Day"],["col_total","ጠቅላላ","Total"],["year_total","የዓመቱ ጠቅላላ ገንዘብ (ብር)","Year total (Birr)"],
+ ["payroll_title","የደመወዝ ክፍያ — {0} {1}","Salary payments — {0} {1}"],["salary_paid","ደመወዝ","Salary"],["bonus_paid","ኮሚሽን/ቦነስ","Commission/Bonus"],["pay_total","ጠቅላላ ክፍያ (ብር)","Total paid (Birr)"],
+ ["staff_list","የተመዘገቡ ሰራተኞች","Registered staff"],["no_pay","በዚህ ወር የደመወዝ ክፍያ አልተመዘገበም","No salary payments this month"],["dup_pay","ለዚህ ሰራተኛ በዚህ ወር ክፍያ ተመዝግቧል። እንደገና ይመዝገብ?","A payment for this employee already exists this month. Record again?"],
+ ["opex_title","አማና ካፌ ወርሃዊ ወጭዎች","Amana Cafe Monthly Expenses"],["opex_year","{0} ዓ.ም.","{0} E.C."],
+ ["sum_title","የወር ሪፖርት — {0} ዓ.ም.","Monthly report — {0} E.C."],["c_month","ወር","Month"],["c_sales_t","ጠቅላላ ሽያጭ","Total sales"],["c_purch","የአስቤዛ ወጭ","Purchases"],["c_payroll","የደመወዝ ወጭ","Payroll"],["c_opex","የአገልግሎት ወጭ","Operating costs"],["c_diff","ልዩነት","Difference"],
+ ["sum_formula","ልዩነት = ሽያጭ − (አስቤዛ + ደመወዝ + አገልግሎት)","Difference = Sales − (Purchases + Payroll + Operating costs)"],
+ ["rec_what","የትኛውን ልዩ?","Which records?"],["search","ፈልግ","Search"],["rec_note","የመጨረሻዎቹ 300 መዝገቦች ይታያሉ። ለማረም «አስተካክል»፣ ለማጥፋት «ሰርዝ» ይጫኑ።","Latest 300 records are shown. Use Edit to correct or Delete to remove."],
+ ["ds_sales","ሽያጭ","Sales"],["ds_stock","ስቶክ ገቢ/ወጪ","Inventory in/out"],["ds_emp","ሰራተኞች","Staff"],["ds_pay","ደመወዝ ክፍያዎች","Salary payments"],["ds_opex","ወጪዎች","Expenses"],
+ ["edit","አስተካክል","Edit"],["del","ሰርዝ","Delete"],["save","አስቀምጥ","Save"],["cancel","ተው","Cancel"],["confirm_del","ይህ መዝገብ እስከመጨረሻው ይሰረዛል። እርግጠኛ ነዎት?","This record will be permanently deleted. Are you sure?"],
+ ["c_time","ሰዓት","Time"],["c_waiter","ወይተር","Waiter"],["c_cat","መደብ","Category"],["c_item","አይነት","Item"],["c_qty","ብዛት","Qty"],["c_totalb","ድምር","Total"],["c_note","አስተያየት","Note"],["c_price","ዋጋ","Price"],
+ ["edit_title","መዝገብ አስተካክል","Edit record"],["no_perm","ፈቃድ የለዎትም","Not allowed"],["actions","ተግባር","Actions"],
+ ["e_NET","ኢንተርኔት ያረጋግጡ እና እንደገና ይሞክሩ","Check your connection and try again"],["e_AUTH","ጊዜው አልፏል፤ እንደገና ይግቡ","Session expired; please sign in again"],
+ ["e_MISSING","ሁሉንም መስኮች ይሙሉ","Please fill in all fields"],["e_BAD_LOGIN","ኮድ ወይም የይለፍ ቃል ትክክል አይደለም","Wrong code or password"],["e_LOCKED","ብዙ ጊዜ ተሳስተዋል። ከ 5 ደቂቃ በኋላ ይሞክሩ","Too many attempts. Try again in 5 minutes"],
+ ["e_NO_ROLES_SHEET","Roles ሺት አልተገኘም","Roles sheet not found"],["e_BAD_EMAIL","ኢሜይሉ ትክክል አይደለም","Invalid email"],["e_SHORT_PASS","የይለፍ ቃል ቢያንስ 6 ቁምፊ መሆን አለበት","Password must be at least 6 characters"],
+ ["e_BAD_ROLE","ይህ Role አይፈቀድም","This role is not allowed"],["e_BAD_KEY","የማናጀር ሚስጥር ቁልፍ ትክክል አይደለም","Wrong manager key"],["e_CODE_EXISTS","ይህ ኮድ አስቀድሞ የይለፍ ቃል አለው","This code already has a password"],
+ ["e_ROLE_MISMATCH","Role ከተመዘገበው ጋር አይመሳሰልም","Role does not match the registered one"],["e_SIGNUP_CLOSED","ኮዱ በማናጀር አስቀድሞ መመዝገብ አለበት","Your code must be registered by the manager first"],
+ ["e_TOO_MANY","ብዙ ሙከራ ተደርጓል። ቆይተው ይሞክሩ","Too many attempts. Try again later"],["e_BAD_RESET","ቁጥሩ ትክክል አይደለም ወይም ጊዜው አልፏል","Wrong or expired code"],["e_MAIL_FAIL","ኢሜይል መላክ አልተቻለም","Could not send the email"],
+ ["e_FORBIDDEN","ይህን ለማድረግ ፈቃድ የለዎትም","You are not allowed to do this"],["e_BAD_DATE","ቀኑ ትክክል አይደለም","Invalid date"],["e_BAD_QTY","ብዛት ከ 0 በላይ መሆን አለበት","Quantity must be greater than 0"],
+ ["e_BAD_AMOUNT","የብር መጠን ትክክል አይደለም","Invalid amount"],["e_BAD_NAME","ስም/ምክንያት ባዶ መሆን የለበትም","Name/reason is required"],["e_NO_ITEMS","እቃ አልተመረጠም","No items selected"],
+ ["e_NO_EMP","ሰራተኛው አልተመዘገበም","Employee not registered"],["e_EMP_EXISTS","ይህ ሰራተኛ አስቀድሞ ተመዝግቧል","This employee is already registered"],
+ ["e_STALE","መዝገቡ ተቀይሯል፤ «አድስ» ተጭነው እንደገና ይሞክሩ","The record changed; refresh and try again"],["e_UNKNOWN","ያልታወቀ ጥያቄ","Unknown request"],
+ ["menu_fail","ምናሌ መጫን አልተቻለም። ገጹን እንደገና ይጫኑ","Could not load the menu. Reload the page"],["rep_fail","መጫን አልተቻለም። ኢንተርኔት ያረጋግጡ እና «አድስ» ይጫኑ","Could not load. Check your connection and press Refresh"]
+];
+TR.forEach(([k, a, e]) => { L.am[k] = a; L.en[k] = e; });
+let lang = localStorage.getItem("amana_lang") === "en" ? "en" : "am";
+function t(k, ...a) { let s = L[lang][k]; if (s === undefined) s = k; a.forEach((v, i) => { s = s.replace("{" + i + "}", v); }); return s; }
+const errText = c => { const k = "e_" + c; return L[lang][k] !== undefined ? L[lang][k] : String(c); };
 
-/* ===== ከሰርቨር ጋር መገናኛ ===== */
-async function api(action, payload) {
-  const body = JSON.stringify(Object.assign({action, token: AUTH ? AUTH.token : ""}, payload || {}));
-  const r = await fetch(SCRIPT_URL, {method: "POST", headers: {"Content-Type": "text/plain;charset=utf-8"}, body});
-  const j = await r.json();
-  if (!j.ok && j.error === "AUTH") { logout("ጊዜው አልፏል፤ እንደገና ይግቡ"); throw new Error("AUTH"); }
-  return j;
-}
-
-/* ===== መግቢያ / መውጫ ===== */
-$("lshow").addEventListener("click", () => {
-  const p = $("lpass"), show = p.type === "password";
-  p.type = show ? "text" : "password";
-  $("lshow").textContent = show ? "ደብቅ" : "አሳይ";
-});
-
-$("lf").addEventListener("submit", async e => {
-  e.preventDefault();
-  const code = $("lcode").value.trim(), password = $("lpass").value;
-  if (!code || !password) { lmsg("ኮድ እና የይለፍ ቃል ያስገቡ", "err"); return; }
-  $("lbtn").disabled = true; lmsg("በመግባት ላይ...");
-  try {
-    const j = await api("login", {code, password});
-    if (!j.ok) { lmsg(j.error || "መግባት አልተቻለም", "err"); return; }
-    AUTH = {token: j.token, role: j.role, code: j.code, canRecord: !!j.canRecord};
-    localStorage.setItem("amana_auth", JSON.stringify(AUTH));
-    $("lpass").value = ""; lmsg("");
-    enterApp();
-  } catch (err) {
-    if (err.message !== "AUTH") lmsg("መግባት አልተቻለም። ኢንተርኔት ያረጋግጡ እና እንደገና ይሞክሩ", "err");
-  } finally {
-    $("lbtn").disabled = false;
-  }
-});
-
-function showLogin(message) {
-  $("app").hidden = true; $("login").hidden = false;
-  lmsg(message || "", message ? "err" : "");
-  $("lpass").type = "password"; $("lshow").textContent = "አሳይ";
-  setTimeout(() => $("lcode").focus(), 50);
-}
-
-function logout(message) {
-  AUTH = null; MENU = []; REPORT = null; TAB = "";
-  localStorage.removeItem("amana_auth");
-  localStorage.removeItem("amana_menu");
-  showLogin(typeof message === "string" ? message : "");
-}
-$("logout").addEventListener("click", () => logout());
-
-function enterApp() {
-  $("login").hidden = true; $("app").hidden = false;
-  $("who").textContent = AUTH.role + " · " + AUTH.code;
-  document.querySelector('.tabs [data-tab="rec"]').hidden = !AUTH.canRecord;   // መመዝገቢያ ለ Manager ብቻ
-  REPORT = null;
-  if (AUTH.canRecord) loadMenu();
-  showTab(AUTH.canRecord ? "rec" : "daily");
-}
+const E_AM = ["መስከረም","ጥቅምት","ኅዳር","ታኅሣሥ","ጥር","የካቲት","መጋቢት","ሚያዝያ","ግንቦት","ሰኔ","ሐምሌ","ነሐሴ","ጳጉሜ"];
+const E_EN = ["Meskerem","Tikimt","Hidar","Tahsas","Tir","Yekatit","Megabit","Miazia","Ginbot","Sene","Hamle","Nehase","Pagume"];
+const WD_AM = ["እሑ","ሰኞ","ማክ","ረቡ","ሐሙ","አር","ቅዳ"], WD_EN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const mName = m => (lang === "am" ? E_AM : E_EN)[m - 1];
+const WDN = i => (lang === "am" ? WD_AM : WD_EN)[i];
 
 /* ===== የኢትዮጵያ ቀን አቆጣጠር ===== */
-const E_MONTHS = ["መስከረም","ጥቅምት","ኅዳር","ታኅሣሥ","ጥር","የካቲት","መጋቢት","ሚያዝያ","ግንቦት","ሰኔ","ሐምሌ","ነሐሴ","ጳጉሜ"];
 const ETH_EPOCH = 1723856;
 function gregToEth(y, m, d) {
   const a = Math.floor((14 - m) / 12), yy = y + 4800 - a, mm = m + 12 * a - 3;
   const jdn = d + Math.floor((153 * mm + 2) / 5) + 365 * yy + Math.floor(yy / 4) - Math.floor(yy / 100) + Math.floor(yy / 400) - 32045;
   const r = (jdn - ETH_EPOCH) % 1461;
   const n = (r % 365) + 365 * Math.floor(r / 1460);
-  return {
-    y: 4 * Math.floor((jdn - ETH_EPOCH) / 1461) + Math.floor(r / 365) - Math.floor(r / 1460),
-    m: Math.floor(n / 30) + 1,
-    d: (n % 30) + 1
-  };
+  return {y: 4 * Math.floor((jdn - ETH_EPOCH) / 1461) + Math.floor(r / 365) - Math.floor(r / 1460), m: Math.floor(n / 30) + 1, d: (n % 30) + 1};
 }
 const daysIn = (m, y) => m < 13 ? 30 : (y % 4 === 3 ? 6 : 5);
-const ethJdn = (y, m, d) => ETH_EPOCH + 365 * (y - 1) + Math.floor(y / 4) + 30 * m + d - 31;
-const weekday = (y, m, d) => (ethJdn(y, m, d) + 2) % 7;   // 0 = እሑድ
-const WD = ["እሑ","ሰኞ","ማክ","ረቡ","ሐሙ","አር","ቅዳ"];
-
+const weeksIn = (m, y) => Math.ceil(daysIn(m, y) / 7);
+const weekday = (y, m, d) => (ETH_EPOCH + 365 * y + Math.floor(y / 4) + 30 * m + d - 31 + 1) % 7;   // 0 = እሑድ
 const n0 = new Date();
 const TODAY = gregToEth(n0.getFullYear(), n0.getMonth() + 1, n0.getDate());
-let sel = {...TODAY}, view = {y: TODAY.y, m: TODAY.m};
-
-const ethDateText = () => sel.d + " " + E_MONTHS[sel.m - 1] + " " + sel.y;
-const showSel = () => $("dbtn").textContent = ethDateText() + " ዓ.ም.";
-
-function renderCal() {
-  $("pt").textContent = E_MONTHS[view.m - 1] + " " + view.y;
-  const g = $("gr"); g.innerHTML = "";
-  WD.forEach(w => g.appendChild(el("div", w, "wd")));
-  for (let i = 0; i < weekday(view.y, view.m, 1); i++) g.appendChild(document.createElement("div"));
-  for (let d = 1; d <= daysIn(view.m, view.y); d++) {
-    const b = el("button", d); b.type = "button";
-    if (sel.y === view.y && sel.m === view.m && sel.d === d) b.classList.add("sel");
-    if (TODAY.y === view.y && TODAY.m === view.m && TODAY.d === d) b.classList.add("now");
-    b.onclick = () => { sel = {y: view.y, m: view.m, d}; showSel(); $("pop").hidden = true; };
-    g.appendChild(b);
-  }
+const ethText = o => o.d + " " + mName(o.m) + " " + o.y;
+function parseEthTxt(s) {
+  const p = String(s).trim().split(/\s+/);
+  const m = E_AM.indexOf(p[1]) + 1;
+  return (p.length >= 3 && m) ? {y: parseInt(p[2], 10), m: m, d: parseInt(p[0], 10)} : {...TODAY};
 }
-const shift = k => { view.m += k; if (view.m > 13) { view.m = 1; view.y++; } if (view.m < 1) { view.m = 13; view.y--; } renderCal(); };
-$("pm").onclick = () => shift(-1);
-$("nm").onclick = () => shift(1);
-$("tod").onclick = () => { sel = {...TODAY}; showSel(); $("pop").hidden = true; };
-$("dbtn").onclick = () => { view = {y: sel.y, m: sel.m}; renderCal(); $("pop").hidden = !$("pop").hidden; };
-document.addEventListener("click", e => { if (!e.target.closest(".cal")) $("pop").hidden = true; });
-showSel();
 
-/* ===== ምናሌ ===== */
+/* ===== የቀን መምረጫ (ብዙ ቦታ የሚሰራ) ===== */
+const CALS = [];
+function makeCal(root, onChange, init) {
+  const st = {sel: {...(init || TODAY)}};
+  st.view = {y: st.sel.y, m: st.sel.m};
+  root.className = "cal";
+  root.innerHTML = '<button type="button" class="dbtn"></button><div class="pop" hidden role="dialog"><div class="ph"><button type="button" class="pm">‹</button><strong class="pt"></strong><button type="button" class="nm">›</button></div><div class="grid"></div><button type="button" class="todaybtn"></button></div>';
+  const q = s => root.querySelector(s), pop = q(".pop");
+  const label = () => { q(".dbtn").textContent = ethText(st.sel) + " " + t("ec"); q(".todaybtn").textContent = t("today"); };
+  const pick = o => { st.sel = o; label(); pop.hidden = true; if (onChange) onChange({...o}); };
+  function render() {
+    q(".pt").textContent = mName(st.view.m) + " " + st.view.y;
+    const g = q(".grid"); g.innerHTML = "";
+    for (let i = 0; i < 7; i++) g.appendChild(el("div", WDN(i), "wd"));
+    for (let i = 0; i < weekday(st.view.y, st.view.m, 1); i++) g.appendChild(document.createElement("div"));
+    for (let d = 1; d <= daysIn(st.view.m, st.view.y); d++) {
+      const b = el("button", d); b.type = "button";
+      if (st.sel.y === st.view.y && st.sel.m === st.view.m && st.sel.d === d) b.classList.add("sel");
+      if (TODAY.y === st.view.y && TODAY.m === st.view.m && TODAY.d === d) b.classList.add("now");
+      b.onclick = () => pick({y: st.view.y, m: st.view.m, d});
+      g.appendChild(b);
+    }
+  }
+  const shiftv = k => { st.view.m += k; if (st.view.m > 13) { st.view.m = 1; st.view.y++; } if (st.view.m < 1) { st.view.m = 13; st.view.y--; } render(); };
+  q(".pm").onclick = () => shiftv(-1);
+  q(".nm").onclick = () => shiftv(1);
+  q(".todaybtn").onclick = () => pick({...TODAY});
+  q(".dbtn").onclick = () => { st.view = {y: st.sel.y, m: st.sel.m}; render(); pop.hidden = !pop.hidden; };
+  const api = {root, get: () => ({...st.sel}), set(o) { st.sel = {...o}; label(); }, refresh() { label(); if (!pop.hidden) render(); }};
+  CALS.push(api); label();
+  return api;
+}
+document.addEventListener("click", e => {
+  document.querySelectorAll(".cal .pop").forEach(p => { if (!p.parentElement.contains(e.target)) p.hidden = true; });
+});
+
+/* ===== ሁኔታ ===== */
+let AUTH = null, MENU = [], EMPS = [], SEC = "", SUB = "", REQ = 0;
+const RC = {date: {...TODAY}, month: {y: TODAY.y, m: TODAY.m}, week: Math.ceil(TODAY.d / 7), year: TODAY.y, sk: "in"};
+try { AUTH = JSON.parse(localStorage.getItem("amana_auth") || "null"); } catch (_) {}
+if (AUTH && !AUTH.kind) AUTH = null;
+
+const setMsg = (id, text, c) => { $(id).textContent = text; $(id).className = "msg " + (c || ""); };
+
+/* ===== ከሰርቨር ጋር መገናኛ ===== */
+async function api(action, payload) {
+  const body = JSON.stringify(Object.assign({action, token: AUTH ? AUTH.token : ""}, payload || {}));
+  const r = await fetch(SCRIPT_URL, {method: "POST", headers: {"Content-Type": "text/plain;charset=utf-8"}, body});
+  const j = await r.json();
+  if (!j.ok && j.error === "AUTH" && AUTH) { logout(t("e_AUTH")); throw new Error("AUTH"); }
+  return j;
+}
+async function post(act, data, btnId, msgId, after) {
+  $(btnId).disabled = true; setMsg(msgId, t("sending"));
+  try {
+    const j = await api(act, data);
+    if (!j.ok) { setMsg(msgId, errText(j.error), "err"); return j; }
+    setMsg(msgId, "✓ " + t("saved"), "ok");
+    if (after) after(j);
+    return j;
+  } catch (err) {
+    if (err.message !== "AUTH") setMsg(msgId, t("e_NET"), "err");
+  } finally { $(btnId).disabled = false; }
+}
+
+/* ===== መግቢያ ===== */
+function showAuth(which) {
+  ["lf", "sf", "ff"].forEach(id => $(id).hidden = id !== which);
+  ["lmsg", "smsg", "fmsg"].forEach(id => setMsg(id, ""));
+  if (which === "sf") loadRoles();
+  if (which === "ff") $("fstep2").hidden = true;
+}
+$("go_signup").onclick = () => showAuth("sf");
+$("go_forgot").onclick = () => showAuth("ff");
+document.querySelectorAll("[data-back]").forEach(b => b.onclick = () => showAuth("lf"));
+
+$("lshow").addEventListener("click", () => {
+  const p = $("lpass"); p.type = p.type === "password" ? "text" : "password";
+  $("lshow").textContent = p.type === "password" ? t("show") : t("hide");
+});
+
+$("lf").addEventListener("submit", async e => {
+  e.preventDefault();
+  const code = $("lcode").value.trim(), password = $("lpass").value;
+  if (!code || !password) { setMsg("lmsg", t("e_MISSING"), "err"); return; }
+  $("lbtn").disabled = true; setMsg("lmsg", t("signing"));
+  try {
+    const j = await api("login", {code, password});
+    if (!j.ok) { setMsg("lmsg", errText(j.error), "err"); return; }
+    AUTH = {token: j.token, role: j.role, code: j.code, kind: j.kind};
+    localStorage.setItem("amana_auth", JSON.stringify(AUTH));
+    $("lpass").value = ""; setMsg("lmsg", "");
+    enterApp();
+  } catch (err) {
+    if (err.message !== "AUTH") setMsg("lmsg", t("e_NET"), "err");
+  } finally { $("lbtn").disabled = false; }
+});
+
+let KEYROLES = [];
+async function loadRoles() {
+  const s = $("srole"); s.innerHTML = "";
+  const o = new Option(t("choose_role"), ""); o.disabled = true; o.selected = true; s.add(o);
+  try {
+    const j = await api("roles");
+    if (j.ok) { KEYROLES = j.keyRoles || []; j.roles.forEach(r => s.add(new Option(r, r))); }
+  } catch (_) { setMsg("smsg", t("e_NET"), "err"); }
+}
+$("srole").addEventListener("change", () => { $("skeybox").hidden = KEYROLES.indexOf($("srole").value) < 0; });
+
+$("sf").addEventListener("submit", async e => {
+  e.preventDefault();
+  const role = $("srole").value, code = $("scode").value.trim(), email = $("semail").value.trim(), password = $("spass").value;
+  if (!role || !code || !email || !password) { setMsg("smsg", t("e_MISSING"), "err"); return; }
+  if (password !== $("spass2").value) { setMsg("smsg", t("pass_mismatch"), "err"); return; }
+  $("sbtn").disabled = true; setMsg("smsg", t("sending"));
+  try {
+    const j = await api("signup", {role, code, email, password, key: $("skey").value});
+    if (!j.ok) { setMsg("smsg", errText(j.error), "err"); return; }
+    $("lcode").value = code; $("spass").value = ""; $("spass2").value = ""; $("skey").value = "";
+    showAuth("lf"); setMsg("lmsg", t("created"), "ok");
+  } catch (err) { setMsg("smsg", t("e_NET"), "err"); }
+  finally { $("sbtn").disabled = false; }
+});
+
+$("fsend").addEventListener("click", async () => {
+  const code = $("fcode").value.trim(), email = $("femail").value.trim();
+  if (!code || !email) { setMsg("fmsg", t("e_MISSING"), "err"); return; }
+  $("fsend").disabled = true; setMsg("fmsg", t("sending"));
+  try {
+    const j = await api("forgot", {code, email});
+    if (!j.ok) { setMsg("fmsg", errText(j.error), "err"); return; }
+    $("fstep2").hidden = false; setMsg("fmsg", t("code_sent"), "ok");
+  } catch (err) { setMsg("fmsg", t("e_NET"), "err"); }
+  finally { $("fsend").disabled = false; }
+});
+$("ff").addEventListener("submit", async e => {
+  e.preventDefault();
+  if ($("fstep2").hidden) return;
+  const code = $("fcode").value.trim(), resetCode = $("frc").value.trim(), password = $("fpass").value;
+  if (!resetCode || !password) { setMsg("fmsg", t("e_MISSING"), "err"); return; }
+  if (password !== $("fpass2").value) { setMsg("fmsg", t("pass_mismatch"), "err"); return; }
+  $("freset").disabled = true; setMsg("fmsg", t("sending"));
+  try {
+    const j = await api("reset", {code, resetCode, password});
+    if (!j.ok) { setMsg("fmsg", errText(j.error), "err"); return; }
+    ["frc", "fpass", "fpass2"].forEach(id => $(id).value = "");
+    $("lcode").value = code; showAuth("lf"); setMsg("lmsg", t("pass_changed"), "ok");
+  } catch (err) { setMsg("fmsg", t("e_NET"), "err"); }
+  finally { $("freset").disabled = false; }
+});
+
+function showLogin(message) {
+  $("app").hidden = true; $("login").hidden = false;
+  showAuth("lf");
+  if (message) setMsg("lmsg", message, "err");
+  $("lpass").type = "password"; $("lshow").textContent = t("show");
+  setTimeout(() => $("lcode").focus(), 50);
+}
+function logout(message) {
+  AUTH = null; MENU = []; EMPS = []; SEC = ""; SUB = ""; REQ++;
+  localStorage.removeItem("amana_auth"); localStorage.removeItem("amana_menu");
+  showLogin(typeof message === "string" ? message : "");
+}
+$("logout").addEventListener("click", () => logout());
+
+/* ===== ፈቃዶች እና አሰሳ ===== */
+function perms() {
+  if (AUTH.kind === "manager") return {sales: ["rec", "daily", "weekly", "monthly"], stock: ["rec", "cur", "daily", "weekly", "monthly", "total"],
+    payroll: ["emp", "pay", "rep"], opex: ["rec", "rep"], summary: ["rep"], records: ["rec"]};
+  if (AUTH.kind === "cashier") return {sales: ["rec", "daily"]};
+  return {sales: ["daily", "weekly", "monthly"], stock: ["cur", "daily", "weekly", "monthly", "total"], payroll: ["rep"], opex: ["rep"]};
+}
+const FORMS = {"sales/rec": "f", "stock/rec": "fs", "payroll/emp": "fe", "payroll/pay": "fp", "opex/rec": "fo"};
+const subLabel = (sec, sub) => (sec === "opex" && sub === "rec") ? t("c_reason") : t("s_" + sub);
+
+function buildNav() {
+  const P = perms(), secs = Object.keys(P);
+  const sn = $("secs"); sn.innerHTML = ""; sn.hidden = secs.length < 2;
+  secs.forEach(s => {
+    const b = el("button", t("sec_" + s)); b.type = "button"; b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", String(s === SEC));
+    b.onclick = () => showView(s, P[s][0]);
+    sn.appendChild(b);
+  });
+  const subs = P[SEC] || [];
+  const bn = $("subs"); bn.innerHTML = ""; bn.hidden = subs.length < 2;
+  subs.forEach(u => {
+    const b = el("button", subLabel(SEC, u)); b.type = "button"; b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", String(u === SUB));
+    b.onclick = () => showView(SEC, u);
+    bn.appendChild(b);
+  });
+}
+
+function enterApp() {
+  $("login").hidden = true; $("app").hidden = false;
+  $("who").textContent = AUTH.role + " · " + AUTH.code;
+  MENU = [];
+  const P = perms(), first = Object.keys(P)[0];
+  showView(first, P[first][0]);
+}
+
+function showView(sec, sub) {
+  if (!AUTH) return;
+  const P = perms();
+  if (!P[sec]) sec = Object.keys(P)[0];
+  if (P[sec].indexOf(sub) < 0) sub = P[sec][0];
+  SEC = sec; SUB = sub; REQ++;
+  buildNav();
+  const form = FORMS[sec + "/" + sub], isRec = sec === "records";
+  ["f", "fs", "fe", "fp", "fo"].forEach(id => $(id).hidden = id !== form);
+  $("recs").hidden = !isRec;
+  $("rep").hidden = !!form || isRec;
+  if (form) {
+    if (form === "f") { if (!MENU.length) loadMenu(); }
+    if (form === "fs") loadNames();
+    if (form === "fp") loadEmps();
+  } else if (isRec) loadRecs();
+  else loadReport();
+}
+
+/* ===== ምናሌ እና ሽያጭ መመዝገብ ===== */
+const fill = (sel, list, ph) => {
+  sel.innerHTML = "";
+  const o = new Option(ph, ""); o.disabled = true; o.selected = true; sel.add(o);
+  list.forEach(v => sel.add(new Option(v, v)));
+};
+const setPh = (id, key) => { const s = $(id); if (s.options.length && s.options[0].value === "") s.options[0].textContent = t(key); };
+
+let calSales, calStock, calPay, calOpex;
+calSales = makeCal($("c_sales"));
+calStock = makeCal($("c_stock"));
+calPay   = makeCal($("c_pay"));
+calOpex  = makeCal($("c_opex"));
+
 async function loadMenu() {
-  fill($("category"), [], "ምናሌ በመጫን ላይ...");
+  fill($("category"), [], t("menu_loading"));
   try {
     const j = await api("menu");
     if (!j.ok) throw new Error(j.error);
@@ -348,24 +810,20 @@ async function loadMenu() {
   } catch (e) {
     if (!AUTH) return;
     try { MENU = JSON.parse(localStorage.getItem("amana_menu") || "[]"); } catch (_) {}
-    if (!MENU.length) msg("ምናሌ መጫን አልተቻለም። ገጹን እንደገና ይጫኑ", "err");
+    if (!MENU.length) setMsg("msg", t("menu_fail"), "err");
   }
-  fill($("category"), MENU.map(c => c.category), "መደብ ይምረጡ");
+  fill($("category"), MENU.map(c => c.category), t("choose_cat"));
 }
-
-const normItem = it => typeof it === "string" ? {name: it, price: 0} : it;
-
 function renderItems(cat) {
   const box = $("items"); box.innerHTML = "";
   const c = MENU.find(x => x.category === cat);
-  if (!c || !c.items.length) { box.appendChild(el("div", "በዚህ መደብ ስር እቃ የለም", "hint")); return; }
-  c.items.map(normItem).forEach(({name, price}) => {
+  if (!c || !c.items.length) { box.appendChild(el("div", t("no_items"), "hint")); return; }
+  c.items.forEach(({name, price}) => {
     const row = document.createElement("label"); row.className = "it";
-    row.innerHTML = '<input type="checkbox"><span></span>' +
-      '<input class="q" type="number" inputmode="numeric" min="1" step="1" value="1" disabled aria-label="ብዛት">';
+    row.innerHTML = '<input type="checkbox"><span></span><input class="q" type="number" inputmode="numeric" min="1" step="1" value="1" disabled>';
     const sp = row.querySelector("span");
     sp.textContent = name;
-    if (price) sp.appendChild(el("small", fmt(price) + " ብር"));
+    if (price) sp.appendChild(el("small", fmt(price) + " " + t("birr")));
     row.dataset.name = name;
     const cb = row.querySelector("[type=checkbox]"), q = row.querySelector(".q");
     cb.addEventListener("change", () => { q.disabled = !cb.checked; row.classList.toggle("on", cb.checked); if (cb.checked) { q.focus(); q.select(); } });
@@ -373,148 +831,457 @@ function renderItems(cat) {
   });
 }
 $("category").addEventListener("change", e => renderItems(e.target.value));
-
 const tick = () => $("ts").textContent = new Date().toLocaleString("en-GB");
 tick(); setInterval(tick, 1000);
+fill($("waiter"), WAITERS, t("choose"));
+fill($("category"), [], t("menu_loading"));
 
-fill($("waiter"), WAITERS, "ይምረጡ");
-fill($("category"), [], "ምናሌ በመጫን ላይ...");
-
-/* ===== መመዝገብ ===== */
 $("f").addEventListener("submit", async e => {
   e.preventDefault();
-  if (!AUTH || !AUTH.canRecord) return;
-  const need = [["waiter","የወይተር ስም"],["category","የምግብ መደብ"]];
-  for (const [id, name] of need) {
-    if (!$(id).value) { msg(name + " ይምረጡ", "err"); $(id).focus(); return; }
-  }
+  if (!AUTH) return;
+  if (!$("waiter").value) { setMsg("msg", t("pick_waiter"), "err"); $("waiter").focus(); return; }
+  if (!$("category").value) { setMsg("msg", t("pick_category"), "err"); $("category").focus(); return; }
   const items = [];
   for (const row of document.querySelectorAll("#items .it")) {
     if (!row.querySelector("[type=checkbox]").checked) continue;
     const q = parseInt(row.querySelector(".q").value, 10);
-    if (!q || q < 1) { msg(row.dataset.name + ": ብዛት ከ 1 ያላነሰ መሆን አለበት", "err"); row.querySelector(".q").focus(); return; }
+    if (!q || q < 1) { setMsg("msg", row.dataset.name + ": " + t("qty_min"), "err"); row.querySelector(".q").focus(); return; }
     items.push({name: row.dataset.name, qty: q});
   }
-  if (!items.length) { msg("ቢያንስ አንድ የምግብ አይነት ይምረጡ", "err"); return; }
-
-  const data = {
-    timestamp: new Date().toLocaleString("en-GB"),
-    waiter: $("waiter").value,
-    category: $("category").value,
-    date: ethDateText(),
-    note: $("note").value.trim(),
-    items
-  };
-
-  $("send").disabled = true; msg("በመላክ ላይ...");
-  try {
-    const j = await api("submit", data);
-    if (!j.ok) { msg(j.error || "መመዝገብ አልተቻለም", "err"); return; }
-    msg("✓ " + items.length + " እቃ ተመዝግቧል", "ok");
-    REPORT = null;
+  if (!items.length) { setMsg("msg", t("pick_one"), "err"); return; }
+  const data = {waiter: $("waiter").value, category: $("category").value, date: calSales.get(), note: $("note").value.trim(), items};
+  await post("submit", data, "send", "msg", j => {
+    setMsg("msg", "✓ " + items.length + " " + t("items_saved"), "ok");
     $("category").selectedIndex = 0;
-    $("items").innerHTML = '<div class="hint">መጀመሪያ መደብ ይምረጡ</div>';
+    $("items").innerHTML = ""; $("items").appendChild(el("div", t("choose_cat_first"), "hint"));
     $("note").value = "";
-  } catch (err) {
-    if (err.message !== "AUTH") msg("መላክ አልተቻለም። ኢንተርኔት ያረጋግጡ እና እንደገና ይሞክሩ", "err");
-  } finally {
-    $("send").disabled = false;
+  });
+});
+
+/* ===== ስቶክ መመዝገብ ===== */
+function fillTypes() {
+  const keep = $("st_type").value;
+  $("st_type").innerHTML = ""; $("st_type").add(new Option(t("in"), "in")); $("st_type").add(new Option(t("out"), "out")); $("st_type").value = keep || "in";
+  const k2 = $("op_type").value;
+  $("op_type").innerHTML = ""; $("op_type").add(new Option(t("fixed"), "fixed")); $("op_type").add(new Option(t("temp"), "temp")); $("op_type").value = k2 || "fixed";
+}
+async function loadNames() {
+  try { const j = await api("stock_names"); if (j.ok) { const dl = $("names"); dl.innerHTML = ""; j.names.forEach(n => { const o = document.createElement("option"); o.value = n; dl.appendChild(o); }); } } catch (_) {}
+}
+const calcTotal = () => { const q = parseFloat($("st_qty").value), p = parseFloat($("st_price").value); $("st_total").value = (q > 0 && p >= 0) ? fmt(q * p) : ""; };
+$("st_qty").addEventListener("input", calcTotal); $("st_price").addEventListener("input", calcTotal);
+$("fs").addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = $("st_name").value.trim(), qty = parseFloat($("st_qty").value), price = parseFloat($("st_price").value);
+  if (!name) { setMsg("m_stock", t("e_BAD_NAME"), "err"); return; }
+  if (!(qty > 0)) { setMsg("m_stock", t("e_BAD_QTY"), "err"); return; }
+  if (!(price >= 0)) { setMsg("m_stock", t("e_BAD_AMOUNT"), "err"); return; }
+  await post("stock_submit", {name, type: $("st_type").value, qty, price, date: calStock.get()}, "b_stock", "m_stock", () => {
+    $("st_name").value = ""; $("st_qty").value = ""; $("st_price").value = ""; $("st_total").value = ""; loadNames();
+  });
+});
+
+/* ===== ሰራተኛ እና ደመወዝ ===== */
+$("fe").addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = $("em_name").value.trim(), sal = parseFloat($("em_sal").value);
+  if (!name) { setMsg("m_emp", t("e_BAD_NAME"), "err"); return; }
+  if (!(sal >= 0)) { setMsg("m_emp", t("e_BAD_AMOUNT"), "err"); return; }
+  await post("emp_add", {name, position: $("em_pos").value.trim(), salary: sal}, "b_emp", "m_emp", () => {
+    $("em_name").value = ""; $("em_pos").value = ""; $("em_sal").value = "";
+  });
+});
+async function loadEmps() {
+  try {
+    const j = await api("emp_list");
+    if (j.ok) { EMPS = j.emps; fill($("pa_emp"), EMPS.map(x => x.name), t("choose")); }
+  } catch (_) {}
+}
+$("pa_emp").addEventListener("change", () => {
+  const e = EMPS.find(x => x.name === $("pa_emp").value);
+  if (e) $("pa_sal").value = e.salary;
+});
+$("fp").addEventListener("submit", async e => {
+  e.preventDefault();
+  const emp = $("pa_emp").value, sal = parseFloat($("pa_sal").value), bon = $("pa_bon").value === "" ? 0 : parseFloat($("pa_bon").value);
+  if (!emp) { setMsg("m_pay", t("e_NO_EMP"), "err"); return; }
+  if (!(sal >= 0) || !(bon >= 0)) { setMsg("m_pay", t("e_BAD_AMOUNT"), "err"); return; }
+  const data = {employee: emp, salary: sal, bonus: bon, bonusNote: $("pa_note").value.trim(), date: calPay.get()};
+  const reset = () => { $("pa_emp").selectedIndex = 0; $("pa_sal").value = ""; $("pa_bon").value = ""; $("pa_note").value = ""; };
+  const j = await post("pay_submit", data, "b_pay", "m_pay", reset);
+  if (j && !j.ok && j.error === "DUP_PAY" && confirm(t("dup_pay"))) {
+    await post("pay_submit", Object.assign({force: true}, data), "b_pay", "m_pay", reset);
   }
 });
 
-/* ===== ታቦች እና ሪፖርቶች ===== */
-document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
-$("rf").addEventListener("click", () => { REPORT = null; showTab(TAB); });
+/* ===== ወጪ መመዝገብ ===== */
+$("fo").addEventListener("submit", async e => {
+  e.preventDefault();
+  const reason = $("op_reason").value.trim(), amt = parseFloat($("op_amt").value);
+  if (!reason) { setMsg("m_opex", t("e_BAD_NAME"), "err"); return; }
+  if (!(amt >= 0)) { setMsg("m_opex", t("e_BAD_AMOUNT"), "err"); return; }
+  await post("opex_add", {reason, type: $("op_type").value, amount: amt, date: calOpex.get()}, "b_opex", "m_opex", () => {
+    $("op_reason").value = ""; $("op_amt").value = "";
+  });
+});
 
-async function showTab(t) {
-  if (!AUTH) return;
-  if (t === "rec" && !AUTH.canRecord) t = "daily";
-  TAB = t;
-  document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
-  $("f").hidden = t !== "rec";
-  $("rep").hidden = t === "rec";
-  $("rep").classList.toggle("wide", t === "monthly");
-  if (t === "rec") return;
-  if (!REPORT) {
-    $("rb").innerHTML = ""; $("rb").appendChild(el("div", "በመጫን ላይ...", "hint"));
-    $("rt").textContent = ""; $("rg").textContent = "";
-    try {
-      const j = await api("report");
-      if (!j.ok) throw new Error(j.error);
-      REPORT = j.report;
-    } catch (err) {
-      if (err.message === "AUTH") return;
-      $("rb").innerHTML = ""; $("rb").appendChild(el("div", "ሪፖርት መጫን አልተቻለም። ኢንተርኔት ያረጋግጡ እና «አድስ» ይጫኑ", "hint err"));
-      return;
+/* ===== ሪፖርቶች ===== */
+const KINDS = {"sales/daily": "date", "sales/weekly": "week", "sales/monthly": "year",
+  "stock/cur": "", "stock/daily": "date", "stock/weekly": "week", "stock/monthly": "year", "stock/total": "",
+  "payroll/rep": "month", "opex/rep": "year", "summary/rep": "year"};
+
+function nav(label, onPrev, onNext) {
+  const d = el("div", null, "ynav");
+  const p = el("button", "‹"); p.type = "button"; p.onclick = onPrev;
+  const n = el("button", "›"); n.type = "button"; n.onclick = onNext;
+  d.appendChild(p); d.appendChild(el("strong", label)); d.appendChild(n);
+  return d;
+}
+function buildControls() {
+  const rc = $("rc"); rc.innerHTML = "";
+  const kind = KINDS[SEC + "/" + SUB];
+  if (kind === "date") {
+    const w = el("div"); w.appendChild(el("label", t("pick_date")));
+    const m = document.createElement("div"); w.appendChild(m); rc.appendChild(w);
+    makeCal(m, d => { RC.date = d; loadReport(); }, RC.date);
+  } else if (kind === "year") {
+    rc.appendChild(nav(String(RC.year) + " " + t("ec"), () => { RC.year--; loadReport(); }, () => { RC.year++; loadReport(); }));
+  } else if (kind === "month" || kind === "week") {
+    const mv = k => { let {y, m} = RC.month; m += k; if (m > 13) { m = 1; y++; } if (m < 1) { m = 13; y--; } RC.month = {y, m}; RC.week = (y === TODAY.y && m === TODAY.m) ? Math.min(Math.ceil(TODAY.d / 7), weeksIn(m, y)) : 1; loadReport(); };
+    rc.appendChild(nav(mName(RC.month.m) + " " + RC.month.y, () => mv(-1), () => mv(1)));
+    if (kind === "week") {
+      const ws = el("div", null, "weeks");
+      const n = weeksIn(RC.month.m, RC.month.y);
+      if (RC.week > n) RC.week = 1;
+      for (let w = 1; w <= n; w++) {
+        const b = el("button", t("week_n", w)); b.type = "button";
+        b.appendChild(el("small", (w - 1) * 7 + 1 + "–" + Math.min(w * 7, daysIn(RC.month.m, RC.month.y))));
+        b.setAttribute("aria-pressed", String(w === RC.week));
+        b.onclick = () => { RC.week = w; loadReport(); };
+        ws.appendChild(b);
+      }
+      rc.appendChild(ws);
     }
   }
-  if (TAB !== t) return;
-  t === "monthly" ? renderMonthly(REPORT.monthly) : renderRanked(REPORT[t]);
-  $("rg").textContent = "የተሰላበት: " + REPORT.generated;
 }
 
-function summary(total, money) {
-  const s = el("div", null, "sum");
-  [["ጠቅላላ ብዛት", fmt(total)], ["ጠቅላላ ገንዘብ (ብር)", fmt(money)]].forEach(([k, v]) => {
-    const d = el("div"); d.appendChild(el("small", k)); d.appendChild(el("b", v)); s.appendChild(d);
+const weekText = () => {
+  const n = daysIn(RC.month.m, RC.month.y), a = (RC.week - 1) * 7 + 1, b = Math.min(RC.week * 7, n);
+  return t("week") + " " + RC.week + " (" + a + "–" + b + " " + mName(RC.month.m) + " " + RC.month.y + ")";
+};
+
+function requestFor() {
+  const key = SEC + "/" + SUB;
+  const wk = {y: RC.month.y, m: RC.month.m, w: RC.week};
+  switch (key) {
+    case "sales/daily":   return ["rep_sales", {mode: "daily", date: RC.date}];
+    case "sales/weekly":  return ["rep_sales", Object.assign({mode: "weekly"}, wk)];
+    case "sales/monthly": return ["rep_sales", {mode: "monthly", y: RC.year}];
+    case "stock/cur":     return ["rep_stock", {mode: "current"}];
+    case "stock/total":   return ["rep_stock", {mode: "total"}];
+    case "stock/daily":   return ["rep_stock", {mode: "daily", date: RC.date}];
+    case "stock/weekly":  return ["rep_stock", Object.assign({mode: "weekly"}, wk)];
+    case "stock/monthly": return ["rep_stock", {mode: "monthly", y: RC.year}];
+    case "payroll/rep":   return ["rep_payroll", {y: RC.month.y, m: RC.month.m}];
+    case "opex/rep":      return ["rep_opex", {y: RC.year}];
+    case "summary/rep":   return ["rep_summary", {y: RC.year}];
+  }
+  return null;
+}
+function titleFor() {
+  switch (SEC + "/" + SUB) {
+    case "sales/daily":   return t("daily_sales") + " — " + ethText(RC.date);
+    case "sales/weekly":  return t("weekly_sales") + " — " + weekText();
+    case "sales/monthly": return t("sales_year", RC.year);
+    case "stock/cur":     return t("cur_title");
+    case "stock/total":   return t("total_title");
+    case "stock/daily":   return t("daily_stock") + " — " + ethText(RC.date);
+    case "stock/weekly":  return t("weekly_stock") + " — " + weekText();
+    case "stock/monthly": return t("stock_year", RC.year);
+    case "payroll/rep":   return t("payroll_title", mName(RC.month.m), RC.month.y);
+    case "opex/rep":      return t("opex_title") + " — " + t("opex_year", RC.year);
+    case "summary/rep":   return t("sum_title", RC.year);
+  }
+  return "";
+}
+$("rf").addEventListener("click", () => loadReport());
+
+let LASTREP = null;
+async function loadReport() {
+  const rq = requestFor();
+  if (!rq) return;
+  const my = ++REQ;
+  buildControls();
+  $("rep").classList.toggle("wide", /monthly|opex|summary|payroll/.test(SEC + "/" + SUB));
+  $("rt").textContent = titleFor(); $("rbrand").textContent = t("app") + " — " + titleFor();
+  $("rb").innerHTML = ""; $("rb").appendChild(el("div", t("loading"), "hint")); $("rg").textContent = ""; $("pr").hidden = true;
+  let j;
+  try { j = await api(rq[0], rq[1]); }
+  catch (err) { if (err.message === "AUTH" || my !== REQ) return; $("rb").innerHTML = ""; $("rb").appendChild(el("div", t("rep_fail"), "hint err")); return; }
+  if (my !== REQ) return;
+  if (!j.ok) { $("rb").innerHTML = ""; $("rb").appendChild(el("div", errText(j.error), "hint err")); return; }
+  LASTREP = j.report;
+  drawReport();
+}
+function drawReport() {
+  const rep = LASTREP, box = $("rb"); box.innerHTML = "";
+  const key = SEC + "/" + SUB;
+  let grid = false;
+  switch (key) {
+    case "sales/daily": case "sales/weekly": renderSales(box, rep); break;
+    case "sales/monthly": renderGrid(box, rep); grid = true; break;
+    case "stock/daily": case "stock/weekly": renderStock(box, rep); break;
+    case "stock/monthly": {
+      const seg = el("div", null, "seg");
+      [["in", "in_grid"], ["out", "out_grid"]].forEach(([k, lb]) => {
+        const b = el("button", t(lb)); b.type = "button"; b.setAttribute("aria-pressed", String(RC.sk === k));
+        b.onclick = () => { RC.sk = k; drawReport(); }; seg.appendChild(b);
+      });
+      box.appendChild(seg); renderGrid(box, RC.sk === "in" ? rep.gridIn : rep.gridOut); grid = true; break;
+    }
+    case "stock/cur": renderCur(box, rep); break;
+    case "stock/total": renderTotal(box, rep); break;
+    case "payroll/rep": renderPayroll(box, rep); break;
+    case "opex/rep": renderOpex(box, rep); grid = true; break;
+    case "summary/rep": renderSummary(box, rep); break;
+  }
+  $("rg").textContent = t("gen") + rep.generated;
+  const pr = $("pr"); pr.textContent = t("print"); pr.hidden = AUTH.kind !== "manager"; pr.dataset.grid = grid ? "1" : "";
+}
+$("pr").addEventListener("click", () => {
+  $("pg").textContent = $("pr").dataset.grid ? "@page{size:landscape;margin:10mm}" : "@page{margin:12mm}";
+  window.print();
+});
+
+/* ----- የሰንጠረዥ መገንቢያ ----- */
+function tbl(head, rows, foot, cls) {
+  const w = el("div", null, "tw"), tb = document.createElement("table");
+  if (cls) tb.className = cls;
+  const hr = tb.createTHead().insertRow();
+  head.forEach(h => { const o = typeof h === "object" ? h : {t: h}; const c = el("th", o.t); if (o.c) c.className = o.c; hr.appendChild(c); });
+  const body = tb.createTBody();
+  rows.forEach(r => {
+    const tr = body.insertRow();
+    r.forEach(c => {
+      const o = (c !== null && typeof c === "object") ? c : {t: c};
+      const td = el("td", o.t); if (o.c) td.className = o.c;
+      if (o.s) td.appendChild(el("small", o.s));
+      tr.appendChild(td);
+    });
   });
+  if (foot) {
+    const f = tb.createTFoot().insertRow();
+    foot.forEach(c => { const o = (c !== null && typeof c === "object") ? c : {t: c}; const td = el("td", o.t); if (o.c) td.className = o.c; f.appendChild(td); });
+  }
+  w.appendChild(tb); return w;
+}
+const N = x => ({t: fmt(x), c: "n"});
+const RK = i => ({t: i + 1, c: "rk"});
+function sumBox(pairs, one) {
+  const s = el("div", null, "sum"); if (one) s.style.gridTemplateColumns = "1fr";
+  pairs.forEach(([k, v]) => { const d = el("div"); d.appendChild(el("small", k)); d.appendChild(el("b", v)); s.appendChild(d); });
   return s;
 }
+const none = box => box.appendChild(el("div", t("none"), "hint"));
 
-function renderRanked(rep) {
-  $("rt").textContent = rep.title;
-  const box = $("rb"); box.innerHTML = "";
-  box.appendChild(summary(rep.total, rep.totalMoney));
-  if (!rep.rows.length) { box.appendChild(el("div", "በዚህ ጊዜ የተመዘገበ ሽያጭ የለም", "hint")); return; }
-
-  const wrap = el("div", null, "tw"), tb = document.createElement("table");
-  const th = tb.createTHead().insertRow();
-  ["#", "የምግብ አይነት", "ብዛት", "ብር"].forEach((h, i) => { const c = el("th", h); if (i === 0) c.className = "rk"; th.appendChild(c); });
-  const body = tb.createTBody();
-  rep.rows.forEach((x, i) => {
-    const r = body.insertRow();
-    r.appendChild(el("td", i + 1, "rk"));
-    const nm = el("td", x.item); nm.appendChild(el("small", x.category)); r.appendChild(nm);
-    r.appendChild(el("td", fmt(x.qty), "n"));
-    r.appendChild(el("td", fmt(x.amount), "n"));
-  });
-  const f = tb.createTFoot().insertRow();
-  f.appendChild(el("td", "")); f.appendChild(el("td", "ድምር"));
-  f.appendChild(el("td", fmt(rep.total), "n")); f.appendChild(el("td", fmt(rep.totalMoney), "n"));
-  wrap.appendChild(tb); box.appendChild(wrap);
+function renderSales(box, rep) {
+  box.appendChild(sumBox([[t("total_qty"), fmt(rep.total)], [t("total_money"), fmt(rep.totalMoney)]]));
+  if (!rep.rows.length) return none(box);
+  box.appendChild(tbl([{t: "#", c: "rk"}, t("item"), {t: t("c_qty"), c: "n"}, {t: t("birr"), c: "n"}],
+    rep.rows.map((x, i) => [RK(i), {t: x.item, s: x.category}, N(x.qty), N(x.amount)]),
+    ["", t("sum"), N(rep.total), N(rep.totalMoney)]));
+}
+function renderStock(box, rep) {
+  box.appendChild(sumBox([[t("in_total"), fmt(rep.inMoney)], [t("out_total"), fmt(rep.outMoney)]]));
+  if (!rep.rows.length) return none(box);
+  box.appendChild(tbl([{t: t("c_no"), c: "rk"}, t("item_name"), t("inout"), {t: t("qty"), c: "n"}, {t: t("birr"), c: "n"}],
+    rep.rows.map((x, i) => [RK(i), x.item, t(x.type), N(x.qty), N(x.amount)])));
+}
+function renderGrid(box, rep) {
+  box.appendChild(sumBox([[t("year_total"), fmt(rep.totalMoney)]], true));
+  const head = [t("day")].concat(Array.from({length: 13}, (_, i) => mName(i + 1)), [t("col_total")]);
+  const rows = rep.grid.map((line, i) => [{t: i + 1}].concat(
+    line.map(v => v === null ? {t: "", c: "n z"} : {t: v ? fmt(v) : "·", c: v ? "n" : "n z"}),
+    [{t: rep.rowTotals[i] ? fmt(rep.rowTotals[i]) : "·", c: "n"}]));
+  const foot = [t("sum")].concat(rep.monthTotals.map(v => ({t: v ? fmt(v) : "·", c: "n"})), [N(rep.totalMoney)]);
+  box.appendChild(tbl(head, rows, foot, "mt"));
+}
+function renderCur(box, rep) {
+  box.appendChild(sumBox([[t("items_count"), fmt(rep.rows.length)], [t("stock_value"), fmt(rep.totalValue)]]));
+  if (!rep.rows.length) return none(box);
+  box.appendChild(tbl([{t: t("c_no"), c: "rk"}, t("item_name"), {t: t("qty"), c: "n"}, {t: t("c_total_val"), c: "n"}],
+    rep.rows.map((x, i) => [RK(i), x.item, {t: fmt(x.qty), c: x.qty < 0 ? "n neg" : "n"}, N(x.value)]),
+    ["", t("sum"), "", N(rep.totalValue)]));
+}
+function renderTotal(box, rep) {
+  box.appendChild(sumBox([[t("c_total_in"), fmt(rep.totalQty)], [t("c_spent"), fmt(rep.totalMoney)]]));
+  if (!rep.rows.length) return none(box);
+  box.appendChild(tbl([{t: t("c_no"), c: "rk"}, t("item_name"), {t: t("c_total_in"), c: "n"}, {t: t("c_spent"), c: "n"}],
+    rep.rows.map((x, i) => [RK(i), x.item, N(x.qty), N(x.amount)]),
+    ["", t("sum"), N(rep.totalQty), N(rep.totalMoney)]));
+}
+function renderPayroll(box, rep) {
+  box.appendChild(sumBox([[t("salary_paid"), fmt(rep.salary)], [t("bonus_paid"), fmt(rep.bonus)], [t("pay_total"), fmt(rep.total)], [t("staff_list"), fmt(rep.emps.length)]]));
+  if (!rep.pays.length) box.appendChild(el("div", t("no_pay"), "hint"));
+  else box.appendChild(tbl([{t: t("c_no"), c: "rk"}, t("c_emp"), {t: t("salary_paid"), c: "n"}, {t: t("bonus_paid"), c: "n"}, t("c_date"), {t: t("col_total"), c: "n"}],
+    rep.pays.map((p, i) => [RK(i), p.name, N(p.salary), {t: p.bonus ? fmt(p.bonus) : "·", c: "n", s: p.note}, p.d + " " + mName(p.m) + " " + p.y, N(p.total)]),
+    ["", t("sum"), N(rep.salary), N(rep.bonus), "", N(rep.total)]));
+  box.appendChild(el("h3", t("staff_list"), "sh"));
+  if (!rep.emps.length) return none(box);
+  box.appendChild(tbl([{t: t("c_no"), c: "rk"}, t("emp_name"), t("emp_pos"), {t: t("emp_salary"), c: "n"}],
+    rep.emps.map((e, i) => [RK(i), e.name, e.position, N(e.salary)]), ["", t("sum"), "", N(rep.empSalary || rep.emps.reduce((s, e) => s + e.salary, 0))]));
+}
+function renderOpex(box, rep) {
+  box.appendChild(sumBox([[t("year_total"), fmt(rep.total)]], true));
+  if (!rep.rows.length) return none(box);
+  const head = [t("c_no"), {t: t("c_reason"), c: "l"}].concat(Array.from({length: 13}, (_, i) => mName(i + 1)), [t("col_total")]);
+  const rows = rep.rows.map((r, i) => [{t: i + 1}, {t: r.reason, s: t(r.type), c: "l"}].concat(r.months.map(v => ({t: v ? fmt(v) : "·", c: v ? "n" : "n z"})), [N(r.total)]));
+  const foot = [{t: ""}, {t: t("sum"), c: "l"}].concat(rep.monthTotals.map(v => ({t: v ? fmt(v) : "·", c: "n"})), [N(rep.total)]);
+  box.appendChild(tbl(head, rows, foot, "mt"));
+}
+function renderSummary(box, rep) {
+  const T = rep.totals;
+  box.appendChild(sumBox([[t("c_sales_t"), fmt(T.sales)], [t("c_diff"), fmt(T.diff)]]));
+  const nd = v => ({t: fmt(v), c: v < 0 ? "n neg" : "n"});
+  const rows = Array.from({length: 13}, (_, i) => [mName(i + 1), N(rep.sales[i]), N(rep.purchase[i]), N(rep.payroll[i]), N(rep.opex[i]), nd(rep.diff[i])]);
+  box.appendChild(tbl([t("c_month"), {t: t("c_sales_t"), c: "n"}, {t: t("c_purch"), c: "n"}, {t: t("c_payroll"), c: "n"}, {t: t("c_opex"), c: "n"}, {t: t("c_diff"), c: "n"}],
+    rows, [t("sum"), N(T.sales), N(T.purchase), N(T.payroll), N(T.opex), nd(T.diff)]));
+  box.appendChild(el("div", t("sum_formula"), "hint"));
 }
 
-function renderMonthly(rep) {
-  $("rt").textContent = rep.title;
-  const box = $("rb"); box.innerHTML = "";
-  const s = el("div", null, "sum"); s.style.gridTemplateColumns = "1fr";
-  const d0 = el("div"); d0.appendChild(el("small", "የዓመቱ ጠቅላላ ገንዘብ (ብር)")); d0.appendChild(el("b", fmt(rep.totalMoney)));
-  s.appendChild(d0); box.appendChild(s);
-
-  const wrap = el("div", null, "tw"), tb = document.createElement("table"); tb.className = "mt";
-  const th = tb.createTHead().insertRow();
-  th.appendChild(el("th", "ቀን"));
-  rep.months.forEach(m => th.appendChild(el("th", m)));
-  th.appendChild(el("th", "ጠቅላላ"));
-
-  const body = tb.createTBody();
-  rep.grid.forEach((line, i) => {
-    const r = body.insertRow();
-    r.appendChild(el("td", i + 1));
-    line.forEach(v => {
-      if (v === null) r.appendChild(el("td", "", "n z"));
-      else r.appendChild(el("td", v ? fmt(v) : "·", v ? "n" : "n z"));
-    });
-    r.appendChild(el("td", rep.rowTotals[i] ? fmt(rep.rowTotals[i]) : "·", "n"));
-  });
-  const f = tb.createTFoot().insertRow();
-  f.appendChild(el("td", "ድምር"));
-  rep.monthTotals.forEach(v => f.appendChild(el("td", v ? fmt(v) : "·", "n")));
-  f.appendChild(el("td", fmt(rep.totalMoney), "n"));
-  wrap.appendChild(tb); box.appendChild(wrap);
+/* ===== ማስተካከያ / መሰረዝ ===== */
+const RECDEF = {
+  sales: {cols: [[0, "c_time"], [2, "c_waiter"], [3, "c_cat"], [4, "c_item"], [5, "c_qty"], [6, "c_date"], [9, "c_totalb"], [7, "c_note"]],
+    fields: [{k: "waiter", i: 2, ty: "text", lb: "c_waiter"}, {k: "date", i: 6, ty: "date", lb: "c_date"}, {k: "qty", i: 5, ty: "num", lb: "c_qty"}, {k: "note", i: 7, ty: "text", lb: "c_note"}]},
+  stock: {cols: [[0, "c_time"], [1, "item_name"], [2, "c_type"], [3, "qty"], [4, "unit_price"], [5, "total_price"], [6, "c_date"]],
+    fields: [{k: "name", i: 1, ty: "text", lb: "item_name"}, {k: "type", i: 2, ty: "io", lb: "inout"}, {k: "qty", i: 3, ty: "num", lb: "qty"}, {k: "price", i: 4, ty: "num", lb: "unit_price"}, {k: "date", i: 6, ty: "date", lb: "buy_date"}]},
+  emp: {cols: [[1, "emp_name"], [2, "emp_pos"], [3, "emp_salary"]],
+    fields: [{k: "name", i: 1, ty: "text", lb: "emp_name"}, {k: "position", i: 2, ty: "text", lb: "emp_pos"}, {k: "salary", i: 3, ty: "num", lb: "emp_salary"}]},
+  pay: {cols: [[1, "c_emp"], [2, "salary_paid"], [3, "c_date"], [4, "c_bonus"], [5, "c_bonus_note"], [6, "col_total"]],
+    fields: [{k: "employee", i: 1, ty: "text", lb: "c_emp"}, {k: "salary", i: 2, ty: "num", lb: "salary_paid"}, {k: "date", i: 3, ty: "date", lb: "paid_date"}, {k: "bonus", i: 4, ty: "num", lb: "c_bonus"}, {k: "bonusNote", i: 5, ty: "text", lb: "c_bonus_note"}]},
+  opex: {cols: [[1, "c_reason"], [2, "c_type"], [3, "c_amount"], [4, "c_date"]],
+    fields: [{k: "reason", i: 1, ty: "text", lb: "c_reason"}, {k: "type", i: 2, ty: "ft", lb: "c_type"}, {k: "amount", i: 3, ty: "num", lb: "c_amount"}, {k: "date", i: 4, ty: "date", lb: "c_date"}]}
+};
+let RECROWS = [];
+function fillRds() {
+  const keep = $("rds").value || "sales";
+  $("rds").innerHTML = "";
+  Object.keys(RECDEF).forEach(k => $("rds").add(new Option(t("ds_" + k), k)));
+  $("rds").value = keep;
 }
+$("rds").addEventListener("change", () => loadRecs());
+$("rrefresh").addEventListener("click", () => loadRecs());
+$("rfilter").addEventListener("input", () => renderRecs());
+
+async function loadRecs() {
+  if (!AUTH || AUTH.kind !== "manager") return;
+  if (!$("rds").options.length) fillRds();
+  setMsg("m_rec", t("loading"));
+  const my = ++REQ;
+  try {
+    const j = await api("rec_list", {ds: $("rds").value});
+    if (my !== REQ) return;
+    if (!j.ok) { setMsg("m_rec", errText(j.error), "err"); return; }
+    RECROWS = j.rows; setMsg("m_rec", ""); renderRecs();
+  } catch (err) { if (err.message !== "AUTH") setMsg("m_rec", t("e_NET"), "err"); }
+}
+function renderRecs() {
+  const ds = $("rds").value, def = RECDEF[ds], f = $("rfilter").value.trim().toLowerCase();
+  const box = $("rlist"); box.innerHTML = "";
+  const rows = RECROWS.filter(r => !f || r.v.join(" ").toLowerCase().indexOf(f) >= 0);
+  if (!rows.length) { box.appendChild(el("div", t("none"), "hint")); return; }
+  const w = el("div", null, "tw"), tb = document.createElement("table");
+  const hr = tb.createTHead().insertRow();
+  def.cols.forEach(c => hr.appendChild(el("th", t(c[1]))));
+  hr.appendChild(el("th", t("actions")));
+  const body = tb.createTBody();
+  rows.forEach(r => {
+    const tr = body.insertRow();
+    def.cols.forEach(c => tr.appendChild(el("td", r.v[c[0]])));
+    const td = el("td"), acts = el("div", null, "acts");
+    const eb = el("button", t("edit")); eb.type = "button"; eb.onclick = () => openEdit(ds, r);
+    const db = el("button", t("del"), "del"); db.type = "button"; db.onclick = () => delRec(ds, r);
+    acts.appendChild(eb); acts.appendChild(db); td.appendChild(acts); tr.appendChild(td);
+  });
+  w.appendChild(tb); box.appendChild(w);
+}
+async function delRec(ds, r) {
+  if (!confirm(t("confirm_del"))) return;
+  setMsg("m_rec", t("sending"));
+  try {
+    const j = await api("rec_delete", {ds, row: r.row, sig: r.sig});
+    if (!j.ok) { setMsg("m_rec", errText(j.error), "err"); if (j.error === "STALE") loadRecs(); return; }
+    setMsg("m_rec", "✓", "ok"); loadRecs();
+  } catch (err) { if (err.message !== "AUTH") setMsg("m_rec", t("e_NET"), "err"); }
+}
+let EDIT = null;
+function openEdit(ds, r) {
+  const def = RECDEF[ds], box = $("dfields"); box.innerHTML = "";
+  $("dtitle").textContent = t("edit_title"); setMsg("dmsg", "");
+  EDIT = {ds, r, ctl: {}};
+  def.fields.forEach(f => {
+    const wrap = el("div"); wrap.appendChild(el("label", t(f.lb)));
+    const cur = r.v[f.i];
+    if (f.ty === "date") {
+      const m = document.createElement("div"); wrap.appendChild(m);
+      EDIT.ctl[f.k] = makeCal(m, null, parseEthTxt(cur));
+    } else if (f.ty === "io" || f.ty === "ft") {
+      const s = document.createElement("select");
+      const opts = f.ty === "io" ? [["in", "in"], ["out", "out"]] : [["fixed", "fixed"], ["temp", "temp"]];
+      opts.forEach(([v, k]) => s.add(new Option(t(k), v)));
+      s.value = f.ty === "io" ? (/^(ወጪ|out)/i.test(cur) ? "out" : "in") : (/^(ጊዜያዊ|temp)/i.test(cur) ? "temp" : "fixed");
+      wrap.appendChild(s); EDIT.ctl[f.k] = {get: () => s.value};
+    } else {
+      const i = document.createElement("input");
+      if (f.ty === "num") { i.type = "number"; i.step = "any"; i.min = "0"; i.inputMode = "decimal"; i.value = String(cur).replace(/,/g, ""); } else i.value = cur;
+      wrap.appendChild(i); EDIT.ctl[f.k] = {get: () => i.value};
+    }
+    box.appendChild(wrap);
+  });
+  $("dlg").showModal();
+}
+$("dcancel").addEventListener("click", () => $("dlg").close());
+$("dform").addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!EDIT) return;
+  const edits = {};
+  Object.keys(EDIT.ctl).forEach(k => { edits[k] = EDIT.ctl[k].get(); });
+  $("dsave").disabled = true; setMsg("dmsg", t("sending"));
+  try {
+    const j = await api("rec_update", {ds: EDIT.ds, row: EDIT.r.row, sig: EDIT.r.sig, edits});
+    if (!j.ok) { setMsg("dmsg", errText(j.error), "err"); if (j.error === "STALE") { $("dlg").close(); loadRecs(); } return; }
+    $("dlg").close(); setMsg("m_rec", "✓ " + t("saved"), "ok"); loadRecs();
+  } catch (err) { if (err.message !== "AUTH") setMsg("dmsg", t("e_NET"), "err"); }
+  finally { $("dsave").disabled = false; }
+});
+
+/* ===== ቋንቋ ማዘመን ===== */
+function applyLang() {
+  document.documentElement.lang = lang; document.title = t("app");
+  document.querySelectorAll("[data-i]").forEach(n => { n.textContent = t(n.dataset.i); });
+  document.querySelectorAll("[data-ph]").forEach(n => { n.placeholder = t(n.dataset.ph); });
+  document.querySelectorAll("#lang span").forEach(s => s.classList.toggle("on", s.dataset.l === lang));
+  $("lshow").textContent = $("lpass").type === "password" ? t("show") : t("hide");
+  setPh("waiter", "choose"); setPh("category", MENU.length ? "choose_cat" : "menu_loading"); setPh("pa_emp", "choose"); setPh("srole", "choose_role");
+  if (!$("category").value && !$("items").querySelector(".it")) { $("items").innerHTML = ""; $("items").appendChild(el("div", t("choose_cat_first"), "hint")); }
+  fillTypes();
+  const keepDs = $("rds").value; if ($("rds").options.length) fillRds(); else fillRds();
+  if (keepDs) $("rds").value = keepDs;
+  CALS.forEach(c => { if (c.root.isConnected) c.refresh(); });
+  if (AUTH && !$("app").hidden) {
+    $("who").textContent = AUTH.role + " · " + AUTH.code;
+    buildNav();
+    if (!FORMS[SEC + "/" + SUB]) { if (SEC === "records") renderRecs(); else if (LASTREP) { buildControls(); $("rt").textContent = titleFor(); $("rbrand").textContent = t("app") + " — " + titleFor(); drawReport(); } }
+  }
+}
+$("lang").addEventListener("click", () => {
+  lang = lang === "am" ? "en" : "am";
+  localStorage.setItem("amana_lang", lang);
+  applyLang();
+});
 
 /* ===== ጅምር ===== */
+applyLang();
 if (AUTH && AUTH.token) enterApp(); else showLogin();
 </script>
 </body>
