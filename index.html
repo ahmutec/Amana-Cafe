@@ -2,6 +2,8 @@
 <html lang="am">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#eaf7f0">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>አማና ካፌ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9,30 +11,28 @@
 <style id="pg"></style>
 <style>
 :root{
-  --bg:#f2efe9; --card:#fffdf9; --ink:#2a1f1a; --muted:#7a6a60;
-  --line:#d9cfc4; --accent:#1f5c4a; --accent-ink:#fff; --err:#b3261e; --ok:#1f5c4a; --soft:#e8f3ee;
-  --t1:#1f5c4a; --t2:#c27a1c;
-}
-@media (prefers-color-scheme:dark){
-  :root{--bg:#171210; --card:#221b18; --ink:#f1e9e0; --muted:#a8998d; --line:#3b3029; --accent:#5cc3a0; --accent-ink:#0f241c; --err:#ff8a80; --ok:#5cc3a0; --soft:#1d2b26; --t1:#5cc3a0; --t2:#f2b45c;}
+  color-scheme:light;
+  --bg:#f3faf6; --card:#ffffff; --ink:#23362f; --muted:#5f776d;
+  --line:#d3e7dd; --accent:#1f7a62; --accent-ink:#ffffff; --err:#c0392b; --ok:#1f7a62; --soft:#e5f5ed;
+  --t1:#1f7a62; --t2:#e08a2e;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0}
-body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;min-height:100dvh;
+body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:linear-gradient(160deg,#eaf7f0 0%,#f8fbf4 45%,#fff3e2 100%) fixed,var(--bg);color:var(--ink);min-height:100vh;min-height:100dvh;
   padding:max(58px,calc(env(safe-area-inset-top) + 48px)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));
   font-size:16px;-webkit-text-size-adjust:100%}
 @media (min-width:900px){body{padding-top:64px;font-size:17px}}
 .wrap{width:100%;max-width:1100px;margin:0 auto}
 
 /* ቋንቋ መቀየሪያ (ግራ ጥግ) */
-.lang{position:fixed;right:max(10px,env(safe-area-inset-left));top:max(10px,env(safe-area-inset-top));z-index:50;display:flex;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;overflow:hidden;font:inherit;cursor:pointer;padding:0;min-height:40px}
+.lang{position:fixed;left:max(10px,env(safe-area-inset-left));top:max(10px,env(safe-area-inset-top));z-index:50;display:flex;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;overflow:hidden;font:inherit;cursor:pointer;padding:0;min-height:40px}
 .lang span{padding:8px 12px;font-weight:600;font-size:.9rem;color:var(--muted)}
 .lang span.on{background:var(--accent);color:var(--accent-ink);font-weight:800}
 
 /* መግቢያ */
 .screen{min-height:calc(100dvh - 90px);display:flex;align-items:center;justify-content:center}
-.card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 22px;display:grid;gap:16px}
+.card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(31,122,98,.10);padding:26px 22px;display:grid;gap:16px}
 .card form{display:grid;gap:14px}
 .card h1{margin:0;text-align:center}
 .card p{margin:0;color:var(--muted);text-align:center;font-size:.95rem}
@@ -66,16 +66,16 @@ body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:var(--bg);
 .side button{flex:0 0 auto;display:flex;align-items:center;gap:10px;font:inherit;font-weight:600;min-height:50px;padding:0 16px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;cursor:pointer;white-space:nowrap;text-align:left}
 .side button .ic{font-size:1.25rem}
 .side button[aria-current=page]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:800}
+/* ኮምፒውተር: ዋና ምናሌ በአንድ ረድፍ ከላይ፤ ስፋቱ ከታችኛው ይዘት አይበልጥም */
 @media (min-width:900px){
-  .layout{grid-template-columns:minmax(0,1fr) 230px}
-  .layout.solo{grid-template-columns:minmax(0,1fr)}
-  .main{order:1}
-  .side{order:2;flex-direction:column;overflow:visible;position:sticky;top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px}
-  .side button{width:100%;border-color:transparent;background:transparent}
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .main{order:2}
+  .side{order:1;flex-direction:row;overflow-x:auto;width:100%;max-width:100%;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px;gap:8px;box-shadow:0 4px 16px rgba(31,122,98,.07)}
+  .side button{flex:1 1 0;min-width:0;justify-content:center;border-color:transparent;background:transparent}
   .side button[aria-current=page]{border-color:var(--accent)}
 }
 @media (max-width:899px){.side{order:-1}}
-form.fm,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+form.fm,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 4px 16px rgba(31,122,98,.07)}
 @media (min-width:600px){form.fm,.panel{padding:22px}}
 form.fm{display:grid;gap:16px}
 label{display:block;font-weight:600;margin-bottom:6px;font-size:.95rem}
@@ -87,7 +87,7 @@ select:focus,input:focus,textarea:focus,button:focus-visible{outline:3px solid v
 .row2{display:grid;gap:16px}
 @media (min-width:600px){.row2{grid-template-columns:1fr 1fr}}
 .cat{border-top:2px solid var(--accent);padding-top:16px}
-.submit{background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;font:inherit;font-weight:800;font-size:1.1rem;padding:14px;cursor:pointer;min-height:54px}
+.submit{background:linear-gradient(135deg,#1f7a62,#2b9a7c);color:var(--accent-ink);border:0;border-radius:12px;font:inherit;font-weight:800;font-size:1.1rem;padding:14px;cursor:pointer;min-height:54px}
 .submit[disabled]{opacity:.6;cursor:wait}
 .msg{min-height:1.4em;font-weight:600;text-align:center}
 .msg.err{color:var(--err)} .msg.ok{color:var(--ok)}
@@ -510,11 +510,11 @@ const TR = [
  ["s_rec","መመዝገቢያ","Record"],["s_daily","ዕለታዊ","Daily"],["s_weekly","ሳምንታዊ","Weekly"],["s_monthly","ወርሃዊ","Monthly"],
  ["s_cur","አሁን ስቶክ","Current Stock"],["s_total","Total Purchase","Total Purchase"],
  ["s_emp","ሰራተኛ መመዝገቢያ","Register Staff"],["s_pay","ደመወዝ መክፈያ","Pay Salary"],["s_rep","ሪፖርት","Report"],
- ["waiter","የወይተር ስም","Waiter"],["rec_date","የተመዘገበበት ቀን (ዓ.ም.)","Date (E.C.)"],["category","የምግቡ መደብ","Category"],
+ ["waiter","የወይተር ስም","Waiter"],["rec_date","የተመዘገበበት ቀን (ዓ.ል.)","Date (E.C.)"],["category","የምግቡ መደብ","Category"],
  ["item","የምግቡ አይነት","Item"],["multi","(ብዙ መምረጥ ይቻላል)","(select several)"],["choose_cat_first","መጀመሪያ መደብ ይምረጡ","Choose a category first"],
  ["note","አስተያየት","Note"],["note_ph","ካለ ብቻ ይጻፉ","Optional"],["submit","Submit","Submit"],["choose","ይምረጡ","Choose"],
  ["choose_cat","መደብ ይምረጡ","Choose category"],["menu_loading","ምናሌ በመጫን ላይ...","Loading menu..."],
- ["no_items","በዚህ መደብ ስር እቃ የለም","No items in this category"],["birr","ብር","Birr"],["ec","ዓ.ም.","E.C."],["today","ዛሬ","Today"],
+ ["no_items","በዚህ መደብ ስር እቃ የለም","No items in this category"],["birr","ብር","Birr"],["ec","ዓ.ል.","E.C."],["today","ዛሬ","Today"],
  ["pick_one","ቢያንስ አንድ የምግብ አይነት ይምረጡ","Select at least one item"],["pick_waiter","የወይተር ስም ይምረጡ","Choose a waiter"],["pick_category","የምግብ መደብ ይምረጡ","Choose a category"],
  ["qty_min","ብዛት ከ 1 ያላነሰ መሆን አለበት","Quantity must be at least 1"],["saved","ተመዝግቧል","Saved"],["items_saved","እቃ ተመዝግቧል","item(s) saved"],
  ["item_name","የእቃው ስም","Item name"],["inout","አይነት (ገቢ/ወጪ)","Type (In/Out)"],["in","ገቢ","In"],["out","ወጪ","Out"],
@@ -525,8 +525,8 @@ const TR = [
  ["refresh","↻ አድስ","↻ Refresh"],["print","🖨 Print","🖨 Print"],["pick_date","ቀን ይምረጡ","Pick a date"],["week","ሳምንት","Week"],["week_n","ሳምንት {0}","Week {0}"],
  ["gen","የተሰላበት: ","Generated: "],["none","በዚህ ጊዜ የተመዘገበ የለም","Nothing recorded for this period"],
  ["total_qty","ጠቅላላ ብዛት","Total quantity"],["total_money","ጠቅላላ ገንዘብ (ብር)","Total amount (Birr)"],["sum","ድምር","Total"],
- ["daily_sales","የዕለቱ ሽያጭ","Daily sales"],["weekly_sales","የሳምንቱ ሽያጭ","Weekly sales"],["sales_year","የ{0} ዓ.ም. ሽያጭ (ብር)","Sales for {0} E.C. (Birr)"],
- ["daily_stock","ዕለታዊ ስቶክ ገቢ/ወጪ","Daily inventory in/out"],["weekly_stock","ሳምንታዊ ስቶክ ገቢ/ወጪ","Weekly inventory in/out"],["stock_year","የ{0} ዓ.ም. ስቶክ (ብር)","Inventory for {0} E.C. (Birr)"],
+ ["daily_sales","የዕለቱ ሽያጭ","Daily sales"],["weekly_sales","የሳምንቱ ሽያጭ","Weekly sales"],["sales_year","የ{0} ዓ.ል. ሽያጭ (ብር)","Sales for {0} E.C. (Birr)"],
+ ["daily_stock","ዕለታዊ ስቶክ ገቢ/ወጪ","Daily inventory in/out"],["weekly_stock","ሳምንታዊ ስቶክ ገቢ/ወጪ","Weekly inventory in/out"],["stock_year","የ{0} ዓ.ል. ስቶክ (ብር)","Inventory for {0} E.C. (Birr)"],
  ["in_total","ገቢ ጠቅላላ (ብር)","Total in (Birr)"],["out_total","ወጪ ጠቅላላ (ብር)","Total out (Birr)"],["in_grid","ገቢ (የተገዛ)","In (purchased)"],["out_grid","ወጪ (የወጣ)","Out (used)"],
  ["cur_title","አሁን ስቶክ ላይ ያሉ እቃዎች","Current stock"],["total_title","ጠቅላላ የተገዙ እቃዎች (Total Purchase)","Total Purchase"],
  ["stock_value","የስቶኩ ጠቅላላ ዋጋ (ብር)","Stock value (Birr)"],["items_count","የእቃ አይነቶች","Item types"],
@@ -534,8 +534,8 @@ const TR = [
  ["day","ቀን","Day"],["col_total","ጠቅላላ","Total"],["year_total","የዓመቱ ጠቅላላ ገንዘብ (ብር)","Year total (Birr)"],
  ["payroll_title","የደመወዝ ክፍያ — {0} {1}","Salary payments — {0} {1}"],["salary_paid","ደመወዝ","Salary"],["bonus_paid","ኮሚሽን/ቦነስ","Commission/Bonus"],["pay_total","ጠቅላላ ክፍያ (ብር)","Total paid (Birr)"],
  ["staff_list","የተመዘገቡ ሰራተኞች","Registered staff"],["no_pay","በዚህ ወር የደመወዝ ክፍያ አልተመዘገበም","No salary payments this month"],["dup_pay","ለዚህ ሰራተኛ በዚህ ወር ክፍያ ተመዝግቧል። እንደገና ይመዝገብ?","A payment for this employee already exists this month. Record again?"],
- ["opex_title","አማና ካፌ ወርሃዊ ወጭዎች","Amana Cafe Monthly Expenses"],["opex_year","{0} ዓ.ም.","{0} E.C."],
- ["sum_title","የወር ሪፖርት — {0} ዓ.ም.","Monthly report — {0} E.C."],["c_month","ወር","Month"],["c_sales_t","ጠቅላላ ሽያጭ","Total sales"],["c_purch","የአስቤዛ ወጭ","Purchases"],["c_payroll","የደመወዝ ወጭ","Payroll"],["c_opex","የአገልግሎት ወጭ","Operating costs"],["c_diff","ልዩነት","Difference"],
+ ["opex_title","አማና ካፌ ወርሃዊ ወጭዎች","Amana Cafe Monthly Expenses"],["opex_year","{0} ዓ.ል.","{0} E.C."],
+ ["sum_title","የወር ሪፖርት — {0} ዓ.ል.","Monthly report — {0} E.C."],["c_month","ወር","Month"],["c_sales_t","ጠቅላላ ሽያጭ","Total sales"],["c_purch","የአስቤዛ ወጭ","Purchases"],["c_payroll","የደመወዝ ወጭ","Payroll"],["c_opex","የአገልግሎት ወጭ","Operating costs"],["c_diff","ልዩነት","Difference"],
  ["sum_formula","ልዩነት = ሽያጭ − (አስቤዛ + ደመወዝ + አገልግሎት)","Difference = Sales − (Purchases + Payroll + Operating costs)"],
  ["rec_what","የትኛውን ልዩ?","Which records?"],["search","ፈልግ","Search"],["rec_note","የመጨረሻዎቹ 300 መዝገቦች ይታያሉ። ለማረም «አስተካክል»፣ ለማጥፋት «ሰርዝ» ይጫኑ።","Latest 300 records are shown. Use Edit to correct or Delete to remove."],
  ["ds_sales","ሽያጭ","Sales"],["ds_stock","ስቶክ ገቢ/ወጪ","Inventory in/out"],["ds_emp","ሰራተኞች","Staff"],["ds_pay","ደመወዝ ክፍያዎች","Salary payments"],["ds_opex","ወጪዎች","Expenses"],
