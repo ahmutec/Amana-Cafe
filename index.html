@@ -23,7 +23,11 @@ body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:linear-gra
   padding:max(58px,calc(env(safe-area-inset-top) + 48px)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));
   font-size:16px;-webkit-text-size-adjust:100%}
 @media (min-width:900px){body{padding-top:64px;font-size:17px}}
-.wrap{width:100%;max-width:1100px;margin:0 auto}
+.wrap{width:100%;max-width:1100px;margin:0 auto;min-width:0}
+.top,.ftr,.calcard,.cbox,.stat{width:100%;max-width:100%;box-sizing:border-box}
+.cbox .tw{max-width:100%}
+html,body{overflow-x:hidden}
+@media (max-width:700px){.cbox table{font-size:.78rem}.cbox th,.cbox td{padding:7px 4px;white-space:normal;word-break:break-word}.cbox .tw{overflow-x:visible}.cbox th.rk,.cbox td.rk{width:24px}}
 
 /* ቋንቋ መቀየሪያ (ግራ ጥግ) */
 .lang.fix{position:fixed;right:max(10px,env(safe-area-inset-right));top:max(10px,env(safe-area-inset-top));z-index:50}
@@ -74,9 +78,10 @@ body.inapp{padding-top:max(14px,calc(env(safe-area-inset-top) + 8px))}
 @media (min-width:900px){.card h1{font-size:2.4rem}}
 
 /* ዳሽቦርድ */
-.dash{display:grid;gap:16px}
-.cals{display:grid;gap:16px}
-@media (min-width:760px){.cals{grid-template-columns:1fr 1fr}}
+.dash{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);width:100%}
+.dash>*,.cals>*,.charts>*,.stats>*{min-width:0}
+.cals{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:760px){.cals{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 .calcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 14px 12px;box-shadow:0 4px 16px rgba(107,66,38,.07)}
 .calcard .ct{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
 .calcard .ct b{font-size:1rem}
@@ -89,8 +94,8 @@ body.inapp{padding-top:max(14px,calc(env(safe-area-inset-top) + 8px))}
 .mg .dd{height:34px;display:flex;align-items:center;justify-content:center;border-radius:9px;font-size:.9rem;font-variant-numeric:tabular-nums}
 .mg .dd.now{background:var(--accent);color:var(--accent-ink);font-weight:800}
 .mg .dd.fri{color:var(--t2);font-weight:700}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-@media (min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:760px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .stat{border-radius:16px;padding:14px 16px;color:#fff;box-shadow:0 6px 16px rgba(107,66,38,.18);display:grid;gap:2px}
 .stat small{opacity:.9;font-size:.85rem}
 .stat b{font-size:1.9rem;font-weight:800;line-height:1.1}
@@ -98,8 +103,8 @@ body.inapp{padding-top:max(14px,calc(env(safe-area-inset-top) + 8px))}
 .stat.s2{background:linear-gradient(135deg,#4a2c1d,#6b4226)}
 .stat.s3{background:linear-gradient(135deg,#c08a3e,#d9a95a)}
 .stat.s4{background:linear-gradient(135deg,#3d5a2a,#5c7d40)}
-.charts{display:grid;gap:16px}
-@media (min-width:900px){.charts{grid-template-columns:1.6fr 1fr}}
+.charts{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){.charts{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}}
 .cbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 4px 16px rgba(107,66,38,.07)}
 .cbox h3{margin:0 0 12px;font-size:1.02rem}
 .legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:.85rem;color:var(--muted)}
@@ -923,10 +928,10 @@ $("logout").addEventListener("click", () => logout());
 
 /* ===== ፈቃዶች እና አሰሳ ===== */
 function perms() {
-  if (AUTH.kind === "manager") return {home: ["dash"], sales: ["rec", "daily", "weekly", "monthly"], stock: ["rec", "cur", "daily", "weekly", "monthly", "total"],
+  if (AUTH.kind === "manager") return {sales: ["rec", "daily", "weekly", "monthly"], stock: ["rec", "cur", "daily", "weekly", "monthly", "total"],
     payroll: ["emp", "pay", "rep"], opex: ["rec", "rep"], menu: ["rec"], summary: ["rep"], records: ["rec"]};
-  if (AUTH.kind === "cashier") return {home: ["dash"], sales: ["rec", "daily"]};
-  return {home: ["dash"], sales: ["daily", "weekly", "monthly"], stock: ["cur", "daily", "weekly", "monthly", "total"], payroll: ["rep"], opex: ["rep"]};
+  if (AUTH.kind === "cashier") return {sales: ["rec", "daily"]};
+  return {sales: ["daily", "weekly", "monthly"], stock: ["cur", "daily", "weekly", "monthly", "total"], payroll: ["rep"], opex: ["rep"]};
 }
 const FORMS = {"sales/rec": "f", "stock/rec": "fs", "payroll/emp": "fe", "payroll/pay": "fp", "opex/rec": "fo"};
 const subLabel = (sec, sub) => (sec === "opex" && sub === "rec") ? t("c_reason") : t("s_" + sub);
