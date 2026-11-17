@@ -59,6 +59,7 @@ body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:linear-gra
 .act #who{margin:0;color:var(--muted);font-size:.8rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .out{font:inherit;font-weight:600;min-height:44px;padding:0 16px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;cursor:pointer;white-space:nowrap}
 .out:hover{border-color:var(--accent)}
+.out.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:800}
 @media (max-width:700px){
   .top{grid-template-columns:auto 1fr;grid-template-areas:"logo act" "wel wel";padding:10px 12px}
   .top .logo{width:56px;height:64px}
@@ -120,7 +121,7 @@ body.inapp{padding-top:max(14px,calc(env(safe-area-inset-top) + 8px))}
 .tile .ic{font-size:1.5rem}
 
 /* footer */
-.ftr{margin:26px auto 6px;max-width:1100px;text-align:center;color:var(--muted);font-size:.85rem;padding:14px 10px 4px;border-top:1px solid var(--line)}
+.ftr{margin:26px auto 6px;max-width:1100px;text-align:center;color:#f3e3c6;font-size:.88rem;padding:18px 14px;border-radius:16px;background:linear-gradient(135deg,#4a2c1d,#6b4226);border-top:3px solid #c08a3e;box-shadow:0 8px 24px rgba(74,44,29,.25)}
 
 /* ምናሌ ማናጀር */
 .mrow{display:grid;gap:12px;margin-bottom:14px}
@@ -267,6 +268,32 @@ dialog .btns .mini{min-height:50px}
 <body>
 <div class="wrap">
 
+  <!-- ራስጌ (ለሁሉም ገጾች) -->
+  <header class="top noprint" id="hdr" hidden>
+    <div class="logo" role="img" aria-label="Amana Cafe"></div>
+    <div class="welcome">
+      <h1 class="wl" data-i="welcome"></h1>
+      <div class="orn" aria-hidden="true">☕</div>
+    </div>
+    <div class="act">
+      <div class="row">
+        <button type="button" class="out pri" id="gologin" data-i="login_tab" hidden></button>
+        <button type="button" class="lang" aria-label="Language"><span data-l="en">En</span><span data-l="am">አማ</span></button>
+        <button type="button" class="out" id="logout" data-i="logout" hidden></button>
+      </div>
+      <p id="who" hidden></p>
+    </div>
+  </header>
+
+  <!-- ለሁሉም የሚታይ መነሻ ገጽ -->
+  <section class="dash noprint" id="pub" hidden>
+    <div class="cals">
+      <div class="calcard" id="cal_eth_p"></div>
+      <div class="calcard" id="cal_hij_p"></div>
+    </div>
+    <div id="dstats_p"></div>
+  </section>
+
   <!-- መግቢያ ገጽ -->
   <div id="login" class="screen" hidden>
     <button type="button" class="lang fix noprint" aria-label="Language"><span data-l="en">En</span><span data-l="am">አማ</span></button>
@@ -356,25 +383,12 @@ dialog .btns .mini{min-height:50px}
         <button type="button" class="lk" data-back data-i="back"></button>
       </form>
     </div>
+    <button type="button" class="lk" id="go_home" data-i="back_home"></button>
     </div>
   </div>
 
   <!-- ዋናው መተግበሪያ -->
   <div id="app" hidden>
-    <header class="top noprint">
-      <div class="logo" role="img" aria-label="Amana Cafe"></div>
-      <div class="welcome">
-        <h1 class="wl" data-i="welcome"></h1>
-        <div class="orn" aria-hidden="true">☕</div>
-      </div>
-      <div class="act">
-        <div class="row">
-          <button type="button" class="lang" aria-label="Language"><span data-l="en">En</span><span data-l="am">አማ</span></button>
-          <button type="button" class="out" id="logout" data-i="logout"></button>
-        </div>
-        <p id="who"></p>
-      </div>
-    </header>
 
     <div class="layout" id="layout">
     <main class="main">
@@ -584,8 +598,8 @@ dialog .btns .mini{min-height:50px}
     </main>
     <aside class="side noprint" id="secs" role="navigation"></aside>
     </div>
-    <footer class="ftr noprint" id="ftr"></footer>
   </div>
+  <footer class="ftr noprint" id="ftr" hidden></footer>
 </div>
 
 <dialog id="dlg">
@@ -695,6 +709,7 @@ TR.push(
  ["d_total","ጠቅላላ ሰራተኞች","Total staff"],["d_male","ወንዶች","Male"],["d_female","ሴቶች","Female"],["d_pos","የስራ ድርሻዎች","Positions"],
  ["d_by_pos","የሰራተኞች ብዛት በስራ ድርሻ","Staff by position"],["d_gender","የወንድ እና ሴት ድርሻ","Gender split"],["d_table","ዝርዝር","Details"],
  ["pos_waiter","ወይተር","Waiter"],["pos_cashier","ካሸር","Cashier"],["pos_chef","ሸፍ","Chef"],["pos_barista","ባሪስታ","Barista"],["pos_cleaner","ጽዳት","Cleaner"],["pos_security","ጥበቃ","Security"],["pos_manager","ስራ አስኪያጅ","Manager"],
+ ["login_tab","ግባ (Login)","Login"],["back_home","← ወደ መነሻ ገጽ","← Back to home"],
  ["m_rename_cat","የመደብ ስም ቀይር","Rename category"],["m_new_cat","+ አዲስ መደብ","+ New category"],["m_cat_name","የአዲሱ መደብ ስም","New category name"],
  ["m_new_item","አዲስ የምግብ ስም","New item name"],["m_add","+ ጨምር","+ Add"],
  ["m_note","አዲስ እቃ ከመደቡ የመጨረሻ ረድፍ ስር ይጨመራል። ሲሰረዝ ከታች ያሉት ወደ ላይ ይጠጋጋሉ። ያለፉ ሽያጮች ባሉበት ስም እና ዋጋ ይቆያሉ።","A new item is added below the last row of the category. Deleting closes the gap. Past sales keep their old name and price."],
@@ -891,7 +906,7 @@ $("ff").addEventListener("submit", async e => {
 
 function showLogin(message) {
   document.body.classList.remove("inapp");
-  $("app").hidden = true; $("login").hidden = false;
+  $("app").hidden = true; $("pub").hidden = true; $("hdr").hidden = true; $("ftr").hidden = true; $("login").hidden = false;
   showAuth("lf");
   if (message) setMsg("lmsg", message, "err");
   $("lpass").type = "password"; $("lshow").textContent = t("show");
@@ -900,8 +915,10 @@ function showLogin(message) {
 function logout(message) {
   AUTH = null; MENU = []; EMPS = []; SEC = ""; SUB = ""; REQ++;
   localStorage.removeItem("amana_auth"); localStorage.removeItem("amana_menu");
-  showLogin(typeof message === "string" ? message : "");
+  if (typeof message === "string" && message) showLogin(message); else showPublic();
 }
+$("gologin").addEventListener("click", () => showLogin());
+$("go_home").addEventListener("click", () => showPublic());
 $("logout").addEventListener("click", () => logout());
 
 /* ===== ፈቃዶች እና አሰሳ ===== */
@@ -937,9 +954,18 @@ function buildNav() {
   });
 }
 
+function showPublic() {
+  document.body.classList.add("inapp");
+  $("login").hidden = true; $("app").hidden = true; $("pub").hidden = false;
+  $("hdr").hidden = false; $("ftr").hidden = false;
+  $("gologin").hidden = false; $("logout").hidden = true; $("who").hidden = true;
+  renderFooter(); renderCalEth(); renderCalHij(); renderPubStats(); loadPubStats();
+}
 function enterApp() {
   document.body.classList.add("inapp");
-  $("login").hidden = true; $("app").hidden = false;
+  $("login").hidden = true; $("app").hidden = false; $("pub").hidden = true;
+  $("hdr").hidden = false; $("ftr").hidden = false;
+  $("gologin").hidden = true; $("logout").hidden = false; $("who").hidden = false;
   $("who").textContent = AUTH.role + " · " + AUTH.code;
   MENU = [];
   const P = perms(), first = Object.keys(P)[0];
@@ -1533,9 +1559,9 @@ function calShell(id, title, onPrev, onNext) {
   p.onclick = onPrev; n.onclick = onNext; nv.appendChild(p); nv.appendChild(n); ct.appendChild(nv); c.appendChild(ct);
   return c;
 }
-function renderCalEth() {
+function drawCalEth(id) {
   const v = DASHC.eth, now = new Date();
-  const c = calShell("cal_eth", "📅 " + t("cal_eth"),
+  const c = calShell(id, "📅 " + t("cal_eth"),
     () => { v.m--; if (v.m < 1) { v.m = 13; v.y--; } renderCalEth(); },
     () => { v.m++; if (v.m > 13) { v.m = 1; v.y++; } renderCalEth(); });
   const big = el("p", WDF(now.getDay()) + " · " + ethText(TODAY) + " " + t("ec"), "big");
@@ -1554,15 +1580,15 @@ function renderCalEth() {
   }
   c.appendChild(g);
 }
-function renderCalHij() {
+function drawCalHij(id) {
   let h0, now = new Date();
   try {
     if (!DASHC.hij) DASHC.hij = hijStart(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12));
     h0 = hijriOf(DASHC.hij);
-  } catch (_) { const c = calShell("cal_hij", "🌙 " + t("cal_hij"), () => {}, () => {}); c.appendChild(el("div", t("cal_na"), "hint")); return; }
+  } catch (_) { const c = calShell(id, "🌙 " + t("cal_hij"), () => {}, () => {}); c.appendChild(el("div", t("cal_na"), "hint")); return; }
   const start = DASHC.hij;
   let len = 1; while (len < 31 && hijriOf(addDays(start, len)).m === h0.m) len++;
-  const c = calShell("cal_hij", "🌙 " + t("cal_hij"),
+  const c = calShell(id, "🌙 " + t("cal_hij"),
     () => { DASHC.hij = hijStart(addDays(start, -1)); renderCalHij(); },
     () => { DASHC.hij = hijStart(addDays(start, len)); renderCalHij(); });
   const th = hijriOf(now);
@@ -1582,11 +1608,16 @@ function renderCalHij() {
   }
   c.appendChild(g);
 }
+const renderCalEth = () => { drawCalEth("cal_eth"); drawCalEth("cal_eth_p"); };
+const renderCalHij = () => { drawCalHij("cal_hij"); drawCalHij("cal_hij_p"); };
 const posLabel = g => (g.key !== "other" && L[lang]["pos_" + g.key] !== undefined) ? t("pos_" + g.key) : (g.label || "—");
 
-function renderDashStats() {
-  const box = $("dstats"); box.innerHTML = "";
-  if (!AUTH || AUTH.kind === "cashier" || !DASHREP) return;
+const renderDashStats = () => drawStats("dstats", false);
+const renderPubStats = () => drawStats("dstats_p", true);
+function drawStats(boxId, pub) {
+  const box = $(boxId); box.innerHTML = "";
+  if (!DASHREP) return;
+  if (!pub && (!AUTH || AUTH.kind === "cashier")) return;
   const R = DASHREP, T = R.totals;
   const st = el("div", null, "stats");
   [["s1", t("d_total"), T.all], ["s2", t("d_male"), T.m], ["s3", t("d_female"), T.f], ["s4", t("d_pos"), R.groups.length]].forEach(([c, k, v]) => {
@@ -1645,6 +1676,12 @@ function renderTiles() {
   });
 }
 function renderDash() { renderCalEth(); renderCalHij(); renderDashStats(); renderTiles(); }
+async function loadPubStats() {
+  try {
+    const j = await api("pub_dash");
+    if (j.ok) { DASHREP = j.report; if (!$("pub").hidden) renderPubStats(); }
+  } catch (_) {}
+}
 async function loadDash() {
   renderDash();
   if (!AUTH || AUTH.kind === "cashier") return;
@@ -1760,6 +1797,7 @@ function applyLang() {
   const keepDs = $("rds").value; if ($("rds").options.length) fillRds(); else fillRds();
   if (keepDs) $("rds").value = keepDs;
   CALS.forEach(c => { if (c.root.isConnected) c.refresh(); });
+  if (!$("pub").hidden) { renderCalEth(); renderCalHij(); renderPubStats(); }
   if (AUTH && !$("app").hidden) {
     $("who").textContent = AUTH.role + " · " + AUTH.code;
     buildNav();
@@ -1782,7 +1820,7 @@ if (AUTH && AUTH.token) {
     else if (j && j.error === "UNKNOWN") { logout(); return; }
     enterApp();
   }).catch(() => { if (AUTH) enterApp(); });
-} else showLogin();
+} else showPublic();
 </script>
 </body>
 </html>
