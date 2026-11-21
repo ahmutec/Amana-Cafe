@@ -23,12 +23,11 @@ body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:linear-gra
   padding:max(58px,calc(env(safe-area-inset-top) + 48px)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));
   font-size:16px;-webkit-text-size-adjust:100%}
 @media (min-width:900px){body{padding-top:64px;font-size:17px}}
-/* ፉተር ሁልጊዜ ከገጹ ግርጌ ነው፤ ወደ ላይ አይንቀሳቀስም፤ ወደ ታች ስክሮል ሲደረግ ብቻ ይታያል */
-.wrap{width:100%;max-width:1100px;margin:0 auto;min-width:0;min-height:calc(100dvh - 90px);display:flex;flex-direction:column}
-.wrap>.ftr{margin-top:auto}
-.wrap>#app,.wrap>#pub{margin-bottom:26px}
-.top,.ftr{width:100%;max-width:100%;box-sizing:border-box}
+.wrap{width:100%;max-width:1100px;margin:0 auto;min-width:0}
+.top,.ftr,.calcard,.cbox,.stat{width:100%;max-width:100%;box-sizing:border-box}
+.cbox .tw{max-width:100%}
 html,body{overflow-x:hidden}
+@media (max-width:700px){.cbox table{font-size:.78rem}.cbox th,.cbox td{padding:7px 4px;white-space:normal;word-break:break-word}.cbox .tw{overflow-x:visible}.cbox th.rk,.cbox td.rk{width:24px}}
 
 /* ቋንቋ መቀየሪያ */
 .lang.fix{position:fixed;left:max(10px,env(safe-area-inset-left));top:max(10px,env(safe-area-inset-top));z-index:50}
@@ -37,7 +36,8 @@ html,body{overflow-x:hidden}
 .lang span.on{background:var(--accent);color:var(--accent-ink);font-weight:800}
 
 /* ሎጎ (ክብ) */
-.logo{background:#fff var(--logo) center/cover no-repeat;border-radius:50%;border:3px solid var(--t2);box-shadow:0 6px 18px rgba(74,44,29,.35);flex:0 0 auto;overflow:hidden}
+.logo{background:#fff var(--logo) center 46%/cover no-repeat;border-radius:50%;border:3px solid var(--t2);box-shadow:0 6px 18px rgba(74,44,29,.35);flex:0 0 auto;overflow:hidden;aspect-ratio:1/1}
+
 /* መግቢያ */
 .screen{min-height:calc(100dvh - 90px);display:flex;align-items:center;justify-content:center}
 .card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(107,66,38,.10);padding:26px 22px;display:grid;gap:16px}
@@ -84,7 +84,55 @@ body.inapp{padding-top:max(14px,calc(env(safe-area-inset-top) + 8px))}
 .dc-date{position:relative;margin-top:10px;font-size:clamp(.85rem,2.6vw,1.05rem);color:#f3d9a4}
 #obbar{position:fixed;left:10px;right:10px;bottom:10px;z-index:60;background:#c0392b;color:#fff;padding:10px 14px;border-radius:10px;text-align:center;font-weight:600}
 
-.ftr{margin:0 auto 6px;max-width:1100px;text-align:center;color:#f3e3c6;font-size:.88rem;padding:18px 14px;border-radius:16px;background:linear-gradient(135deg,#4a2c1d,#6b4226);border-top:3px solid #c08a3e;box-shadow:0 8px 24px rgba(74,44,29,.25)}
+/* ዳሽቦርድ */
+.dash{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);width:100%}
+.dash>*,.cals>*,.charts>*,.stats>*{min-width:0}
+.cals{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:760px){.cals{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.calcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 14px 12px;box-shadow:0 4px 16px rgba(107,66,38,.07)}
+.calcard .ct{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.calcard .ct b{font-size:1rem}
+.calcard .big{font-size:1.25rem;font-weight:800;color:var(--accent);margin:0 0 8px}
+.calcard .big small{display:block;font-size:.8rem;font-weight:600;color:var(--muted)}
+.calcard .nv{display:flex;gap:4px}
+.calcard .nv button{width:36px;height:36px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:9px;font-size:1.2rem;cursor:pointer}
+.mg{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.mg .wd{font-size:.72rem;color:var(--muted);padding:3px 0}
+.mg .dd{height:34px;display:flex;align-items:center;justify-content:center;border-radius:9px;font-size:.9rem;font-variant-numeric:tabular-nums}
+.mg .dd.now{background:var(--accent);color:var(--accent-ink);font-weight:800}
+.mg .dd.fri{color:var(--t2);font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:760px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stat{border-radius:16px;padding:14px 16px;color:#fff;box-shadow:0 6px 16px rgba(107,66,38,.18);display:grid;gap:2px}
+.stat small{opacity:.9;font-size:.85rem}
+.stat b{font-size:1.9rem;font-weight:800;line-height:1.1}
+.stat.s1{background:linear-gradient(135deg,#6b4226,#8a5a36)}
+.stat.s2{background:linear-gradient(135deg,#4a2c1d,#6b4226)}
+.stat.s3{background:linear-gradient(135deg,#c08a3e,#d9a95a)}
+.stat.s4{background:linear-gradient(135deg,#3d5a2a,#5c7d40)}
+.charts{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){.charts{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}}
+.cbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 4px 16px rgba(107,66,38,.07)}
+.cbox h3{margin:0 0 12px;font-size:1.02rem}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:.85rem;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+.cm{background:#6b4226}.cf{background:#c9953c}.cu{background:#b8aa98}
+.bars{display:grid;gap:12px}
+.br .bn{display:flex;justify-content:space-between;font-weight:600;font-size:.92rem;margin-bottom:4px}
+.br .bn span:last-child{color:var(--muted);font-weight:600}
+.br .tr{display:grid;gap:3px}
+.br .bar{height:16px;border-radius:6px;min-width:0;display:flex;align-items:center;justify-content:flex-end;color:#fff;font-size:.72rem;font-weight:800;padding:0 6px;transition:width .5s}
+.donutw{display:grid;justify-items:center;gap:14px}
+.donut{width:190px;height:190px;border-radius:50%;display:grid;place-items:center}
+.donut div{width:116px;height:116px;border-radius:50%;background:var(--card);display:grid;place-content:center;text-align:center}
+.donut b{font-size:1.8rem;line-height:1}
+.donut small{color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tile{display:flex;align-items:center;gap:12px;font:inherit;font-weight:700;text-align:left;min-height:62px;padding:10px 16px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;cursor:pointer;box-shadow:0 3px 10px rgba(107,66,38,.06)}
+.tile:hover{border-color:var(--accent)}
+.tile .ic{font-size:1.5rem}
+
+.ftr{margin:26px auto 6px;max-width:1100px;text-align:center;color:#f3e3c6;font-size:.88rem;padding:18px 14px;border-radius:16px;background:linear-gradient(135deg,#4a2c1d,#6b4226);border-top:3px solid #c08a3e;box-shadow:0 8px 24px rgba(74,44,29,.25)}
 
 /* ምናሌ ማናጀር */
 .mrow{display:grid;gap:12px;margin-bottom:14px}
@@ -143,7 +191,6 @@ select:focus,input:focus,textarea:focus,button:focus-visible{outline:3px solid v
 .todaybtn{width:100%;margin-top:6px;min-height:40px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;font:inherit;cursor:pointer}
 .items{display:grid;gap:8px}
 @media (min-width:600px){.items{grid-template-columns:1fr 1fr}}
-.items.one{grid-template-columns:1fr}
 .it{display:grid;grid-template-columns:auto 1fr 84px;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;min-height:52px;margin:0}
 .it.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
 .it input[type=checkbox]{width:24px;height:24px;min-height:0;accent-color:var(--accent);padding:0}
@@ -154,21 +201,6 @@ select:focus,input:focus,textarea:focus,button:focus-visible{outline:3px solid v
 .hint{color:var(--muted);font-size:.9rem;padding:6px 0}
 .hint.err{color:var(--err)}
 .ts{font-size:.8rem;color:var(--muted);text-align:center}
-
-/* የተገዙ እቃዎች (ብዛት / ዋጋ / ጠቅላላ) */
-.pit{border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;display:grid;gap:8px}
-.pit.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
-.ph1{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.ck{display:flex;align-items:center;gap:10px;margin:0;font-weight:600;cursor:pointer}
-.ck.dk{font-weight:400;font-size:.82rem;color:var(--muted)}
-.ck input{width:22px;height:22px;min-height:0;padding:0;accent-color:var(--accent)}
-.ck.dk input{width:18px;height:18px}
-.pin{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
-.pin small{display:block;font-size:.72rem;color:var(--muted)}
-.pin input{min-height:42px;padding:6px;text-align:center}
-.kf{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
-.kf1{display:flex;align-items:center;gap:8px;margin:0;cursor:pointer}
-.kf1 input{width:22px;height:22px;min-height:0;padding:0;accent-color:var(--accent)}
 
 /* ሪፖርት */
 .panel{margin:0}
@@ -235,6 +267,25 @@ dialog .btns .mini{min-height:50px}
 .pm td.sub{padding-left:24px}
 .pm td{white-space:normal}
 
+/* ዕቃ ክምችት */
+.pitems{display:grid;gap:8px}
+.pit{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px 10px;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px}
+.pit.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.pit input[type=checkbox]{width:22px;height:22px;min-height:0;padding:0;accent-color:var(--accent)}
+.pit .nm{font-weight:600}
+.dly{display:flex;align-items:center;gap:5px;margin:0;font-weight:400}
+.dly input[type=checkbox]{width:16px;height:16px}
+.pit .pf{grid-column:1/-1;display:none;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.pit.on .pf{display:grid}
+.pit .pf input{min-height:42px;padding:6px}
+.it.is{grid-template-columns:auto 1fr auto 84px}
+.it.is b{color:var(--accent)}
+.kinds{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.kd{display:flex;align-items:center;gap:6px;margin:0;font-weight:600}
+.kd input{width:22px;height:22px;min-height:0;padding:0;accent-color:var(--accent)}
+.ftr{position:fixed;bottom:0;left:0;right:0;margin:0;max-width:none;border-radius:0;z-index:40;padding:10px 14px}
+body{padding-bottom:80px}
+@media(min-width:640px){#iaddrow{grid-template-columns:2fr auto}}
 @media print{
   :root{--bg:#fff;--card:#fff;--ink:#000;--line:#999;--muted:#444;--soft:#eee;--accent:#4a2c1d;--accent-ink:#fff;--err:#b00}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -249,7 +300,7 @@ dialog .btns .mini{min-height:50px}
   th,td{padding:4px 5px}
 }
 </style>
-<!-- ሎጎ: ከ GitHub (ሬፖው Public መሆን አለበት) -->
+<!-- ሎጎ: የራስዎን ምስል ለመጠቀም ከታች ያለውን url("...") በ data:image/... ወይም በራስዎ ሊንክ ይተኩ -->
 <style id="logo-style">:root{--logo:url("https://raw.githubusercontent.com/ahmutec/Amana-Cafe/main/logo.png")}</style>
 </head>
 <body>
@@ -269,7 +320,7 @@ dialog .btns .mini{min-height:50px}
     </div>
   </header>
 
-  <!-- ለሁሉም የሚታይ መነሻ ገጽ (ከመግባት በፊት) -->
+  <!-- ለሁሉም የሚታይ መነሻ ገጽ -->
   <section class="hero noprint" id="pub" hidden>
     <h2 class="hero-wl" data-i="welcome"></h2>
     <div class="dclock">
@@ -398,40 +449,28 @@ dialog .btns .mini{min-height:50px}
       <div class="ts" id="ts"></div>
     </form>
 
-    <!-- የተገዙ እቃዎች (Purchased Items) -->
+    <!-- የተገዙ እቃዎች መመዝገቢያ -->
     <form id="fs" class="fm noprint" novalidate hidden>
-      <div>
-        <label data-i="buy_date"></label>
-        <div id="c_stock"></div>
+      <div class="row2">
+        <div><label for="st_cat" data-i="category"></label><select id="st_cat"></select></div>
+        <div><label data-i="buy_date"></label><div id="c_stock"></div></div>
       </div>
-      <div class="cat">
-        <label for="pcat" data-i="category"></label>
-        <select id="pcat"></select>
-      </div>
-      <div>
-        <label data-i="item"></label>
-        <div class="items one" id="pitems"><div class="hint" data-i="choose_cat_first"></div></div>
-      </div>
+      <div><label><span data-i="item"></span> <span style="color:var(--muted);font-weight:400" data-i="multi"></span></label>
+        <div class="pitems" id="st_items"><div class="hint" data-i="choose_cat_first"></div></div></div>
       <div class="msg" id="m_stock" role="status" aria-live="polite"></div>
       <button class="submit" id="b_stock" type="submit" data-i="submit"></button>
     </form>
 
-    <!-- ወጪ የተደረጉ እቃዎች (Items Issued) -->
+    <!-- ወጪ የተደረጉ እቃዎች -->
     <form id="fi" class="fm noprint" novalidate hidden>
-      <div>
-        <label data-i="issue_date"></label>
-        <div id="c_iss"></div>
+      <div class="row2">
+        <div><label for="is_cat" data-i="category"></label><select id="is_cat"></select></div>
+        <div><label data-i="issue_date"></label><div id="c_issue"></div></div>
       </div>
-      <div class="cat">
-        <label for="icat" data-i="category"></label>
-        <select id="icat"></select>
-      </div>
-      <div>
-        <label data-i="item"></label>
-        <div class="items" id="iitems"><div class="hint" data-i="choose_cat_first"></div></div>
-      </div>
-      <div class="msg" id="m_iss" role="status" aria-live="polite"></div>
-      <button class="submit" id="b_iss" type="submit" data-i="submit"></button>
+      <div><label><span data-i="item"></span> <span style="color:var(--muted);font-weight:400" data-i="multi"></span></label>
+        <div class="items" id="is_items"><div class="hint" data-i="choose_cat_first"></div></div></div>
+      <div class="msg" id="m_issue" role="status" aria-live="polite"></div>
+      <button class="submit" id="b_issue" type="submit" data-i="submit"></button>
     </form>
 
     <!-- ሰራተኛ መመዝገቢያ -->
@@ -515,10 +554,7 @@ dialog .btns .mini{min-height:50px}
         <label data-i="c_date"></label>
         <div id="c_opex"></div>
       </div>
-      <div>
-        <label for="op_note" data-i="op_note"></label>
-        <input id="op_note" autocomplete="off">
-      </div>
+      <div><label for="op_note" data-i="note"></label><textarea id="op_note" data-ph="op_note_ph"></textarea></div>
       <div class="msg" id="m_opex" role="status" aria-live="polite"></div>
       <button class="submit" id="b_opex" type="submit" data-i="submit"></button>
     </form>
@@ -564,6 +600,25 @@ dialog .btns .mini{min-height:50px}
       <div class="gen" data-i="st_note"></div>
     </section>
 
+    
+    <!-- የዕቃ ዝርዝር (መደብ / እቃ) ማስተካከያ -->
+    <section class="panel noprint" id="invMgr" hidden>
+      <div class="mrow">
+        <div><label for="i_cat" data-i="category"></label><select id="i_cat"></select></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button type="button" class="mini" id="i_newcat" data-i="m_new_cat"></button>
+          <button type="button" class="mini" id="i_ren" data-i="m_rename_cat"></button>
+          <button type="button" class="mini" id="i_ref" data-i="refresh"></button>
+        </div>
+      </div>
+      <div class="maddrow" id="iaddrow">
+        <div><label for="i_name" data-i="m_new_item"></label><input id="i_name" autocomplete="off"></div>
+        <button type="button" class="submit" id="i_add" data-i="m_add"></button>
+      </div>
+      <div class="msg" id="m_inv" role="status" aria-live="polite"></div>
+      <div id="ilist"></div>
+    </section>
+
     <!-- ምናሌ ማስተካከያ -->
     <section class="panel noprint" id="menuMgr" hidden>
       <div class="mrow">
@@ -582,25 +637,6 @@ dialog .btns .mini{min-height:50px}
       <div class="msg" id="m_menu" role="status" aria-live="polite"></div>
       <div id="mlist"></div>
       <div class="gen" data-i="m_note"></div>
-    </section>
-
-    <!-- የእቃ ዝርዝር ማስተካከያ (Inventory) -->
-    <section class="panel noprint" id="invp" hidden>
-      <div class="mrow">
-        <div><label for="i_cat" data-i="category"></label><select id="i_cat"></select></div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button type="button" class="mini" id="i_newcat" data-i="m_new_cat"></button>
-          <button type="button" class="mini" id="i_ren" data-i="m_rename_cat"></button>
-          <button type="button" class="mini" id="i_ref" data-i="refresh"></button>
-        </div>
-      </div>
-      <div class="maddrow" id="iaddrow" style="grid-template-columns:1fr auto">
-        <div><label for="i_name" data-i="i_new_item"></label><input id="i_name" autocomplete="off"></div>
-        <button type="button" class="submit" id="i_add" data-i="m_add"></button>
-      </div>
-      <div class="msg" id="m_inv" role="status" aria-live="polite"></div>
-      <div id="ilist"></div>
-      <div class="gen" data-i="i_note"></div>
     </section>
 
     <!-- ሪፖርት -->
@@ -665,7 +701,7 @@ const L = {am: {}, en: {}};
 const TR = [
  ["app","አማና ካፌ ማኔጅመንት ሲስተም","Amana Cafe Management System"],
  ["welcome","ወደ አማና ካፌ ማኔጅመንት ሲስተም በሰላም መጡ","Welcome to Amana Cafe Management System"],
- ["pg_sales","አማና ካፌ ሽያጭ","Amana Cafe Sales"],["pg_stock","አማና ካፌ የዕቃ ክምችት","Amana Cafe Inventory"],
+ ["pg_home","መነሻ ገጽ","Home"],["pg_sales","አማና ካፌ ሽያጭ","Amana Cafe Sales"],["pg_stock","አማና ካፌ የዕቃ ክምችት","Amana Cafe Inventory"],
  ["pg_payroll","አማና ካፌ የሠራተኞች አስተዳደር","Amana Cafe Staff Management"],["pg_opex","አማና ካፌ ወጪዎች","Amana Cafe Expenses"],
  ["pg_summary","አማና ካፌ የወር ሪፖርት","Amana Cafe Monthly Summary"],["pg_records","አማና ካፌ ማስተካከያ","Amana Cafe Edit / Delete"],
  ["pg_menu","አማና ካፌ የምግብ ሜኑ ማስተካከያ","Amana Cafe Food Menu Management"],
@@ -684,7 +720,7 @@ const TR = [
  ["cp_title","የይለፍ ቃል ቀይር","Change password"],["cp_sub","ለደህንነትዎ አዲስ የይለፍ ቃል (ቢያንስ 4 ቁምፊ) ይፍጠሩ። ከዚያ በኋላ ብቻ ሲስተሙን ማየት ይችላሉ።","For your security, create a new password (at least 4 characters) before using the system."],
  ["cp_btn","አዲሱን የይለፍ ቃል አስቀምጥ","Save new password"],
  ["signing","በመግባት ላይ...","Signing in..."],["sending","በመላክ ላይ...","Sending..."],["loading","በመጫን ላይ...","Loading..."],
- ["sec_sales","ሽያጭ","Sales"],["sec_stock","የዕቃ ክምችት","Inventory"],["sec_payroll","የሠራተኞች አስተዳደር","Staff Management"],["sec_opex","ወጪዎች","Expenses"],
+ ["sec_home","መነሻ","Home"],["sec_sales","ሽያጭ","Sales"],["sec_stock","የዕቃ ክምችት","Inventory"],["sec_payroll","የሠራተኞች አስተዳደር","Staff Management"],["sec_opex","ወጪዎች","Expenses"],
  ["sec_menu","የምግብ ሜኑ","Food Menu"],["sec_summary","የወር ሪፖርት","Monthly Summary"],["sec_records","ማስተካከያ","Edit / Delete"],
  ["sec_users","ተጠቃሚዎች","Users"],["sec_settings","ቅንብር","Settings"],
  ["s_rec","ዕቃዎችን መመዝገቢያ","Record Items"],["s_daily","ዕለታዊ","Daily"],["s_weekly","ሳምንታዊ","Weekly"],["s_monthly","ወርሃዊ","Monthly"],
@@ -724,12 +760,14 @@ const TR = [
  ["sum_title","የወር ሪፖርት — {0} ዓ.ል.","Monthly report — {0} E.C."],["c_month","ወር","Month"],["c_sales_t","ጠቅላላ ሽያጭ","Total sales"],["c_purch","የአስቤዛ ወጭ","Purchases"],["c_payroll","የደመወዝ ወጭ","Payroll"],["c_opex","የአገልግሎት ወጭ","Operating costs"],["c_diff","ልዩነት","Difference"],
  ["sum_formula","ልዩነት = ሽያጭ − (አስቤዛ + ደመወዝ + አገልግሎት)","Difference = Sales − (Purchases + Payroll + Operating costs)"],
  ["rec_what","የትኛውን ልዩ?","Which records?"],["search","ፈልግ","Search"],["rec_note","የመጨረሻዎቹ 300 መዝገቦች ይታያሉ። ለማረም «አስተካክል»፣ ለማጥፋት «ሰርዝ» ይጫኑ።","Latest 300 records are shown. Use Edit to correct or Delete to remove."],
- ["ds_sales","ሽያጭ","Sales"],["ds_stock","የድሮ ስቶክ (Old Stock)","Old Stock"],["ds_pur","የተገዙ እቃዎች","Purchased Items"],["ds_iss","ወጪ የተደረጉ እቃዎች","Items Issued"],
- ["ds_emp","ሰራተኞች","Staff"],["ds_pay","ደመወዝ ክፍያዎች","Salary payments"],["ds_opex","ወጪዎች","Expenses"],
+ ["ds_sales","ሽያጭ","Sales"],["ds_stock","ስቶክ ገቢ/ወጪ","Inventory in/out"],["ds_emp","ሰራተኞች","Staff"],["ds_pay","ደመወዝ ክፍያዎች","Salary payments"],["ds_opex","ወጪዎች","Expenses"],
  ["edit","አስተካክል","Edit"],["del","ሰርዝ","Delete"],["save","አስቀምጥ","Save"],["cancel","ተው","Cancel"],["confirm_del","ይህ መዝገብ እስከመጨረሻው ይሰረዛል። እርግጠኛ ነዎት?","This record will be permanently deleted. Are you sure?"],
  ["c_time","ሰዓት","Time"],["c_waiter","ወይተር","Waiter"],["c_cat","መደብ","Category"],["c_item","አይነት","Item"],["c_qty","ብዛት","Qty"],["c_totalb","ድምር","Total"],["c_note","አስተያየት","Note"],["c_price","ዋጋ","Price"],
  ["edit_title","መዝገብ አስተካክል","Edit record"],["no_perm","ፈቃድ የለዎትም","Not allowed"],["actions","ተግባር","Actions"],
  ["gender","ፆታ","Sex"],["male","ወንድ","Male"],["female","ሴት","Female"],["unspec","ያልተገለጸ","Not specified"],["waiter_code","የወይተር ኮድ","Waiter code"],
+ ["cal_eth","የኢትዮጵያ ቀን መቁጠሪያ","Ethiopian Calendar"],["cal_hij","የሂጅራ ቀን መቁጠሪያ","Hijri Calendar"],["ah","ሂ.","AH"],["cal_na","በዚህ ብራውዘር አይደገፍም","Not supported by this browser"],
+ ["d_total","ጠቅላላ ሰራተኞች","Total staff"],["d_male","ወንዶች","Male"],["d_female","ሴቶች","Female"],["d_pos","የስራ ድርሻዎች","Positions"],
+ ["d_by_pos","የሰራተኞች ብዛት በስራ ድርሻ","Staff by position"],["d_gender","የወንድ እና ሴት ድርሻ","Gender split"],["d_table","ዝርዝር","Details"],
  ["pos_waiter","ወይተር","Waiter"],["pos_cashier","ካሸር","Cashier"],["pos_chef","ሸፍ","Chef"],["pos_barista","ባሪስታ","Barista"],["pos_cleaner","ጽዳት","Cleaner"],["pos_security","ጥበቃ","Security"],["pos_manager","ስራ አስኪያጅ","Manager"],
  ["m_rename_cat","የመደብ ስም ቀይር","Rename category"],["m_new_cat","+ አዲስ መደብ","+ New category"],["m_cat_name","የአዲሱ መደብ ስም","New category name"],
  ["m_new_item","አዲስ የምግብ ስም","New item name"],["m_add","+ ጨምር","+ Add"],
@@ -757,18 +795,18 @@ const TR = [
  ["e_BAD_AMOUNT","የብር መጠን ትክክል አይደለም","Invalid amount"],["e_BAD_NAME","ስም/ምክንያት ባዶ መሆን የለበትም","Name/reason is required"],["e_NO_ITEMS","እቃ አልተመረጠም","No items selected"],
  ["e_NO_EMP","ሰራተኛው አልተመዘገበም","Employee not registered"],["e_EMP_EXISTS","ይህ ሰራተኛ አስቀድሞ ተመዝግቧል","This employee is already registered"],
  ["e_STALE","መዝገቡ ተቀይሯል፤ «አድስ» ተጭነው እንደገና ይሞክሩ","The record changed; refresh and try again"],["e_UNKNOWN","ያልታወቀ ጥያቄ","Unknown request"],
- ["e_BAD_GENDER","ፆታ ይምረጡ","Choose a sex"],["e_ITEM_EXISTS","ይህ እቃ አስቀድሞ አለ","This item already exists"],["e_CAT_EXISTS","ይህ የመደብ ስም አስቀድሞ አለ","This category name already exists"],
- ["menu_fail","ምናሌ መጫን አልተቻለም። ገጹን እንደገና ይጫኑ","Could not load the menu. Reload the page"],["rep_fail","መጫን አልተቻለም። ኢንተርኔት ያረጋግጡ እና «አድስ» ይጫኑ","Could not load. Check your connection and press Refresh"],
- /* ዕቃ ክምችት (አዲስ) */
- ["s_pur","የተገዙ እቃዎች","Purchased Items"],["s_iss","ወጪ የተደረጉ እቃዎች","Items Issued"],["s_items","የእቃ ዝርዝር","Item List"],
- ["daily_p","በየቀኑ የሚገዙ","Daily Purchases"],["seasonal_p","ወቅታዊ ግዥ","Seasonal Purchases"],
- ["in_stock","ስቶክ","In stock"],["issue_date","ወጪ የተደረገበት ቀን","Issue date"],
- ["over_stock","ከስቶክ በላይ ማውጣት አይቻልም","Cannot issue more than stock"],
- ["pr_kind","አይነት (በየቀኑ/ወቅታዊ)","Type (Daily/Seasonal)"],
- ["op_note","አስተያየት (የቤት ኪራይ ከሆነ የየትኛው ወር፤ እቃ ከሆነ የእቃው ስም)","Note (rent: which month; goods: item name)"],
- ["i_new_item","አዲስ የእቃ ስም","New item name"],
- ["i_note","ስም ሲቀየር ያለፉ መዝገቦችም አብረው ይቀየራሉ። እቃ ሲሰረዝ ያለፉ መዝገቦች ይቆያሉ።","Renaming also updates past records. Deleting an item keeps past records."]
+ ["e_BAD_GENDER","ፆታ ይምረጡ","Choose a sex"],["e_ITEM_EXISTS","ይህ እቃ በመደቡ ውስጥ አስቀድሞ አለ","This item already exists in the category"],["e_CAT_EXISTS","ይህ የመደብ ስም አስቀድሞ አለ","This category name already exists"],
+ ["menu_fail","ምናሌ መጫን አልተቻለም። ገጹን እንደገና ይጫኑ","Could not load the menu. Reload the page"],["rep_fail","መጫን አልተቻለም። ኢንተርኔት ያረጋግጡ እና «አድስ» ይጫኑ","Could not load. Check your connection and press Refresh"]
 ];
+TR.push(
+ ["s_buy","የተገዙ እቃዎች","Purchased Items"],["s_out","ወጪ የተደረጉ እቃዎች","Items Issued"],["s_cat","የዕቃ ዝርዝር","Item Catalog"],
+ ["ds_stock","የተገዙ እቃዎች","Purchased Items"],["ds_issue","ወጪ የተደረጉ እቃዎች","Items Issued"],
+ ["daily_buy","በየቀኑ የሚገዙ","Daily Purchases"],["seasonal_buy","ወቅታዊ ግዥ","Seasonal Purchases"],
+ ["daily_cat","በየቀኑ የሚገዙ / Daily Purchases","በየቀኑ የሚገዙ / Daily Purchases"],["issue_date","ወጪ የተደረገበት ቀን","Issue date"],
+ ["op_note_ph","ለምሳሌ፦ የቤት ኪራይ ከሆነ የወሩ ስም፤ እቃ ከሆነ የእቃው ስም","e.g. rent: which month; goods: item name"],
+ ["i_rename_item","የእቃ ስም ቀይር","Rename item"],["in_stock","በስቶር ያለ","In stock"],["issue_qty","ወጪ የሚደረግ ብዛት","Qty to issue"],
+ ["e_NOT_ENOUGH","በስቶር ያለው ብዛት አይበቃም","Not enough in stock"],["e_BAD_CAT","መደብ ይምረጡ","Choose a category"]
+);
 TR.forEach(([k, a, e]) => { L.am[k] = a; L.en[k] = e; });
 let lang = localStorage.getItem("amana_lang") === "en" ? "en" : "am";
 function t(k, ...a) { let s = L[lang][k]; if (s === undefined) s = k; a.forEach((v, i) => { s = s.replace("{" + i + "}", v); }); return s; }
@@ -777,9 +815,9 @@ const errText = c => { const k = "e_" + c; return L[lang][k] !== undefined ? L[l
 const E_AM = ["መስከረም","ጥቅምት","ኅዳር","ታኅሣሥ","ጥር","የካቲት","መጋቢት","ሚያዝያ","ግንቦት","ሰኔ","ሐምሌ","ነሐሴ","ጳጉሜ"];
 const E_EN = ["September","October","November","December","January","February","March","April","May","June","July","August","Pagume"];
 const WD_AM = ["እሑ","ሰኞ","ማክ","ረቡ","ሐሙ","አር","ቅዳ"], WD_EN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-const WDF_AM = ["እሑድ","ሰኞ","ማክሰኞ","ረቡዕ","ሐሙስ","አርብ","ቅዳሜ"], WDF_EN = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const mName = m => (lang === "am" ? E_AM : E_EN)[m - 1];
 const WDN = i => (lang === "am" ? WD_AM : WD_EN)[i];
+const WDF_AM = ["እሑድ","ሰኞ","ማክሰኞ","ረቡዕ","ሐሙስ","አርብ","ቅዳሜ"], WDF_EN = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const WDF = i => (lang === "am" ? WDF_AM : WDF_EN)[i];
 
 /* ===== የኢትዮጵያ ቀን አቆጣጠር ===== */
@@ -840,8 +878,8 @@ document.addEventListener("click", e => {
 });
 
 /* ===== ሁኔታ ===== */
-let AUTH = null, MENU = [], EMPS = [], SEC = "", SUB = "", REQ = 0, CP_FORCED = false, INV = [];
-const RC = {date: {...TODAY}, month: {y: TODAY.y, m: TODAY.m}, week: Math.ceil(TODAY.d / 7), year: TODAY.y, sk: "in", pv: "paid", kd: true, ks: true};
+let AUTH = null, MENU = [], EMPS = [], SEC = "", SUB = "", REQ = 0, CP_FORCED = false;
+const RC = {date: {...TODAY}, month: {y: TODAY.y, m: TODAY.m}, week: Math.ceil(TODAY.d / 7), year: TODAY.y, sk: "in", pv: "paid", kinds: "ds"};
 try { AUTH = JSON.parse(localStorage.getItem("amana_auth") || "null"); } catch (_) {}
 if (AUTH && !AUTH.perms) AUTH = null;
 const has = (res, b) => !!AUTH && ((AUTH.perms && AUTH.perms[res]) || "").indexOf(b) >= 0;
@@ -1016,8 +1054,8 @@ function showLogin(message) {
 }
 function logout(message) {
   clearTimeout(idleT);
-  AUTH = null; MENU = []; EMPS = []; INV = []; SEC = ""; SUB = ""; REQ++;
-  localStorage.removeItem("amana_auth"); localStorage.removeItem("amana_menu"); localStorage.removeItem("amana_inv");
+  AUTH = null; MENU = []; EMPS = []; SEC = ""; SUB = ""; REQ++;
+  localStorage.removeItem("amana_auth"); localStorage.removeItem("amana_menu");
   if (typeof message === "string" && message) showLogin(message); else showPublic();
 }
 $("gologin").addEventListener("click", () => showLogin());
@@ -1028,7 +1066,7 @@ $("logout").addEventListener("click", () => logout());
 // [ክፍል, የሚታይበት ፈቃድ]  (va = View ወይም Add)
 const NAV = {
   sales:   {rec: ["sales.rec", "va"], daily: ["sales.daily", "v"], weekly: ["sales.weekly", "v"], monthly: ["sales.monthly", "v"]},
-  stock:   {rec: ["stock.rec", "va"], iss: ["stock.iss", "va"], items: ["stock.items", "v"], cur: ["stock.cur", "v"], daily: ["stock.daily", "v"], weekly: ["stock.weekly", "v"], monthly: ["stock.monthly", "v"], total: ["stock.total", "v"]},
+  stock:   {rec: ["stock.rec", "va"], out: ["stock.iss", "va"], cat: ["stock.items", "v"], cur: ["stock.cur", "v"], daily: ["stock.daily", "v"], weekly: ["stock.weekly", "v"], monthly: ["stock.monthly", "v"], total: ["stock.total", "v"]},
   payroll: {emp: ["payroll.emp", "va"], pay: ["payroll.pay", "va"], rep: ["payroll.rep", "v"]},
   opex:    {rec: ["opex.rec", "va"], rep: ["opex.rep", "v"]},
   menu:    {rec: ["menu", "v"]},
@@ -1046,11 +1084,11 @@ function perms() {
   });
   return P;
 }
-const FORMS = {"sales/rec": "f", "stock/rec": "fs", "stock/iss": "fi", "payroll/emp": "fe", "payroll/pay": "fp", "opex/rec": "fo", "users/rec": "fu"};
+const FORMS = {"sales/rec": "f", "stock/rec": "fs", "stock/out": "fi", "payroll/emp": "fe", "payroll/pay": "fp", "opex/rec": "fo", "users/rec": "fu"};
 const subLabel = (sec, sub) => {
-  if (sec === "stock" && (sub === "rec" || sub === "iss" || sub === "items")) return t({rec: "s_pur", iss: "s_iss", items: "s_items"}[sub]);
   if (sec === "opex" && sub === "rec") return t("c_reason");
   if (sec === "sales") return t("ss_" + sub);
+  if (sec === "stock" && sub === "rec") return t("s_buy");
   if (sec === "users") return t(sub === "rec" ? "u_reg" : "u_list");
   return t("s_" + sub);
 };
@@ -1059,7 +1097,7 @@ const ICONS = {menu: "🍽️", sales: "💰", stock: "📦", payroll: "👥", o
 function buildNav() {
   const P = perms(), secs = Object.keys(P);
   $("layout").classList.toggle("solo", secs.length < 2);
-  $("pgt").textContent = t("pg_" + SEC);
+  $("pgt").textContent = t("pg_" + SEC); $("pgt").hidden = SEC === "home";
   const sn = $("secs"); sn.innerHTML = ""; sn.hidden = secs.length < 2;
   secs.forEach(s => {
     const b = document.createElement("button"); b.type = "button";
@@ -1078,7 +1116,7 @@ function buildNav() {
   });
 }
 
-/* ===== የመጀመሪያ ገጽ + ዲጂታል ሰዓት (ከመግባት በፊት) ===== */
+/* ===== የመጀመሪያ ገጽ + ዲጂታል ሰዓት ===== */
 let clockT = null;
 function tickClock() {
   const n = new Date(), p = x => String(x).padStart(2, "0");
@@ -1117,13 +1155,14 @@ function showView(sec, sub) {
   SEC = sec; SUB = sub; REQ++;
   buildNav();
   const form = FORMS[sec + "/" + sub], isRec = sec === "records", isMenu = sec === "menu",
-        isUL = sec === "users" && sub === "list", isSet = sec === "settings", isInv = sec === "stock" && sub === "items";
+        isUL = sec === "users" && sub === "list", isSet = sec === "settings", isInv = sec === "stock" && sub === "cat";
   ["f", "fs", "fi", "fe", "fp", "fo", "fu"].forEach(id => $(id).hidden = id !== form);
-  $("recs").hidden = !isRec; $("menuMgr").hidden = !isMenu; $("ulp").hidden = !isUL; $("setp").hidden = !isSet; $("invp").hidden = !isInv;
+  $("recs").hidden = !isRec; $("menuMgr").hidden = !isMenu; $("ulp").hidden = !isUL; $("setp").hidden = !isSet; $("invMgr").hidden = !isInv;
   $("rep").hidden = !!form || isRec || isMenu || isUL || isSet || isInv;
   if (form) {
     if (form === "f") { if (!MENU.length) loadMenu(); loadWaiters(); }
-    if (form === "fs" || form === "fi") loadInv();
+    if (form === "fs") loadStockForm();
+    if (form === "fi") loadIssue();
     if (form === "fp") loadEmps();
     if (form === "fe") refreshWaiterCode(true);
     if (form === "fu") loadUserMeta();
@@ -1148,6 +1187,7 @@ calSales = makeCal($("c_sales"));
 calStock = makeCal($("c_stock"));
 calPay   = makeCal($("c_pay"));
 calOpex  = makeCal($("c_opex"));
+const calIssue = makeCal($("c_issue"));
 
 const wLabel = w => w.code ? w.name + " (" + w.code + ")" : w.name;
 function fillWaiter() {
@@ -1220,20 +1260,10 @@ $("f").addEventListener("submit", e => {
     $("note").value = ""; $("paytype").value = "cash";
   });
 });
-  if (!items.length) { setMsg("msg", t("pick_one"), "err"); return; }
-  const data = {waiter: $("waiter").value || "ያልተለየ", category: $("category").value, date: calSales.get(), note: $("note").value.trim(), pay: $("paytype").value, items};
-  postFast("submit", data, "msg", () => {
-    setMsg("msg", "✓ " + items.length + " " + t("items_saved"), "ok");
-    $("category").selectedIndex = 0;
-    $("items").innerHTML = ""; $("items").appendChild(el("div", t("choose_cat_first"), "hint"));
-    $("note").value = ""; $("paytype").value = "cash";
-  });
-});
 
-/* ===== ስቶክ መመዝገብ ===== */
+/* ===== የተገዙ እቃዎች ===== */
+let INV = [], ISS = {daily: [], cats: []}, IMGSEL = "";
 function fillTypes() {
-  const keep = $("st_type").value;
-  $("st_type").innerHTML = ""; $("st_type").add(new Option(t("in"), "in")); $("st_type").add(new Option(t("out"), "out")); $("st_type").value = keep || "in";
   const k2 = $("op_type").value;
   $("op_type").innerHTML = ""; $("op_type").add(new Option(t("fixed"), "fixed")); $("op_type").add(new Option(t("temp"), "temp")); $("op_type").value = k2 || "fixed";
   [["em_gender"], ["u_sex"]].forEach(([id]) => {
@@ -1246,21 +1276,156 @@ function fillTypes() {
   const pl = $("poslist"); pl.innerHTML = "";
   ["waiter", "cashier", "chef", "barista", "cleaner", "security"].forEach(k => { const o = document.createElement("option"); o.value = t("pos_" + k); pl.appendChild(o); });
 }
-async function loadNames() {
-  try { const j = await api("stock_names"); if (j.ok) { const dl = $("names"); dl.innerHTML = ""; j.names.forEach(n => { const o = document.createElement("option"); o.value = n; dl.appendChild(o); }); } } catch (_) {}
+async function loadStockForm() {
+  try { const j = await api("inv_full"); if (j.ok) INV = j.cats; } catch (_) {}
+  fill($("st_cat"), INV.map(c => c.category), t("choose_cat")); renderStItems();
 }
-const calcTotal = () => { const q = parseFloat($("st_qty").value), p = parseFloat($("st_price").value); $("st_total").value = (q > 0 && p >= 0) ? fmt(q * p) : ""; };
-$("st_qty").addEventListener("input", calcTotal); $("st_price").addEventListener("input", calcTotal);
+function renderStItems() {
+  const box = $("st_items"); box.innerHTML = "";
+  const c = INV.find(x => x.category === $("st_cat").value);
+  if (!c || !c.items.length) { box.appendChild(el("div", t(c ? "no_items" : "choose_cat_first"), "hint")); return; }
+  c.items.forEach(it => {
+    const r = document.createElement("div"); r.className = "pit"; r.dataset.name = it.name;
+    r.innerHTML = '<input type="checkbox" class="sel"><span class="nm"></span><label class="dly"><input type="checkbox" class="dl"><small></small></label>' +
+      '<div class="pf"><input class="pq" type="number" inputmode="decimal" min="0" step="any"><input class="pp" type="number" inputmode="decimal" min="0" step="any"><input class="pt" readonly></div>';
+    r.querySelector(".nm").textContent = it.name; r.querySelector("small").textContent = t("daily_buy");
+    r.querySelector(".dl").checked = !!it.daily;
+    const q = r.querySelector(".pq"), p = r.querySelector(".pp"), tt = r.querySelector(".pt");
+    q.placeholder = t("qty"); p.placeholder = t("unit_price"); tt.placeholder = t("total_price");
+    const calc = () => { const a = parseFloat(q.value), b = parseFloat(p.value); tt.value = (a > 0 && b >= 0) ? fmt(a * b) : ""; };
+    q.oninput = calc; p.oninput = calc;
+    r.querySelector(".sel").onchange = e => { r.classList.toggle("on", e.target.checked); if (e.target.checked) q.focus(); };
+    box.appendChild(r);
+  });
+}
+$("st_cat").addEventListener("change", renderStItems);
 $("fs").addEventListener("submit", e => {
   e.preventDefault();
-  const name = $("st_name").value.trim(), qty = parseFloat($("st_qty").value), price = parseFloat($("st_price").value);
-  if (!name) { setMsg("m_stock", t("e_BAD_NAME"), "err"); return; }
-  if (!(qty > 0)) { setMsg("m_stock", t("e_BAD_QTY"), "err"); return; }
-  if (!(price >= 0)) { setMsg("m_stock", t("e_BAD_AMOUNT"), "err"); return; }
-  postFast("stock_submit", {name, type: $("st_type").value, qty, price, date: calStock.get()}, "m_stock", () => {
-    $("st_name").value = ""; $("st_qty").value = ""; $("st_price").value = ""; $("st_total").value = "";
-    setTimeout(loadNames, 3000);
+  if (!AUTH) return;
+  const cat = $("st_cat").value;
+  if (!cat) { setMsg("m_stock", t("pick_category"), "err"); return; }
+  const items = [];
+  for (const r of document.querySelectorAll("#st_items .pit")) {
+    if (!r.querySelector(".sel").checked) continue;
+    const q = parseFloat(r.querySelector(".pq").value), p = parseFloat(r.querySelector(".pp").value);
+    if (!(q > 0)) { setMsg("m_stock", r.dataset.name + ": " + t("e_BAD_QTY"), "err"); return; }
+    if (!(p >= 0)) { setMsg("m_stock", r.dataset.name + ": " + t("e_BAD_AMOUNT"), "err"); return; }
+    items.push({name: r.dataset.name, qty: q, price: p, daily: r.querySelector(".dl").checked});
+  }
+  if (!items.length) { setMsg("m_stock", t("pick_one"), "err"); return; }
+  postFast("stock_submit", {category: cat, date: calStock.get(), items}, "m_stock", () => {
+    setMsg("m_stock", "✓ " + items.length + " " + t("items_saved"), "ok");
+    const c = INV.find(x => x.category === cat);
+    items.forEach(i => { const x = c && c.items.find(y => y.name === i.name); if (x) x.daily = i.daily; });
+    $("st_cat").selectedIndex = 0; renderStItems();
   });
+});
+
+/* ===== ወጪ የተደረጉ እቃዎች ===== */
+async function loadIssue() {
+  try { const j = await api("inv_issue_list"); if (j.ok) { ISS = j; fillIssCat(); renderIssItems(); } } catch (_) {}
+}
+function fillIssCat() {
+  const s = $("is_cat"), keep = s.value; s.innerHTML = "";
+  const o = new Option(t("choose_cat"), ""); o.disabled = true; o.selected = true; s.add(o);
+  if (ISS.daily.length) s.add(new Option(t("daily_cat"), "__daily__"));
+  ISS.cats.forEach(c => s.add(new Option(c.category, c.category)));
+  if (keep) s.value = keep;
+}
+function renderIssItems() {
+  const box = $("is_items"); box.innerHTML = "";
+  const v = $("is_cat").value, list = v === "__daily__" ? ISS.daily : ((ISS.cats.find(c => c.category === v) || {}).items || null);
+  if (!list || !list.length) { box.appendChild(el("div", t(list ? "no_items" : "choose_cat_first"), "hint")); return; }
+  list.forEach(it => {
+    const row = document.createElement("label"); row.className = "it is"; row.dataset.name = it.name; row.dataset.cat = it.category; row.dataset.stock = it.qty;
+    row.innerHTML = '<input type="checkbox"><span></span><b></b><input class="q" type="number" inputmode="decimal" min="0" step="any" disabled>';
+    row.querySelector("span").textContent = it.name;
+    row.querySelector("b").textContent = t("in_stock") + ": " + fmt(it.qty);
+    const cb = row.querySelector("[type=checkbox]"), q = row.querySelector(".q");
+    q.placeholder = t("issue_qty"); cb.disabled = !(it.qty > 0);
+    cb.onchange = () => { q.disabled = !cb.checked; row.classList.toggle("on", cb.checked); if (cb.checked) q.focus(); };
+    box.appendChild(row);
+  });
+}
+$("is_cat").addEventListener("change", renderIssItems);
+$("fi").addEventListener("submit", e => {
+  e.preventDefault();
+  if (!AUTH) return;
+  const items = [];
+  for (const row of document.querySelectorAll("#is_items .it")) {
+    if (!row.querySelector("[type=checkbox]").checked) continue;
+    const q = parseFloat(row.querySelector(".q").value);
+    if (!(q > 0)) { setMsg("m_issue", row.dataset.name + ": " + t("e_BAD_QTY"), "err"); return; }
+    if (q > Number(row.dataset.stock)) { setMsg("m_issue", row.dataset.name + ": " + t("e_NOT_ENOUGH"), "err"); return; }
+    items.push({name: row.dataset.name, category: row.dataset.cat, qty: q});
+  }
+  if (!items.length) { setMsg("m_issue", t("pick_one"), "err"); return; }
+  postFast("issue_submit", {date: calIssue.get(), items}, "m_issue", () => {
+    setMsg("m_issue", "✓ " + items.length + " " + t("items_saved"), "ok");
+    const dec = o => { const x = items.find(i => i.name === o.name); if (x) o.qty = Math.round((o.qty - x.qty) * 100) / 100; };
+    ISS.daily.forEach(dec); ISS.cats.forEach(c => c.items.forEach(dec));
+    $("is_cat").selectedIndex = 0; renderIssItems();
+    setTimeout(loadIssue, 4000);
+  });
+});
+
+/* ===== የዕቃ መደብ / እቃ ማስተካከያ ===== */
+const curInv = () => INV.find(c => c.category === $("i_cat").value);
+async function loadInvMgr(quiet) {
+  if (!AUTH || !has("stock.items", "v")) return;
+  if (!quiet) setMsg("m_inv", t("loading"));
+  const my = ++REQ;
+  try {
+    const j = await api("inv_full");
+    if (my !== REQ) return;
+    if (!j.ok) { setMsg("m_inv", errText(j.error), "err"); return; }
+    INV = j.cats; if (!quiet) setMsg("m_inv", ""); renderInvMgr();
+  } catch (err) { if (err.message !== "AUTH") setMsg("m_inv", t("e_NET"), "err"); }
+}
+function renderInvMgr() {
+  $("i_ren").hidden = !has("stock.items", "e"); $("i_newcat").hidden = !has("stock.items", "a"); $("iaddrow").hidden = !has("stock.items", "a");
+  const sel = $("i_cat"); sel.innerHTML = ""; INV.forEach(c => sel.add(new Option(c.category, c.category)));
+  if (INV.some(c => c.category === IMGSEL)) sel.value = IMGSEL;
+  const c = curInv(); if (c) IMGSEL = c.category;
+  const box = $("ilist"); box.innerHTML = "";
+  if (!c) return;
+  if (!c.items.length) { box.appendChild(el("div", t("no_items"), "hint")); return; }
+  const w = el("div", null, "tw"), tb = document.createElement("table");
+  const hr = tb.createTHead().insertRow();
+  [t("c_no"), t("c_item"), t("daily_buy"), t("actions")].forEach(x => hr.appendChild(el("th", x)));
+  const body = tb.createTBody();
+  c.items.forEach((it, i) => {
+    const tr = body.insertRow();
+    tr.appendChild(el("td", i + 1, "rk")); tr.appendChild(el("td", it.name)); tr.appendChild(el("td", it.daily ? "✓" : "·"));
+    const td = el("td"), acts = el("div", null, "acts");
+    if (has("stock.items", "e")) {
+      const b = el("button", t("i_rename_item")); b.type = "button";
+      b.onclick = () => openSimpleDialog(t("i_rename_item"), [{label: t("c_item"), value: it.name}],
+        v => api("inv_item_rename", {category: c.category, oldName: it.name, name: v[0]}), () => loadInvMgr(true));
+      acts.appendChild(b);
+    }
+    td.appendChild(acts); tr.appendChild(td);
+  });
+  w.appendChild(tb); box.appendChild(w);
+}
+$("i_cat").addEventListener("change", () => { const c = curInv(); if (c) IMGSEL = c.category; renderInvMgr(); });
+$("i_ref").addEventListener("click", () => loadInvMgr());
+$("i_ren").addEventListener("click", () => {
+  const c = curInv(); if (!c) return;
+  openSimpleDialog(t("m_rename_cat"), [{label: t("category"), value: c.category}], async v => {
+    const j = await api("inv_cat_rename", {oldName: c.category, name: v[0]}); if (j.ok) IMGSEL = v[0]; return j;
+  }, () => loadInvMgr(true));
+});
+$("i_newcat").addEventListener("click", () => {
+  openSimpleDialog(t("m_new_cat"), [{label: t("m_cat_name"), value: ""}], async v => {
+    const j = await api("inv_cat_add", {name: v[0]}); if (j.ok) IMGSEL = v[0]; return j;
+  }, () => loadInvMgr(true));
+});
+$("i_add").addEventListener("click", async () => {
+  const c = curInv(), name = $("i_name").value.trim();
+  if (!c) return;
+  if (!name) { setMsg("m_inv", t("e_BAD_NAME"), "err"); return; }
+  await post("inv_item_add", {category: c.category, name}, "i_add", "m_inv", () => { $("i_name").value = ""; loadInvMgr(true); });
 });
 
 /* ===== ሰራተኛ እና ደመወዝ ===== */
@@ -1317,8 +1482,8 @@ $("fo").addEventListener("submit", e => {
   const reason = $("op_reason").value.trim(), amt = parseFloat($("op_amt").value);
   if (!reason) { setMsg("m_opex", t("e_BAD_NAME"), "err"); return; }
   if (!(amt >= 0)) { setMsg("m_opex", t("e_BAD_AMOUNT"), "err"); return; }
-  postFast("opex_add", {reason, type: $("op_type").value, amount: amt, date: calOpex.get()}, "m_opex", () => {
-    $("op_reason").value = ""; $("op_amt").value = "";
+  postFast("opex_add", {reason, type: $("op_type").value, amount: amt, date: calOpex.get(), note: $("op_note").value.trim()}, "m_opex", () => {
+    $("op_reason").value = ""; $("op_amt").value = ""; $("op_note").value = "";
   });
 });
 
@@ -1400,7 +1565,7 @@ async function delUser(u) {
 /* ===== Settings: Role ፈቃዶች ===== */
 const SETROWS = [
   ["sales", [["sales.rec", "ss_rec"], ["sales.daily", "ss_daily"], ["sales.weekly", "ss_weekly"], ["sales.monthly", "ss_monthly"]]],
-  ["stock", [["stock.rec", "s_rec"], ["stock.cur", "s_cur"], ["stock.daily", "s_daily"], ["stock.weekly", "s_weekly"], ["stock.monthly", "s_monthly"], ["stock.total", "s_total"]]],
+  ["stock", [["stock.rec", "s_buy"], ["stock.iss", "s_out"], ["stock.items", "s_cat"], ["stock.cur", "s_cur"], ["stock.daily", "s_daily"], ["stock.weekly", "s_weekly"], ["stock.monthly", "s_monthly"], ["stock.total", "s_total"]]],
   ["payroll", [["payroll.emp", "s_emp"], ["payroll.pay", "s_pay"], ["payroll.rep", "s_rep"]]],
   ["opex", [["opex.rec", "s_rec"], ["opex.rep", "s_rep"]]],
   ["menu", [["menu", "sec_menu"]]],
@@ -1530,6 +1695,16 @@ function buildControls() {
       rc.appendChild(ws);
     }
   }
+  if (SEC === "stock" && ["daily", "weekly", "monthly"].indexOf(SUB) >= 0) {
+    const k = el("div", null, "kinds");
+    [["d", "daily_buy"], ["s", "seasonal_buy"]].forEach(([c, lb]) => {
+      const l = document.createElement("label"); l.className = "kd";
+      const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = RC.kinds.indexOf(c) >= 0;
+      cb.onchange = () => { let x = RC.kinds.replace(c, ""); if (cb.checked) x += c; if (!x) { cb.checked = true; return; } RC.kinds = x; loadReport(); };
+      l.appendChild(cb); l.appendChild(el("span", t(lb))); k.appendChild(l);
+    });
+    rc.appendChild(k);
+  }
 }
 
 const weekText = () => {
@@ -1546,9 +1721,9 @@ function requestFor() {
     case "sales/monthly": return ["rep_sales", {mode: "monthly", y: RC.year}];
     case "stock/cur":     return ["rep_stock", {mode: "current"}];
     case "stock/total":   return ["rep_stock", {mode: "total"}];
-    case "stock/daily":   return ["rep_stock", {mode: "daily", date: RC.date}];
-    case "stock/weekly":  return ["rep_stock", Object.assign({mode: "weekly"}, wk)];
-    case "stock/monthly": return ["rep_stock", {mode: "monthly", y: RC.year}];
+    case "stock/daily":   return ["rep_stock", {mode: "daily", date: RC.date, kinds: RC.kinds}];
+    case "stock/weekly":  return ["rep_stock", Object.assign({mode: "weekly", kinds: RC.kinds}, wk)];
+    case "stock/monthly": return ["rep_stock", {mode: "monthly", y: RC.year, kinds: RC.kinds}];
     case "payroll/rep":   return ["rep_payroll", {y: RC.month.y, m: RC.month.m}];
     case "opex/rep":      return ["rep_opex", {y: RC.year}];
     case "summary/rep":   return ["rep_summary", {y: RC.year}];
@@ -1733,14 +1908,16 @@ const RECDEF = {
     fields: [{k: "waiter", i: 2, ty: "wt", lb: "c_waiter"}, {k: "category", i: 3, ty: "cat", lb: "c_cat"}, {k: "item", i: 4, ty: "item", lb: "c_item"},
       {k: "qty", i: 5, ty: "num", lb: "c_qty"}, {k: "price", i: 8, ty: "num", lb: "unit_price"}, {k: "date", i: 6, ty: "date", lb: "c_date"},
       {k: "pay", i: 10, ty: "pay", lb: "pay_type"}, {k: "note", i: 7, ty: "text", lb: "c_note"}]},
-  stock: {cols: [[0, "c_time"], [1, "item_name"], [2, "c_type"], [3, "qty"], [4, "unit_price"], [5, "total_price"], [6, "c_date"], [7, "c_by"]],
-    fields: [{k: "name", i: 1, ty: "text", lb: "item_name"}, {k: "type", i: 2, ty: "io", lb: "inout"}, {k: "qty", i: 3, ty: "num", lb: "qty"}, {k: "price", i: 4, ty: "num", lb: "unit_price"}, {k: "date", i: 6, ty: "date", lb: "buy_date"}]},
+  stock: {cols: [[0, "c_time"], [1, "item_name"], [2, "category"], [3, "qty"], [4, "unit_price"], [5, "total_price"], [6, "c_date"], [8, "daily_buy"], [7, "c_by"]],
+    fields: [{k: "name", i: 1, ty: "text", lb: "item_name"}, {k: "category", i: 2, ty: "text", lb: "category"}, {k: "qty", i: 3, ty: "num", lb: "qty"}, {k: "price", i: 4, ty: "num", lb: "unit_price"}, {k: "date", i: 6, ty: "date", lb: "buy_date"}, {k: "daily", i: 8, ty: "dly", lb: "daily_buy"}]},
+  issue: {cols: [[0, "c_time"], [1, "item_name"], [2, "category"], [3, "qty"], [4, "unit_price"], [5, "total_price"], [6, "c_date"], [8, "daily_buy"], [7, "c_by"]],
+    fields: [{k: "name", i: 1, ty: "text", lb: "item_name"}, {k: "category", i: 2, ty: "text", lb: "category"}, {k: "qty", i: 3, ty: "num", lb: "qty"}, {k: "price", i: 4, ty: "num", lb: "unit_price"}, {k: "date", i: 6, ty: "date", lb: "issue_date"}, {k: "daily", i: 8, ty: "dly", lb: "daily_buy"}]},
   emp: {cols: [[1, "emp_name"], [2, "emp_pos"], [4, "gender"], [5, "waiter_code"], [3, "emp_salary"], [6, "c_by"]],
     fields: [{k: "name", i: 1, ty: "text", lb: "emp_name"}, {k: "position", i: 2, ty: "text", lb: "emp_pos"}, {k: "gender", i: 4, ty: "gd", lb: "gender"}, {k: "salary", i: 3, ty: "num", lb: "emp_salary"}]},
   pay: {cols: [[1, "c_emp"], [2, "salary_paid"], [3, "c_date"], [4, "c_bonus"], [5, "c_bonus_note"], [6, "col_total"], [7, "c_by"]],
     fields: [{k: "employee", i: 1, ty: "text", lb: "c_emp"}, {k: "salary", i: 2, ty: "num", lb: "salary_paid"}, {k: "date", i: 3, ty: "date", lb: "paid_date"}, {k: "bonus", i: 4, ty: "num", lb: "c_bonus"}, {k: "bonusNote", i: 5, ty: "text", lb: "c_bonus_note"}]},
-  opex: {cols: [[1, "c_reason"], [2, "c_type"], [3, "c_amount"], [4, "c_date"], [5, "c_by"]],
-    fields: [{k: "reason", i: 1, ty: "text", lb: "c_reason"}, {k: "type", i: 2, ty: "ft", lb: "c_type"}, {k: "amount", i: 3, ty: "num", lb: "c_amount"}, {k: "date", i: 4, ty: "date", lb: "c_date"}]}
+  opex: {cols: [[1, "c_reason"], [2, "c_type"], [3, "c_amount"], [4, "c_date"], [6, "c_note"], [5, "c_by"]],
+    fields: [{k: "reason", i: 1, ty: "text", lb: "c_reason"}, {k: "type", i: 2, ty: "ft", lb: "c_type"}, {k: "amount", i: 3, ty: "num", lb: "c_amount"}, {k: "date", i: 4, ty: "date", lb: "c_date"}, {k: "note", i: 6, ty: "text", lb: "c_note"}]}
 };
 let RECROWS = [];
 function fillRds() {
@@ -1831,6 +2008,10 @@ async function openEdit(ds, r) {
       const sl = document.createElement("select");
       sl.add(new Option(t("choose"), "")); sl.add(new Option(t("male"), "m")); sl.add(new Option(t("female"), "f"));
       sl.value = /^(ሴ|f)/i.test(cur) ? "f" : /^(ወ|m)/i.test(cur) ? "m" : "";
+      wrap.appendChild(sl); EDIT.ctl[f.k] = {get: () => sl.value};
+    } else if (f.ty === "dly") {
+      const sl = document.createElement("select");
+      sl.add(new Option(t("daily_buy"), "Y")); sl.add(new Option(t("seasonal_buy"), "N")); sl.value = cur === "Y" ? "Y" : "N";
       wrap.appendChild(sl); EDIT.ctl[f.k] = {get: () => sl.value};
     } else if (f.ty === "wt") {
       const sl = mkSel(withCur(["ያልተለየ"].concat(WAITERS), cur), cur); wrap.appendChild(sl); EDIT.ctl[f.k] = {get: () => sl.value};
@@ -1999,6 +2180,7 @@ function applyLang() {
     buildNav();
     if (!FORMS[SEC + "/" + SUB]) {
       if (SEC === "records") renderRecs();
+      else if (SEC === "stock" && SUB === "cat") renderInvMgr();
       else if (SEC === "menu") renderMenuMgr();
       else if (SEC === "users") renderUsers();
       else if (SEC === "settings") { if (PM) renderPermTable(); }
