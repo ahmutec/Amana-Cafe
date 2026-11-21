@@ -23,7 +23,10 @@ body{font-family:"Noto Sans Ethiopic",system-ui,sans-serif;background:linear-gra
   padding:max(58px,calc(env(safe-area-inset-top) + 48px)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));
   font-size:16px;-webkit-text-size-adjust:100%}
 @media (min-width:900px){body{padding-top:64px;font-size:17px}}
-.wrap{width:100%;max-width:1100px;margin:0 auto;min-width:0}
+/* ፉተር ሁልጊዜ ከገጹ ግርጌ ነው፤ ወደ ላይ አይንቀሳቀስም፤ ወደ ታች ስክሮል ሲደረግ ብቻ ይታያል */
+.wrap{width:100%;max-width:1100px;margin:0 auto;min-width:0;min-height:calc(100dvh - 90px);display:flex;flex-direction:column}
+.wrap>.ftr{margin-top:auto}
+.wrap>#app,.wrap>#pub{margin-bottom:26px}
 .top,.ftr{width:100%;max-width:100%;box-sizing:border-box}
 html,body{overflow-x:hidden}
 
@@ -34,7 +37,7 @@ html,body{overflow-x:hidden}
 .lang span.on{background:var(--accent);color:var(--accent-ink);font-weight:800}
 
 /* ሎጎ (ክብ) */
-.logo{background:#fff var(--logo) center 46%/cover no-repeat;border-radius:50%;border:3px solid var(--t2);box-shadow:0 6px 18px rgba(74,44,29,.35);flex:0 0 auto;overflow:hidden}
+.logo{background:#fff var(--logo) center/cover no-repeat;border-radius:50%;border:3px solid var(--t2);box-shadow:0 6px 18px rgba(74,44,29,.35);flex:0 0 auto;overflow:hidden}
 /* መግቢያ */
 .screen{min-height:calc(100dvh - 90px);display:flex;align-items:center;justify-content:center}
 .card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(107,66,38,.10);padding:26px 22px;display:grid;gap:16px}
@@ -81,7 +84,7 @@ body.inapp{padding-top:max(14px,calc(env(safe-area-inset-top) + 8px))}
 .dc-date{position:relative;margin-top:10px;font-size:clamp(.85rem,2.6vw,1.05rem);color:#f3d9a4}
 #obbar{position:fixed;left:10px;right:10px;bottom:10px;z-index:60;background:#c0392b;color:#fff;padding:10px 14px;border-radius:10px;text-align:center;font-weight:600}
 
-.ftr{margin:26px auto 6px;max-width:1100px;text-align:center;color:#f3e3c6;font-size:.88rem;padding:18px 14px;border-radius:16px;background:linear-gradient(135deg,#4a2c1d,#6b4226);border-top:3px solid #c08a3e;box-shadow:0 8px 24px rgba(74,44,29,.25)}
+.ftr{margin:0 auto 6px;max-width:1100px;text-align:center;color:#f3e3c6;font-size:.88rem;padding:18px 14px;border-radius:16px;background:linear-gradient(135deg,#4a2c1d,#6b4226);border-top:3px solid #c08a3e;box-shadow:0 8px 24px rgba(74,44,29,.25)}
 
 /* ምናሌ ማናጀር */
 .mrow{display:grid;gap:12px;margin-bottom:14px}
@@ -140,6 +143,7 @@ select:focus,input:focus,textarea:focus,button:focus-visible{outline:3px solid v
 .todaybtn{width:100%;margin-top:6px;min-height:40px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;font:inherit;cursor:pointer}
 .items{display:grid;gap:8px}
 @media (min-width:600px){.items{grid-template-columns:1fr 1fr}}
+.items.one{grid-template-columns:1fr}
 .it{display:grid;grid-template-columns:auto 1fr 84px;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;min-height:52px;margin:0}
 .it.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
 .it input[type=checkbox]{width:24px;height:24px;min-height:0;accent-color:var(--accent);padding:0}
@@ -150,6 +154,21 @@ select:focus,input:focus,textarea:focus,button:focus-visible{outline:3px solid v
 .hint{color:var(--muted);font-size:.9rem;padding:6px 0}
 .hint.err{color:var(--err)}
 .ts{font-size:.8rem;color:var(--muted);text-align:center}
+
+/* የተገዙ እቃዎች (ብዛት / ዋጋ / ጠቅላላ) */
+.pit{border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;display:grid;gap:8px}
+.pit.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.ph1{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ck{display:flex;align-items:center;gap:10px;margin:0;font-weight:600;cursor:pointer}
+.ck.dk{font-weight:400;font-size:.82rem;color:var(--muted)}
+.ck input{width:22px;height:22px;min-height:0;padding:0;accent-color:var(--accent)}
+.ck.dk input{width:18px;height:18px}
+.pin{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.pin small{display:block;font-size:.72rem;color:var(--muted)}
+.pin input{min-height:42px;padding:6px;text-align:center}
+.kf{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.kf1{display:flex;align-items:center;gap:8px;margin:0;cursor:pointer}
+.kf1 input{width:22px;height:22px;min-height:0;padding:0;accent-color:var(--accent)}
 
 /* ሪፖርት */
 .panel{margin:0}
@@ -230,8 +249,8 @@ dialog .btns .mini{min-height:50px}
   th,td{padding:4px 5px}
 }
 </style>
-<!-- ሎጎ: ይህን አንድ መስመር በድሮው ፋይልዎ ውስጥ ባለው ሙሉ  :root{--logo:url("data:image/webp;base64,....")}  መስመር ይተኩ -->
-<style id="logo-style">:root{--logo:url("PASTE_YOUR_LOGO_DATA_URI_HERE")}</style>
+<!-- ሎጎ: ከ GitHub (ሬፖው Public መሆን አለበት) -->
+<style id="logo-style">:root{--logo:url("https://raw.githubusercontent.com/ahmutec/Amana-Cafe/main/logo.png")}</style>
 </head>
 <body>
 <div class="wrap">
@@ -379,39 +398,40 @@ dialog .btns .mini{min-height:50px}
       <div class="ts" id="ts"></div>
     </form>
 
-    <!-- ስቶክ መመዝገቢያ -->
+    <!-- የተገዙ እቃዎች (Purchased Items) -->
     <form id="fs" class="fm noprint" novalidate hidden>
-      <div>
-        <label for="st_name" data-i="item_name"></label>
-        <input id="st_name" list="names" autocomplete="off">
-        <datalist id="names"></datalist>
-      </div>
-      <div class="row2">
-        <div>
-          <label for="st_type" data-i="inout"></label>
-          <select id="st_type"></select>
-        </div>
-        <div>
-          <label for="st_qty" data-i="qty"></label>
-          <input id="st_qty" type="number" inputmode="decimal" min="0" step="any">
-        </div>
-      </div>
-      <div class="row2">
-        <div>
-          <label for="st_price" data-i="unit_price"></label>
-          <input id="st_price" type="number" inputmode="decimal" min="0" step="any">
-        </div>
-        <div>
-          <label for="st_total" data-i="total_price"></label>
-          <input id="st_total" readonly>
-        </div>
-      </div>
       <div>
         <label data-i="buy_date"></label>
         <div id="c_stock"></div>
       </div>
+      <div class="cat">
+        <label for="pcat" data-i="category"></label>
+        <select id="pcat"></select>
+      </div>
+      <div>
+        <label data-i="item"></label>
+        <div class="items one" id="pitems"><div class="hint" data-i="choose_cat_first"></div></div>
+      </div>
       <div class="msg" id="m_stock" role="status" aria-live="polite"></div>
       <button class="submit" id="b_stock" type="submit" data-i="submit"></button>
+    </form>
+
+    <!-- ወጪ የተደረጉ እቃዎች (Items Issued) -->
+    <form id="fi" class="fm noprint" novalidate hidden>
+      <div>
+        <label data-i="issue_date"></label>
+        <div id="c_iss"></div>
+      </div>
+      <div class="cat">
+        <label for="icat" data-i="category"></label>
+        <select id="icat"></select>
+      </div>
+      <div>
+        <label data-i="item"></label>
+        <div class="items" id="iitems"><div class="hint" data-i="choose_cat_first"></div></div>
+      </div>
+      <div class="msg" id="m_iss" role="status" aria-live="polite"></div>
+      <button class="submit" id="b_iss" type="submit" data-i="submit"></button>
     </form>
 
     <!-- ሰራተኛ መመዝገቢያ -->
@@ -495,6 +515,10 @@ dialog .btns .mini{min-height:50px}
         <label data-i="c_date"></label>
         <div id="c_opex"></div>
       </div>
+      <div>
+        <label for="op_note" data-i="op_note"></label>
+        <input id="op_note" autocomplete="off">
+      </div>
       <div class="msg" id="m_opex" role="status" aria-live="polite"></div>
       <button class="submit" id="b_opex" type="submit" data-i="submit"></button>
     </form>
@@ -558,6 +582,25 @@ dialog .btns .mini{min-height:50px}
       <div class="msg" id="m_menu" role="status" aria-live="polite"></div>
       <div id="mlist"></div>
       <div class="gen" data-i="m_note"></div>
+    </section>
+
+    <!-- የእቃ ዝርዝር ማስተካከያ (Inventory) -->
+    <section class="panel noprint" id="invp" hidden>
+      <div class="mrow">
+        <div><label for="i_cat" data-i="category"></label><select id="i_cat"></select></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button type="button" class="mini" id="i_newcat" data-i="m_new_cat"></button>
+          <button type="button" class="mini" id="i_ren" data-i="m_rename_cat"></button>
+          <button type="button" class="mini" id="i_ref" data-i="refresh"></button>
+        </div>
+      </div>
+      <div class="maddrow" id="iaddrow" style="grid-template-columns:1fr auto">
+        <div><label for="i_name" data-i="i_new_item"></label><input id="i_name" autocomplete="off"></div>
+        <button type="button" class="submit" id="i_add" data-i="m_add"></button>
+      </div>
+      <div class="msg" id="m_inv" role="status" aria-live="polite"></div>
+      <div id="ilist"></div>
+      <div class="gen" data-i="i_note"></div>
     </section>
 
     <!-- ሪፖርት -->
@@ -681,7 +724,8 @@ const TR = [
  ["sum_title","የወር ሪፖርት — {0} ዓ.ል.","Monthly report — {0} E.C."],["c_month","ወር","Month"],["c_sales_t","ጠቅላላ ሽያጭ","Total sales"],["c_purch","የአስቤዛ ወጭ","Purchases"],["c_payroll","የደመወዝ ወጭ","Payroll"],["c_opex","የአገልግሎት ወጭ","Operating costs"],["c_diff","ልዩነት","Difference"],
  ["sum_formula","ልዩነት = ሽያጭ − (አስቤዛ + ደመወዝ + አገልግሎት)","Difference = Sales − (Purchases + Payroll + Operating costs)"],
  ["rec_what","የትኛውን ልዩ?","Which records?"],["search","ፈልግ","Search"],["rec_note","የመጨረሻዎቹ 300 መዝገቦች ይታያሉ። ለማረም «አስተካክል»፣ ለማጥፋት «ሰርዝ» ይጫኑ።","Latest 300 records are shown. Use Edit to correct or Delete to remove."],
- ["ds_sales","ሽያጭ","Sales"],["ds_stock","ስቶክ ገቢ/ወጪ","Inventory in/out"],["ds_emp","ሰራተኞች","Staff"],["ds_pay","ደመወዝ ክፍያዎች","Salary payments"],["ds_opex","ወጪዎች","Expenses"],
+ ["ds_sales","ሽያጭ","Sales"],["ds_stock","የድሮ ስቶክ (Old Stock)","Old Stock"],["ds_pur","የተገዙ እቃዎች","Purchased Items"],["ds_iss","ወጪ የተደረጉ እቃዎች","Items Issued"],
+ ["ds_emp","ሰራተኞች","Staff"],["ds_pay","ደመወዝ ክፍያዎች","Salary payments"],["ds_opex","ወጪዎች","Expenses"],
  ["edit","አስተካክል","Edit"],["del","ሰርዝ","Delete"],["save","አስቀምጥ","Save"],["cancel","ተው","Cancel"],["confirm_del","ይህ መዝገብ እስከመጨረሻው ይሰረዛል። እርግጠኛ ነዎት?","This record will be permanently deleted. Are you sure?"],
  ["c_time","ሰዓት","Time"],["c_waiter","ወይተር","Waiter"],["c_cat","መደብ","Category"],["c_item","አይነት","Item"],["c_qty","ብዛት","Qty"],["c_totalb","ድምር","Total"],["c_note","አስተያየት","Note"],["c_price","ዋጋ","Price"],
  ["edit_title","መዝገብ አስተካክል","Edit record"],["no_perm","ፈቃድ የለዎትም","Not allowed"],["actions","ተግባር","Actions"],
@@ -713,8 +757,17 @@ const TR = [
  ["e_BAD_AMOUNT","የብር መጠን ትክክል አይደለም","Invalid amount"],["e_BAD_NAME","ስም/ምክንያት ባዶ መሆን የለበትም","Name/reason is required"],["e_NO_ITEMS","እቃ አልተመረጠም","No items selected"],
  ["e_NO_EMP","ሰራተኛው አልተመዘገበም","Employee not registered"],["e_EMP_EXISTS","ይህ ሰራተኛ አስቀድሞ ተመዝግቧል","This employee is already registered"],
  ["e_STALE","መዝገቡ ተቀይሯል፤ «አድስ» ተጭነው እንደገና ይሞክሩ","The record changed; refresh and try again"],["e_UNKNOWN","ያልታወቀ ጥያቄ","Unknown request"],
- ["e_BAD_GENDER","ፆታ ይምረጡ","Choose a sex"],["e_ITEM_EXISTS","ይህ እቃ በመደቡ ውስጥ አስቀድሞ አለ","This item already exists in the category"],["e_CAT_EXISTS","ይህ የመደብ ስም አስቀድሞ አለ","This category name already exists"],
- ["menu_fail","ምናሌ መጫን አልተቻለም። ገጹን እንደገና ይጫኑ","Could not load the menu. Reload the page"],["rep_fail","መጫን አልተቻለም። ኢንተርኔት ያረጋግጡ እና «አድስ» ይጫኑ","Could not load. Check your connection and press Refresh"]
+ ["e_BAD_GENDER","ፆታ ይምረጡ","Choose a sex"],["e_ITEM_EXISTS","ይህ እቃ አስቀድሞ አለ","This item already exists"],["e_CAT_EXISTS","ይህ የመደብ ስም አስቀድሞ አለ","This category name already exists"],
+ ["menu_fail","ምናሌ መጫን አልተቻለም። ገጹን እንደገና ይጫኑ","Could not load the menu. Reload the page"],["rep_fail","መጫን አልተቻለም። ኢንተርኔት ያረጋግጡ እና «አድስ» ይጫኑ","Could not load. Check your connection and press Refresh"],
+ /* ዕቃ ክምችት (አዲስ) */
+ ["s_pur","የተገዙ እቃዎች","Purchased Items"],["s_iss","ወጪ የተደረጉ እቃዎች","Items Issued"],["s_items","የእቃ ዝርዝር","Item List"],
+ ["daily_p","በየቀኑ የሚገዙ","Daily Purchases"],["seasonal_p","ወቅታዊ ግዥ","Seasonal Purchases"],
+ ["in_stock","ስቶክ","In stock"],["issue_date","ወጪ የተደረገበት ቀን","Issue date"],
+ ["over_stock","ከስቶክ በላይ ማውጣት አይቻልም","Cannot issue more than stock"],
+ ["pr_kind","አይነት (በየቀኑ/ወቅታዊ)","Type (Daily/Seasonal)"],
+ ["op_note","አስተያየት (የቤት ኪራይ ከሆነ የየትኛው ወር፤ እቃ ከሆነ የእቃው ስም)","Note (rent: which month; goods: item name)"],
+ ["i_new_item","አዲስ የእቃ ስም","New item name"],
+ ["i_note","ስም ሲቀየር ያለፉ መዝገቦችም አብረው ይቀየራሉ። እቃ ሲሰረዝ ያለፉ መዝገቦች ይቆያሉ።","Renaming also updates past records. Deleting an item keeps past records."]
 ];
 TR.forEach(([k, a, e]) => { L.am[k] = a; L.en[k] = e; });
 let lang = localStorage.getItem("amana_lang") === "en" ? "en" : "am";
@@ -787,8 +840,8 @@ document.addEventListener("click", e => {
 });
 
 /* ===== ሁኔታ ===== */
-let AUTH = null, MENU = [], EMPS = [], SEC = "", SUB = "", REQ = 0, CP_FORCED = false;
-const RC = {date: {...TODAY}, month: {y: TODAY.y, m: TODAY.m}, week: Math.ceil(TODAY.d / 7), year: TODAY.y, sk: "in", pv: "paid"};
+let AUTH = null, MENU = [], EMPS = [], SEC = "", SUB = "", REQ = 0, CP_FORCED = false, INV = [];
+const RC = {date: {...TODAY}, month: {y: TODAY.y, m: TODAY.m}, week: Math.ceil(TODAY.d / 7), year: TODAY.y, sk: "in", pv: "paid", kd: true, ks: true};
 try { AUTH = JSON.parse(localStorage.getItem("amana_auth") || "null"); } catch (_) {}
 if (AUTH && !AUTH.perms) AUTH = null;
 const has = (res, b) => !!AUTH && ((AUTH.perms && AUTH.perms[res]) || "").indexOf(b) >= 0;
@@ -963,8 +1016,8 @@ function showLogin(message) {
 }
 function logout(message) {
   clearTimeout(idleT);
-  AUTH = null; MENU = []; EMPS = []; SEC = ""; SUB = ""; REQ++;
-  localStorage.removeItem("amana_auth"); localStorage.removeItem("amana_menu");
+  AUTH = null; MENU = []; EMPS = []; INV = []; SEC = ""; SUB = ""; REQ++;
+  localStorage.removeItem("amana_auth"); localStorage.removeItem("amana_menu"); localStorage.removeItem("amana_inv");
   if (typeof message === "string" && message) showLogin(message); else showPublic();
 }
 $("gologin").addEventListener("click", () => showLogin());
@@ -975,7 +1028,7 @@ $("logout").addEventListener("click", () => logout());
 // [ክፍል, የሚታይበት ፈቃድ]  (va = View ወይም Add)
 const NAV = {
   sales:   {rec: ["sales.rec", "va"], daily: ["sales.daily", "v"], weekly: ["sales.weekly", "v"], monthly: ["sales.monthly", "v"]},
-  stock:   {rec: ["stock.rec", "va"], cur: ["stock.cur", "v"], daily: ["stock.daily", "v"], weekly: ["stock.weekly", "v"], monthly: ["stock.monthly", "v"], total: ["stock.total", "v"]},
+  stock:   {rec: ["stock.rec", "va"], iss: ["stock.iss", "va"], items: ["stock.items", "v"], cur: ["stock.cur", "v"], daily: ["stock.daily", "v"], weekly: ["stock.weekly", "v"], monthly: ["stock.monthly", "v"], total: ["stock.total", "v"]},
   payroll: {emp: ["payroll.emp", "va"], pay: ["payroll.pay", "va"], rep: ["payroll.rep", "v"]},
   opex:    {rec: ["opex.rec", "va"], rep: ["opex.rep", "v"]},
   menu:    {rec: ["menu", "v"]},
@@ -993,8 +1046,9 @@ function perms() {
   });
   return P;
 }
-const FORMS = {"sales/rec": "f", "stock/rec": "fs", "payroll/emp": "fe", "payroll/pay": "fp", "opex/rec": "fo", "users/rec": "fu"};
+const FORMS = {"sales/rec": "f", "stock/rec": "fs", "stock/iss": "fi", "payroll/emp": "fe", "payroll/pay": "fp", "opex/rec": "fo", "users/rec": "fu"};
 const subLabel = (sec, sub) => {
+  if (sec === "stock" && (sub === "rec" || sub === "iss" || sub === "items")) return t({rec: "s_pur", iss: "s_iss", items: "s_items"}[sub]);
   if (sec === "opex" && sub === "rec") return t("c_reason");
   if (sec === "sales") return t("ss_" + sub);
   if (sec === "users") return t(sub === "rec" ? "u_reg" : "u_list");
@@ -1063,18 +1117,19 @@ function showView(sec, sub) {
   SEC = sec; SUB = sub; REQ++;
   buildNav();
   const form = FORMS[sec + "/" + sub], isRec = sec === "records", isMenu = sec === "menu",
-        isUL = sec === "users" && sub === "list", isSet = sec === "settings";
-  ["f", "fs", "fe", "fp", "fo", "fu"].forEach(id => $(id).hidden = id !== form);
-  $("recs").hidden = !isRec; $("menuMgr").hidden = !isMenu; $("ulp").hidden = !isUL; $("setp").hidden = !isSet;
-  $("rep").hidden = !!form || isRec || isMenu || isUL || isSet;
+        isUL = sec === "users" && sub === "list", isSet = sec === "settings", isInv = sec === "stock" && sub === "items";
+  ["f", "fs", "fi", "fe", "fp", "fo", "fu"].forEach(id => $(id).hidden = id !== form);
+  $("recs").hidden = !isRec; $("menuMgr").hidden = !isMenu; $("ulp").hidden = !isUL; $("setp").hidden = !isSet; $("invp").hidden = !isInv;
+  $("rep").hidden = !!form || isRec || isMenu || isUL || isSet || isInv;
   if (form) {
     if (form === "f") { if (!MENU.length) loadMenu(); loadWaiters(); }
-    if (form === "fs") loadNames();
+    if (form === "fs" || form === "fi") loadInv();
     if (form === "fp") loadEmps();
     if (form === "fe") refreshWaiterCode(true);
     if (form === "fu") loadUserMeta();
   } else if (isRec) loadRecs();
   else if (isMenu) loadMenuMgr();
+  else if (isInv) loadInvMgr();
   else if (isUL) loadUsers();
   else if (isSet) loadSettings();
   else loadReport();
@@ -1156,6 +1211,15 @@ $("f").addEventListener("submit", e => {
     if (!q || q < 1) { setMsg("msg", row.dataset.name + ": " + t("qty_min"), "err"); row.querySelector(".q").focus(); return; }
     items.push({name: row.dataset.name, qty: q});
   }
+  if (!items.length) { setMsg("msg", t("pick_one"), "err"); return; }
+  const data = {waiter: $("waiter").value || "ያልተለየ", category: $("category").value, date: calSales.get(), note: $("note").value.trim(), pay: $("paytype").value, items};
+  postFast("submit", data, "msg", () => {
+    setMsg("msg", "✓ " + items.length + " " + t("items_saved"), "ok");
+    $("category").selectedIndex = 0;
+    $("items").innerHTML = ""; $("items").appendChild(el("div", t("choose_cat_first"), "hint"));
+    $("note").value = ""; $("paytype").value = "cash";
+  });
+});
   if (!items.length) { setMsg("msg", t("pick_one"), "err"); return; }
   const data = {waiter: $("waiter").value || "ያልተለየ", category: $("category").value, date: calSales.get(), note: $("note").value.trim(), pay: $("paytype").value, items};
   postFast("submit", data, "msg", () => {
