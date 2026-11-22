@@ -582,24 +582,28 @@ body{padding-bottom:80px}
     <!-- ወጪ መመዝገቢያ -->
     <form id="fo" class="fm noprint" novalidate hidden>
       <div>
+        <label for="op_type" data-i="c_exp_type"></label>
+        <select id="op_type"></select>
+      </div>
+      <div>
         <label for="op_reason" data-i="c_reason"></label>
-        <input id="op_reason" autocomplete="off">
+        <input id="op_reason" autocomplete="off" data-ph="desc_ph">
       </div>
       <div class="row2">
-        <div>
-          <label for="op_type" data-i="c_type"></label>
-          <select id="op_type"></select>
-        </div>
         <div>
           <label for="op_amt" data-i="c_amount"></label>
           <input id="op_amt" type="number" inputmode="decimal" min="0" step="any">
         </div>
+        <div>
+          <label data-i="c_date"></label>
+          <div id="c_opex"></div>
+        </div>
       </div>
       <div>
-        <label data-i="c_date"></label>
-        <div id="c_opex"></div>
+        <label for="op_rcpt" data-i="c_receipt"></label>
+        <input id="op_rcpt" autocomplete="off" maxlength="100" data-ph="receipt_ph">
       </div>
-      <div><label for="op_note" data-i="note"></label><textarea id="op_note" data-ph="op_note_ph"></textarea></div>
+      <div><label for="op_note" data-i="c_addnote"></label><textarea id="op_note" data-ph="op_note_ph"></textarea></div>
       <div class="msg" id="m_opex" role="status" aria-live="polite"></div>
       <button class="submit" id="b_opex" type="submit" data-i="submit"></button>
     </form>
@@ -788,7 +792,7 @@ const TR = [
  ["qty","ብዛት","Quantity"],["unit_price","የአንዱ ዋጋ","Unit price"],["total_price","ጠቅላላ ዋጋ","Total price"],["buy_date","የተገዛበት ቀን","Purchase date"],
  ["emp_name","የሰራተኛው ስም","Employee name"],["emp_pos","የስራ ድርሻ","Position"],["emp_salary","የደመወዝ መጠን","Salary"],
  ["c_emp","ሰራተኛ","Employee"],["paid_date","የተከፈለበት ቀን","Payment date"],["c_bonus","ኮሚሽን / ቦነስ","Commission / Bonus"],["c_bonus_note","የኮሚሽን/ቦነስ ማስታወሻ","Bonus note"],
- ["c_reason","የወጣበት ምክንያት","Reason"],["c_type","አይነት","Type"],["fixed","ቋሚ","Fixed"],["temp","ጊዜያዊ","Temporary"],["c_amount","የብር መጠን","Amount (Birr)"],["c_date","ቀን","Date"],
+ ["c_reason","ዝርዝር መግለጫ","Description"],["c_type","አይነት","Type"],["fixed","ቋሚ","Fixed"],["temp","ጊዜያዊ","Temporary"],["c_amount","የብር መጠን","Amount (Birr)"],["c_date","ቀን","Date"],
  ["refresh","↻ አድስ","↻ Refresh"],["print","🖨 Print","🖨 Print"],["pick_date","ቀን ይምረጡ","Pick a date"],["week","ሳምንት","Week"],["week_n","ሳምንት {0}","Week {0}"],
  ["gen","የተሰላበት: ","Generated: "],["none","በዚህ ጊዜ የተመዘገበ የለም","Nothing recorded for this period"],
  ["total_qty","ጠቅላላ ብዛት","Total quantity"],["total_money","ጠቅላላ ገንዘብ (ብር)","Total amount (Birr)"],["sum","ድምር","Total"],
@@ -819,7 +823,7 @@ const TR = [
  ["m_note","አዲስ እቃ ከመደቡ የመጨረሻ ረድፍ ስር ይጨመራል። ሲሰረዝ ከታች ያሉት ወደ ላይ ይጠጋጋሉ። ያለፉ ሽያጮች ባሉበት ስም እና ዋጋ ይቆያሉ።","A new item is added below the last row of the category. Deleting closes the gap. Past sales keep their old name and price."],
  ["m_edit_item","እቃ አስተካክል","Edit item"],["m_confirm_del","ይህ እቃ ከምናሌው ይሰረዛል። እርግጠኛ ነዎት?","This item will be removed from the menu. Are you sure?"],
  ["u_name","User Name (ስም)","User Name"],["u_email","ኢሜይል (አማራጭ)","Email (optional)"],
- ["u_note","መነሻ የይለፍ ቃል 1234 ነው፤ ተጠቃሚው ለመጀመሪያ ጊዜ ሲገባ ወዲያውኑ እንዲቀይር ይጠየቃል።","The default password is 1234; the user must change it at the first sign-in."],
+ ["u_note","መነሻ የይለፍ ቃል 1234 ነው፤ ተጠቃሚው ለመጀመሪያ ጊዜ ሲገባ ወዲያውኑ እንዲቀይር ይጠየቃል። ኢሜይል ካስገቡ የመግቢያ መረጃው ወደ ኢሜይሉ ይላካል።","The default password is 1234; the user must change it at the first sign-in. If an email is given, the sign-in details are emailed."],
  ["def_pass","መነሻ የይለፍ ቃል","Default password"],["u_reset","ይለፍ ቃል ወደ 1234","Reset to 1234"],
  ["u_confirm_del","ይህ ተጠቃሚ ይሰረዛል። እርግጠኛ ነዎት?","This user will be deleted. Are you sure?"],["u_confirm_reset","የይለፍ ቃሉ ወደ 1234 ይመለሳል። እርግጠኛ ነዎት?","The password will be reset to 1234. Are you sure?"],
  ["st_new_role","+ አዲስ Role","+ New role"],["st_del_role","Role ሰርዝ","Delete role"],["st_role_name","የአዲሱ Role ስም","New role name"],
@@ -827,7 +831,7 @@ const TR = [
  ["st_note","Edit/Delete/Add ሲመረጥ View በራሱ ይመረጣል። Super Admin ሁልጊዜ ሁሉንም ያደርጋል።","Selecting Add/Edit/Delete also selects View. Super Admin can always do everything."],
  ["st_confirm_del","ይህ Role ይሰረዛል። እርግጠኛ ነዎት?","This role will be deleted. Are you sure?"],["st_super","Super Admin ሁሉንም ፈቃድ አለው (አይቀየርም)","Super Admin has all permissions (cannot be changed)"],
  ["no_access","ለዚህ አካውንት ምንም ፈቃድ አልተሰጠም። Super Admin ያነጋግሩ","This account has no permissions. Contact the Super Admin"],
- ["idle_out","ለ10 ደቂቃ እንቅስቃሴ ስላልነበረ ከሲስተሙ ወጥተዋል","Signed out after 10 minute of inactivity"],
+ ["idle_out","ለ10 ደቂቃ እንቅስቃሴ ስላልነበረ ከሲስተሙ ወጥተዋል","Signed out after 10 minutes of inactivity"],
  ["e_NET","ኢንተርኔት ያረጋግጡ እና እንደገና ይሞክሩ","Check your connection and try again"],["e_AUTH","ጊዜው አልፏል፤ እንደገና ይግቡ","Session expired; please sign in again"],
  ["e_MISSING","ሁሉንም መስኮች ይሙሉ","Please fill in all fields"],["e_BAD_LOGIN","User ID ወይም የይለፍ ቃል ትክክል አይደለም","Wrong User ID or password"],["e_LOCKED","ብዙ ጊዜ ተሳስተዋል። ከ 5 ደቂቃ በኋላ ይሞክሩ","Too many attempts. Try again in 5 minutes"],
  ["e_BAD_EMAIL","ኢሜይሉ ትክክል አይደለም","Invalid email"],["e_SHORT_PASS","የይለፍ ቃል ቢያንስ 4 ቁምፊ መሆን አለበት","Password must be at least 4 characters"],
@@ -844,11 +848,18 @@ const TR = [
  ["menu_fail","ምናሌ መጫን አልተቻለም። ገጹን እንደገና ይጫኑ","Could not load the menu. Reload the page"],["rep_fail","መጫን አልተቻለም። ኢንተርኔት ያረጋግጡ እና «አድስ» ይጫኑ","Could not load. Check your connection and press Refresh"]
 ];
 TR.push(
+ ["c_exp_type","የወጪው አይነት (ቋሚ/ጊዚያዊ)","Expense type (Fixed/Temporary)"],
+ ["desc_ph","ምን እንደተገዛ ወይም ለምን እንደተከፈለ በአጭሩ ይግለጹ፤ ለምሳሌ፦ የጥቅምት ወር የመብራት ቢል","Briefly: what was bought or why paid, e.g. October electricity bill"],
+ ["c_receipt","ደረሰኝ ቁጥር (ካለ)","Receipt no. (if any)"],["receipt_ph","ደረሰኝ ከሌለ ይታለፋል","Leave empty if no receipt"],
+ ["c_addnote","ተጨማሪ ማስታወሻ (ካለ ብቻ)","Additional notes (if any)"],
+ ["s_exp_rec","ወጪ መመዝገቢያ","Record Expense"],["s_mon","የወር ሪፖርት","Month Report"],["s_mons","የወራቶች ሪፖርት","Months Report"],
+ ["opex_month_title","የወር ወጪ ሪፖርት — {0} {1}","Monthly expense report — {0} {1}"],
+ ["mail_sent","የእንኳን ደህና መጡ መልእክት ወደ ኢሜይሉ ተልኳል","Welcome email sent"],["mail_failed","ኢሜይል መላክ አልተቻለም (ምዝገባው ተሳክቷል)","Email could not be sent (user was saved)"],
  ["s_buy","የተገዙ እቃዎች","Purchased Items"],["s_out","ወጪ የተደረጉ እቃዎች","Items Issued"],["s_cat","የዕቃ ዝርዝር","Item Catalog"],
  ["ds_stock","የተገዙ እቃዎች","Purchased Items"],["ds_issue","ወጪ የተደረጉ እቃዎች","Items Issued"],
  ["daily_buy","በየቀኑ የሚገዙ","Daily Purchases"],["seasonal_buy","ወቅታዊ ግዥ","Seasonal Purchases"],
  ["daily_cat","በየቀኑ የሚገዙ / Daily Purchases","በየቀኑ የሚገዙ / Daily Purchases"],["issue_date","ወጪ የተደረገበት ቀን","Issue date"],
- ["op_note_ph","ለምሳሌ፦ የቤት ኪራይ ከሆነ የወሩ ስም፤ እቃ ከሆነ የእቃው ስም","e.g. rent: which month; goods: item name"],
+ ["op_note_ph","ካለ ብቻ ይጻፉ","Only if any"],
  ["i_rename_item","የእቃ ስም ቀይር","Rename item"],["in_stock","በስቶር ያለ","In stock"],["issue_qty","ወጪ የሚደረግ ብዛት","Qty to issue"],
  ["e_NOT_ENOUGH","በስቶር ያለው ብዛት አይበቃም","Not enough in stock"],["e_BAD_CAT","መደብ ይምረጡ","Choose a category"],
  ["s_wst","ብክነት (Wastage)","Wastage"],["ds_waste","የባከኑ እቃዎች (Wastage)","Wastage"],
@@ -1010,7 +1021,7 @@ function spinSend(btn) {
   }, 120);
 }
 
-/* =====  ደቂቃ እንቅስቃሴ ከሌለ በራስ መውጣት ===== */
+/* ===== 10 ደቂቃ እንቅስቃሴ ከሌለ በራስ መውጣት ===== */
 const IDLE_MS = 600000; let idleT = null, lastAct = Date.now();
 function idleReset() {
   lastAct = Date.now(); clearTimeout(idleT);
@@ -1134,7 +1145,7 @@ const NAV = {
   sales:   {rec: ["sales.rec", "va"], daily: ["sales.daily", "v"], weekly: ["sales.weekly", "v"], monthly: ["sales.monthly", "v"]},
   stock:   {rec: ["stock.rec", "va"], out: ["stock.iss", "va"], wst: ["stock.wst", "va"], cat: ["stock.items", "v"], cur: ["stock.cur", "v"], daily: ["stock.daily", "v"], weekly: ["stock.weekly", "v"], monthly: ["stock.monthly", "v"], total: ["stock.total", "v"]},
   payroll: {emp: ["payroll.emp", "va"], pay: ["payroll.pay", "va"], rep: ["payroll.rep", "v"]},
-  opex:    {rec: ["opex.rec", "va"], rep: ["opex.rep", "v"]},
+  opex:    {rec: ["opex.rec", "va"], mon: ["opex.rep", "v"], rep: ["opex.rep", "v"]},
   menu:    {rec: ["menu", "v"]},
   summary: {rep: ["summary", "v"]},
   records: {rec: ["records", "v"]},
@@ -1152,7 +1163,7 @@ function perms() {
 }
 const FORMS = {"sales/rec": "f", "stock/rec": "fs", "stock/out": "fi", "stock/wst": "fw", "payroll/emp": "fe", "payroll/pay": "fp", "opex/rec": "fo", "users/rec": "fu"};
 const subLabel = (sec, sub) => {
-  if (sec === "opex" && sub === "rec") return t("c_reason");
+  if (sec === "opex") return t(sub === "rec" ? "s_exp_rec" : sub === "mon" ? "s_mon" : "s_mons");
   if (sec === "sales") return t("ss_" + sub);
   if (sec === "stock" && sub === "rec") return t("s_buy");
   if (sec === "users") return t(sub === "rec" ? "u_reg" : "u_list");
@@ -1613,8 +1624,8 @@ $("fo").addEventListener("submit", e => {
   const reason = $("op_reason").value.trim(), amt = parseFloat($("op_amt").value);
   if (!reason) { setMsg("m_opex", t("e_BAD_NAME"), "err"); return; }
   if (!(amt >= 0)) { setMsg("m_opex", t("e_BAD_AMOUNT"), "err"); return; }
-  postFast("opex_add", {reason, type: $("op_type").value, amount: amt, date: calOpex.get(), note: $("op_note").value.trim()}, "m_opex", () => {
-    $("op_reason").value = ""; $("op_amt").value = ""; $("op_note").value = "";
+  postFast("opex_add", {reason, type: $("op_type").value, amount: amt, date: calOpex.get(), receipt: $("op_rcpt").value.trim(), note: $("op_note").value.trim()}, "m_opex", () => {
+    $("op_reason").value = ""; $("op_amt").value = ""; $("op_rcpt").value = ""; $("op_note").value = "";
   });
 });
 
@@ -1633,7 +1644,7 @@ $("fu").addEventListener("submit", async e => {
   if (!sex) { setMsg("m_user", t("e_BAD_GENDER"), "err"); return; }
   if (!role) { setMsg("m_user", t("e_BAD_ROLE"), "err"); return; }
   await post("user_add", {name, sex, role, email, sid: uid()}, "b_user", "m_user", j => {
-    setMsg("m_user", "✓ " + t("saved") + " — " + j.code + " / " + t("def_pass") + ": 1234", "ok");
+    setMsg("m_user", "✓ " + t("saved") + " — " + j.code + " / " + t("def_pass") + ": 1234" + (email ? " · " + (j.mailed ? "✉ " + t("mail_sent") : "⚠ " + t("mail_failed")) : ""), "ok");
     $("u_name").value = ""; $("u_email").value = ""; $("u_sex").selectedIndex = 0; $("u_role").selectedIndex = 0;
     loadUserMeta();
   });
@@ -1791,7 +1802,7 @@ $("st_del").addEventListener("click", async () => {
 /* ===== ሪፖርቶች ===== */
 const KINDS = {"sales/daily": "date", "sales/weekly": "week", "sales/monthly": "year",
   "stock/cur": "", "stock/daily": "date", "stock/weekly": "week", "stock/monthly": "year", "stock/total": "",
-  "payroll/rep": "month", "opex/rep": "year", "summary/rep": "year"};
+  "payroll/rep": "month", "opex/mon": "month", "opex/rep": "year", "summary/rep": "year"};
 
 function nav(label, onPrev, onNext) {
   const d = el("div", null, "ynav");
@@ -1856,6 +1867,7 @@ function requestFor() {
     case "stock/weekly":  return ["rep_stock", Object.assign({mode: "weekly", kinds: RC.kinds}, wk)];
     case "stock/monthly": return ["rep_stock", {mode: "monthly", y: RC.year, kinds: RC.kinds}];
     case "payroll/rep":   return ["rep_payroll", {y: RC.month.y, m: RC.month.m}];
+    case "opex/mon":      return ["rep_opex_month", {y: RC.month.y, m: RC.month.m}];
     case "opex/rep":      return ["rep_opex", {y: RC.year}];
     case "summary/rep":   return ["rep_summary", {y: RC.year}];
   }
@@ -1872,7 +1884,8 @@ function titleFor() {
     case "stock/weekly":  return t("weekly_stock") + " — " + weekText();
     case "stock/monthly": return t("stock_year", RC.year);
     case "payroll/rep":   return RC.pv === "staff" ? t("staff_list2") : t("payroll_title", mName(RC.month.m), RC.month.y);
-    case "opex/rep":      return t("opex_title") + " — " + t("opex_year", RC.year);
+    case "opex/mon":      return t("opex_month_title", mName(RC.month.m), RC.month.y);
+    case "opex/rep":      return t("s_mons") + " — " + t("opex_year", RC.year);
     case "summary/rep":   return t("sum_title", RC.year);
   }
   return "";
@@ -1915,6 +1928,7 @@ function drawReport() {
     case "stock/cur": renderCur(box, rep); break;
     case "stock/total": renderTotal(box, rep); break;
     case "payroll/rep": renderPayroll(box, rep); break;
+    case "opex/mon": renderOpexMonth(box, rep); break;
     case "opex/rep": renderOpex(box, rep); grid = true; break;
     case "summary/rep": renderSummary(box, rep); break;
   }
@@ -2017,6 +2031,13 @@ function renderPayroll(box, rep) {
     rep.pays.map((p, i) => [RK(i), p.name, N(p.salary), {t: p.bonus ? fmt(p.bonus) : "·", c: "n", s: p.note}, p.d + " " + mName(p.m) + " " + p.y, N(p.total)]),
     ["", t("sum"), N(rep.salary), N(rep.bonus), "", N(rep.total)]));
 }
+function renderOpexMonth(box, rep) {
+  box.appendChild(sumBox([[t("fixed"), fmt(rep.fixed)], [t("temp"), fmt(rep.temp)], [t("pay_total"), fmt(rep.total)]]));
+  if (!rep.rows.length) return none(box);
+  box.appendChild(tbl([{t: t("c_no"), c: "rk"}, t("c_exp_type"), t("c_reason"), {t: t("c_amount"), c: "n"}, t("c_receipt"), t("c_addnote")],
+    rep.rows.map((r, i) => [RK(i), t(r.type), {t: r.reason, s: r.d + " " + mName(rep.m) + " " + rep.y}, N(r.amount), r.receipt || "·", r.note || "·"]),
+    ["", "", t("sum"), N(rep.total), "", ""]));
+}
 function renderOpex(box, rep) {
   box.appendChild(sumBox([[t("year_total"), fmt(rep.total)]], true));
   if (!rep.rows.length) return none(box);
@@ -2054,8 +2075,8 @@ const RECDEF = {
     fields: [{k: "name", i: 1, ty: "text", lb: "emp_name"}, {k: "position", i: 2, ty: "text", lb: "emp_pos"}, {k: "gender", i: 4, ty: "gd", lb: "gender"}, {k: "salary", i: 3, ty: "num", lb: "emp_salary"}]},
   pay: {cols: [[1, "c_emp"], [2, "salary_paid"], [3, "c_date"], [4, "c_bonus"], [5, "c_bonus_note"], [6, "col_total"], [7, "c_by"]],
     fields: [{k: "employee", i: 1, ty: "text", lb: "c_emp"}, {k: "salary", i: 2, ty: "num", lb: "salary_paid"}, {k: "date", i: 3, ty: "date", lb: "paid_date"}, {k: "bonus", i: 4, ty: "num", lb: "c_bonus"}, {k: "bonusNote", i: 5, ty: "text", lb: "c_bonus_note"}]},
-  opex: {cols: [[1, "c_reason"], [2, "c_type"], [3, "c_amount"], [4, "c_date"], [6, "c_note"], [5, "c_by"]],
-    fields: [{k: "reason", i: 1, ty: "text", lb: "c_reason"}, {k: "type", i: 2, ty: "ft", lb: "c_type"}, {k: "amount", i: 3, ty: "num", lb: "c_amount"}, {k: "date", i: 4, ty: "date", lb: "c_date"}, {k: "note", i: 6, ty: "text", lb: "c_note"}]}
+  opex: {cols: [[1, "c_reason"], [2, "c_type"], [3, "c_amount"], [4, "c_date"], [7, "c_receipt"], [6, "c_addnote"], [5, "c_by"]],
+    fields: [{k: "reason", i: 1, ty: "text", lb: "c_reason"}, {k: "type", i: 2, ty: "ft", lb: "c_type"}, {k: "amount", i: 3, ty: "num", lb: "c_amount"}, {k: "date", i: 4, ty: "date", lb: "c_date"}, {k: "receipt", i: 7, ty: "text", lb: "c_receipt"}, {k: "note", i: 6, ty: "text", lb: "c_addnote"}]}
 };
 let RECROWS = [];
 function fillRds() {
