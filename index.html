@@ -827,7 +827,7 @@ const TR = [
  ["st_note","Edit/Delete/Add ሲመረጥ View በራሱ ይመረጣል። Super Admin ሁልጊዜ ሁሉንም ያደርጋል።","Selecting Add/Edit/Delete also selects View. Super Admin can always do everything."],
  ["st_confirm_del","ይህ Role ይሰረዛል። እርግጠኛ ነዎት?","This role will be deleted. Are you sure?"],["st_super","Super Admin ሁሉንም ፈቃድ አለው (አይቀየርም)","Super Admin has all permissions (cannot be changed)"],
  ["no_access","ለዚህ አካውንት ምንም ፈቃድ አልተሰጠም። Super Admin ያነጋግሩ","This account has no permissions. Contact the Super Admin"],
- ["idle_out","ለ5 ደቂቃ እንቅስቃሴ ስላልነበረ ከሲስተሙ ወጥተዋል","Signed out after 5 minute of inactivity"],
+ ["idle_out","ለ10 ደቂቃ እንቅስቃሴ ስላልነበረ ከሲስተሙ ወጥተዋል","Signed out after 10 minute of inactivity"],
  ["e_NET","ኢንተርኔት ያረጋግጡ እና እንደገና ይሞክሩ","Check your connection and try again"],["e_AUTH","ጊዜው አልፏል፤ እንደገና ይግቡ","Session expired; please sign in again"],
  ["e_MISSING","ሁሉንም መስኮች ይሙሉ","Please fill in all fields"],["e_BAD_LOGIN","User ID ወይም የይለፍ ቃል ትክክል አይደለም","Wrong User ID or password"],["e_LOCKED","ብዙ ጊዜ ተሳስተዋል። ከ 5 ደቂቃ በኋላ ይሞክሩ","Too many attempts. Try again in 5 minutes"],
  ["e_BAD_EMAIL","ኢሜይሉ ትክክል አይደለም","Invalid email"],["e_SHORT_PASS","የይለፍ ቃል ቢያንስ 4 ቁምፊ መሆን አለበት","Password must be at least 4 characters"],
@@ -1010,8 +1010,8 @@ function spinSend(btn) {
   }, 120);
 }
 
-/* ===== 1 ደቂቃ እንቅስቃሴ ከሌለ በራስ መውጣት ===== */
-const IDLE_MS = 60000; let idleT = null, lastAct = Date.now();
+/* =====  ደቂቃ እንቅስቃሴ ከሌለ በራስ መውጣት ===== */
+const IDLE_MS = 600000; let idleT = null, lastAct = Date.now();
 function idleReset() {
   lastAct = Date.now(); clearTimeout(idleT);
   if (AUTH) idleT = setTimeout(() => logout(t("idle_out")), IDLE_MS);
