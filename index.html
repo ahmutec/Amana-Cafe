@@ -181,6 +181,9 @@ select:focus,input:focus,textarea:focus,button:focus-visible{outline:3px solid v
 @keyframes spn{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.submit[disabled]::before{animation-duration:1.6s}}
 th.ctr{text-align:center!important}
+td.edited{color:var(--err);font-weight:800;background:color-mix(in srgb,var(--err) 10%,transparent);cursor:help}
+#tip{position:fixed;z-index:9999;display:none;max-width:min(340px,92vw);padding:8px 10px;border-radius:8px;background:#2a1d14;color:#fff;font-size:.82rem;line-height:1.45;white-space:pre-line;box-shadow:0 6px 18px rgba(0,0,0,.3);pointer-events:none}
+.lockd{font-size:.8rem;color:var(--muted);white-space:nowrap}
 .msg{min-height:1.4em;font-weight:600;text-align:center}
 .msg.err{color:var(--err)} .msg.ok{color:var(--ok)}
 .cal{position:relative}
@@ -824,7 +827,7 @@ const TR = [
  ["st_note","Edit/Delete/Add ሲመረጥ View በራሱ ይመረጣል። Super Admin ሁልጊዜ ሁሉንም ያደርጋል።","Selecting Add/Edit/Delete also selects View. Super Admin can always do everything."],
  ["st_confirm_del","ይህ Role ይሰረዛል። እርግጠኛ ነዎት?","This role will be deleted. Are you sure?"],["st_super","Super Admin ሁሉንም ፈቃድ አለው (አይቀየርም)","Super Admin has all permissions (cannot be changed)"],
  ["no_access","ለዚህ አካውንት ምንም ፈቃድ አልተሰጠም። Super Admin ያነጋግሩ","This account has no permissions. Contact the Super Admin"],
- ["idle_out","ለ1 ደቂቃ እንቅስቃሴ ስላልነበረ ከሲስተሙ ወጥተዋል","Signed out after 1 minute of inactivity"],
+ ["idle_out","ለ5 ደቂቃ እንቅስቃሴ ስላልነበረ ከሲስተሙ ወጥተዋል","Signed out after 5 minute of inactivity"],
  ["e_NET","ኢንተርኔት ያረጋግጡ እና እንደገና ይሞክሩ","Check your connection and try again"],["e_AUTH","ጊዜው አልፏል፤ እንደገና ይግቡ","Session expired; please sign in again"],
  ["e_MISSING","ሁሉንም መስኮች ይሙሉ","Please fill in all fields"],["e_BAD_LOGIN","User ID ወይም የይለፍ ቃል ትክክል አይደለም","Wrong User ID or password"],["e_LOCKED","ብዙ ጊዜ ተሳስተዋል። ከ 5 ደቂቃ በኋላ ይሞክሩ","Too many attempts. Try again in 5 minutes"],
  ["e_BAD_EMAIL","ኢሜይሉ ትክክል አይደለም","Invalid email"],["e_SHORT_PASS","የይለፍ ቃል ቢያንስ 4 ቁምፊ መሆን አለበት","Password must be at least 4 characters"],
@@ -852,6 +855,8 @@ TR.push(
  ["waste_date","የባከነበት ቀን","Wastage date"],["waste_reason","የባከነበት ምክንያት","Reason for wastage"],
  ["waste_reason_ph","የባከነበት ምክንያት (ለምሳሌ፦ ተበላሸ፣ ጊዜው አለፈ፣ ተደፋ)","Reason (e.g. spoiled, expired, spilled)"],
  ["waste_qty","የባከነ ብዛት","Wasted qty"],["w_total","ጠቅላላ ድምር","Total"],
+ ["e_EDIT_EXPIRED","ከተመዘገበ ከ1 ቀን በላይ ስለሆነ ማስተካከል/መሰረዝ አይቻልም","More than 1 day since it was recorded — editing/deleting is no longer allowed"],
+ ["edit_locked","🔒 ተዘግቷል","🔒 Locked"],["edit_locked_tip","ከተመዘገበ ከ1 ቀን በላይ ሆኗል","Recorded more than 1 day ago"],
  ["e_BAD_REASON","የባከነበትን ምክንያት ይጻፉ","Enter the reason for wastage"],
  ["sum_p_total","ጠቅላላ ግዥ","Total purchases"],["sum_p_stock","አሁን በስቶር ያለ","Current in stock"],
  ["sum_p_waste","ብክነት (Wastage)","Wastage"],["sum_p_used","ጥቅም ላይ የዋለ (Used)","Used"],
@@ -2087,14 +2092,36 @@ function renderRecs() {
   const body = tb.createTBody();
   rows.forEach(r => {
     const tr = body.insertRow();
-    def.cols.forEach(c => tr.appendChild(el("td", r.v[c[0]])));
+    def.cols.forEach(c => {
+      const cell = el("td", r.v[c[0]]), note = r.ed && r.ed[c[0]];
+      if (note) { cell.className = "edited"; cell.dataset.tip = note; cell.tabIndex = 0; }
+      tr.appendChild(cell);
+    });
     const td = el("td"), acts = el("div", null, "acts");
-    if (has("records", "e")) { const eb = el("button", t("edit")); eb.type = "button"; eb.onclick = () => openEdit(ds, r); acts.appendChild(eb); }
-    if (has("records", "d")) { const db = el("button", t("del"), "del"); db.type = "button"; db.onclick = () => delRec(ds, r); acts.appendChild(db); }
+    if (r.locked) { const lk = el("span", t("edit_locked"), "lockd"); lk.title = t("edit_locked_tip"); acts.appendChild(lk); }
+    if (!r.locked && has("records", "e")) { const eb = el("button", t("edit")); eb.type = "button"; eb.onclick = () => openEdit(ds, r); acts.appendChild(eb); }
+    if (!r.locked && has("records", "d")) { const db = el("button", t("del"), "del"); db.type = "button"; db.onclick = () => delRec(ds, r); acts.appendChild(db); }
     td.appendChild(acts); tr.appendChild(td);
   });
   w.appendChild(tb); box.appendChild(w);
 }
+/* የተስተካከለ ሴል ላይ ሆቨር (ወይም በስልክ ንካ) ሲደረግ የለውጥ ታሪክ ያሳያል */
+const tipEl = document.createElement("div"); tipEl.id = "tip"; document.body.appendChild(tipEl);
+function showTip(td) {
+  tipEl.textContent = td.dataset.tip; tipEl.style.display = "block";
+  const r = td.getBoundingClientRect(), w = tipEl.offsetWidth, h = tipEl.offsetHeight;
+  let x = Math.min(Math.max(8, r.left), innerWidth - w - 8), y = r.bottom + 6;
+  if (y + h > innerHeight - 8) y = Math.max(8, r.top - h - 6);
+  tipEl.style.left = x + "px"; tipEl.style.top = y + "px";
+}
+const hideTip = () => { tipEl.style.display = "none"; };
+$("rlist").addEventListener("mouseover", e => { const td = e.target.closest("td.edited"); if (td) showTip(td); });
+$("rlist").addEventListener("mouseout", e => { if (e.target.closest("td.edited")) hideTip(); });
+$("rlist").addEventListener("focusin", e => { const td = e.target.closest("td.edited"); if (td) showTip(td); });
+$("rlist").addEventListener("focusout", hideTip);
+$("rlist").addEventListener("click", e => { const td = e.target.closest("td.edited"); if (td) { if (tipEl.style.display === "block" && tipEl.textContent === td.dataset.tip) hideTip(); else showTip(td); } else hideTip(); });
+window.addEventListener("scroll", hideTip, true);
+
 async function delRec(ds, r) {
   if (!confirm(t("confirm_del"))) return;
   setMsg("m_rec", t("sending"));
