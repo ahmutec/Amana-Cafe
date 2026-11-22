@@ -586,6 +586,10 @@ body{padding-bottom:80px}
         <select id="op_type"></select>
       </div>
       <div>
+        <label for="op_cause" data-i="c_cause"></label>
+        <input id="op_cause" autocomplete="off" maxlength="150" data-ph="cause_ph">
+      </div>
+      <div>
         <label for="op_reason" data-i="c_reason"></label>
         <input id="op_reason" autocomplete="off" data-ph="desc_ph">
       </div>
@@ -848,6 +852,8 @@ const TR = [
  ["menu_fail","ምናሌ መጫን አልተቻለም። ገጹን እንደገና ይጫኑ","Could not load the menu. Reload the page"],["rep_fail","መጫን አልተቻለም። ኢንተርኔት ያረጋግጡ እና «አድስ» ይጫኑ","Could not load. Check your connection and press Refresh"]
 ];
 TR.push(
+ ["c_cause","የወጣበት ምክንያት","Reason for expense"],["cause_ph","ለምሳሌ፦ ወርሃዊ የአገልግሎት ክፍያ፣ የቤት ኪራይ፣ ጥገና","e.g. monthly utility payment, rent, repairs"],
+ ["e_BAD_CAUSE","የወጣበትን ምክንያት ይጻፉ","Enter the reason for the expense"],
  ["c_exp_type","የወጪው አይነት (ቋሚ/ጊዚያዊ)","Expense type (Fixed/Temporary)"],
  ["desc_ph","ምን እንደተገዛ ወይም ለምን እንደተከፈለ በአጭሩ ይግለጹ፤ ለምሳሌ፦ የጥቅምት ወር የመብራት ቢል","Briefly: what was bought or why paid, e.g. October electricity bill"],
  ["c_receipt","ደረሰኝ ቁጥር (ካለ)","Receipt no. (if any)"],["receipt_ph","ደረሰኝ ከሌለ ይታለፋል","Leave empty if no receipt"],
@@ -1621,11 +1627,12 @@ $("fp").addEventListener("submit", async e => {
 /* ===== ወጪ መመዝገብ ===== */
 $("fo").addEventListener("submit", e => {
   e.preventDefault();
-  const reason = $("op_reason").value.trim(), amt = parseFloat($("op_amt").value);
+  const cause = $("op_cause").value.trim(), reason = $("op_reason").value.trim(), amt = parseFloat($("op_amt").value);
+  if (!cause) { setMsg("m_opex", t("e_BAD_CAUSE"), "err"); $("op_cause").focus(); return; }
   if (!reason) { setMsg("m_opex", t("e_BAD_NAME"), "err"); return; }
   if (!(amt >= 0)) { setMsg("m_opex", t("e_BAD_AMOUNT"), "err"); return; }
-  postFast("opex_add", {reason, type: $("op_type").value, amount: amt, date: calOpex.get(), receipt: $("op_rcpt").value.trim(), note: $("op_note").value.trim()}, "m_opex", () => {
-    $("op_reason").value = ""; $("op_amt").value = ""; $("op_rcpt").value = ""; $("op_note").value = "";
+  postFast("opex_add", {cause, reason, type: $("op_type").value, amount: amt, date: calOpex.get(), receipt: $("op_rcpt").value.trim(), note: $("op_note").value.trim()}, "m_opex", () => {
+    $("op_cause").value = ""; $("op_reason").value = ""; $("op_amt").value = ""; $("op_rcpt").value = ""; $("op_note").value = "";
   });
 });
 
@@ -2034,9 +2041,9 @@ function renderPayroll(box, rep) {
 function renderOpexMonth(box, rep) {
   box.appendChild(sumBox([[t("fixed"), fmt(rep.fixed)], [t("temp"), fmt(rep.temp)], [t("pay_total"), fmt(rep.total)]]));
   if (!rep.rows.length) return none(box);
-  box.appendChild(tbl([{t: t("c_no"), c: "rk"}, t("c_exp_type"), t("c_reason"), {t: t("c_amount"), c: "n"}, t("c_receipt"), t("c_addnote")],
-    rep.rows.map((r, i) => [RK(i), t(r.type), {t: r.reason, s: r.d + " " + mName(rep.m) + " " + rep.y}, N(r.amount), r.receipt || "·", r.note || "·"]),
-    ["", "", t("sum"), N(rep.total), "", ""]));
+  box.appendChild(tbl([{t: t("c_no"), c: "rk"}, t("c_exp_type"), t("c_cause"), t("c_reason"), {t: t("c_amount"), c: "n"}, t("c_receipt"), t("c_addnote")],
+    rep.rows.map((r, i) => [RK(i), t(r.type), r.cause || "·", {t: r.reason, s: r.d + " " + mName(rep.m) + " " + rep.y}, N(r.amount), r.receipt || "·", r.note || "·"]),
+    ["", "", "", t("sum"), N(rep.total), "", ""]));
 }
 function renderOpex(box, rep) {
   box.appendChild(sumBox([[t("year_total"), fmt(rep.total)]], true));
@@ -2075,8 +2082,8 @@ const RECDEF = {
     fields: [{k: "name", i: 1, ty: "text", lb: "emp_name"}, {k: "position", i: 2, ty: "text", lb: "emp_pos"}, {k: "gender", i: 4, ty: "gd", lb: "gender"}, {k: "salary", i: 3, ty: "num", lb: "emp_salary"}]},
   pay: {cols: [[1, "c_emp"], [2, "salary_paid"], [3, "c_date"], [4, "c_bonus"], [5, "c_bonus_note"], [6, "col_total"], [7, "c_by"]],
     fields: [{k: "employee", i: 1, ty: "text", lb: "c_emp"}, {k: "salary", i: 2, ty: "num", lb: "salary_paid"}, {k: "date", i: 3, ty: "date", lb: "paid_date"}, {k: "bonus", i: 4, ty: "num", lb: "c_bonus"}, {k: "bonusNote", i: 5, ty: "text", lb: "c_bonus_note"}]},
-  opex: {cols: [[1, "c_reason"], [2, "c_type"], [3, "c_amount"], [4, "c_date"], [7, "c_receipt"], [6, "c_addnote"], [5, "c_by"]],
-    fields: [{k: "reason", i: 1, ty: "text", lb: "c_reason"}, {k: "type", i: 2, ty: "ft", lb: "c_type"}, {k: "amount", i: 3, ty: "num", lb: "c_amount"}, {k: "date", i: 4, ty: "date", lb: "c_date"}, {k: "receipt", i: 7, ty: "text", lb: "c_receipt"}, {k: "note", i: 6, ty: "text", lb: "c_addnote"}]}
+  opex: {cols: [[8, "c_cause"], [1, "c_reason"], [2, "c_type"], [3, "c_amount"], [4, "c_date"], [7, "c_receipt"], [6, "c_addnote"], [5, "c_by"]],
+    fields: [{k: "cause", i: 8, ty: "text", lb: "c_cause"}, {k: "reason", i: 1, ty: "text", lb: "c_reason"}, {k: "type", i: 2, ty: "ft", lb: "c_type"}, {k: "amount", i: 3, ty: "num", lb: "c_amount"}, {k: "date", i: 4, ty: "date", lb: "c_date"}, {k: "receipt", i: 7, ty: "text", lb: "c_receipt"}, {k: "note", i: 6, ty: "text", lb: "c_addnote"}]}
 };
 let RECROWS = [];
 function fillRds() {
