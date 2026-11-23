@@ -672,6 +672,19 @@ body{padding-bottom:80px}
       <div id="ilist"></div>
     </section>
 
+    <!-- የወር መጨረሻ ማስተላለፍ -->
+    <section class="panel noprint" id="carryP" hidden>
+      <div id="carry_nav" class="rc"></div>
+      <div class="hint" id="carry_info"></div>
+      <div class="msg err" id="carry_done" data-i="carry_done" hidden></div>
+      <label class="kd" id="carry_allw"><input type="checkbox" id="carry_all"><span data-i="select_all"></span></label>
+      <div class="msg" id="m_carry" role="status" aria-live="polite"></div>
+      <div id="carry_list"></div>
+      <div class="wtot" id="carry_tot"></div>
+      <button type="button" class="submit" id="carry_go" data-i="carry_go" style="width:100%"></button>
+      <div class="gen" data-i="carry_note"></div>
+    </section>
+
     <!-- ምናሌ ማስተካከያ -->
     <section class="panel noprint" id="menuMgr" hidden>
       <div class="mrow">
@@ -854,6 +867,12 @@ const TR = [
 TR.push(
  ["c_cause","የወጣበት ምክንያት","Reason for expense"],["cause_ph","ለምሳሌ፦ ወርሃዊ የአገልግሎት ክፍያ፣ የቤት ኪራይ፣ ጥገና","e.g. monthly utility payment, rent, repairs"],
  ["e_BAD_CAUSE","የወጣበትን ምክንያት ይጻፉ","Enter the reason for the expense"],
+ ["s_carry","የወር ማስተላለፍ","Month-end Carry-over"],["select_all","ሁሉንም ምረጥ","Select all"],["carry_go","ወደ ቀጣዩ ወር አስተላልፍ","Carry over to next month"],
+ ["carry_info","በ{0} መጨረሻ በስቶር የነበረው እቃ ወደ ቀጣዩ ወር ግዥ ({1}) ይተላለፋል","Stock on hand at the end of {0} is carried into next month's purchases ({1})"],
+ ["carry_done","ይህ ወር አስቀድሞ ተላልፏል","This month has already been carried over"],["carry_empty","በዚህ ወር መጨረሻ በስቶር የቀረ እቃ የለም","Nothing left in stock at the end of this month"],
+ ["carry_total","የተመረጡ: {0} እቃ · ዋጋ: {1} ብር","Selected: {0} item(s) · Value: {1} Birr"],["carry_confirm","{0} እቃ ከ{1} ወደ {2} ይተላለፋል። ይቀጥል?","{0} item(s) will be carried from {1} to {2}. Continue?"],
+ ["carry_note","ሲስተሙ በወሩ የመጨረሻ ቀን «ወጪ» (Items Issued) እና በቀጣዩ ወር 1ኛ ቀን «ግዥ» (Purchased Items) በአማካይ ዋጋ ይመዘግባል፤ አጠቃላይ የስቶክ ብዛት አይቀየርም። ስህተት ከሆነ በ1 ቀን ውስጥ ከ«ማስተካከያ» ገጽ መሰረዝ ይቻላል።","The system records an Issue on the last day of the month and a Purchase on day 1 of the next month at average cost; total stock does not change. A mistake can be deleted from Edit/Delete within 1 day."],
+ ["e_ALREADY_CARRIED","ይህ ወር አስቀድሞ ተላልፏል","This month has already been carried over"],
  ["c_exp_type","የወጪው አይነት (ቋሚ/ጊዚያዊ)","Expense type (Fixed/Temporary)"],
  ["desc_ph","ምን እንደተገዛ ወይም ለምን እንደተከፈለ በአጭሩ ይግለጹ፤ ለምሳሌ፦ የጥቅምት ወር የመብራት ቢል","Briefly: what was bought or why paid, e.g. October electricity bill"],
  ["c_receipt","ደረሰኝ ቁጥር (ካለ)","Receipt no. (if any)"],["receipt_ph","ደረሰኝ ከሌለ ይታለፋል","Leave empty if no receipt"],
@@ -1149,7 +1168,7 @@ $("logout").addEventListener("click", () => logout());
 // [ክፍል, የሚታይበት ፈቃድ]  (va = View ወይም Add)
 const NAV = {
   sales:   {rec: ["sales.rec", "va"], daily: ["sales.daily", "v"], weekly: ["sales.weekly", "v"], monthly: ["sales.monthly", "v"]},
-  stock:   {rec: ["stock.rec", "va"], out: ["stock.iss", "va"], wst: ["stock.wst", "va"], cat: ["stock.items", "v"], cur: ["stock.cur", "v"], daily: ["stock.daily", "v"], weekly: ["stock.weekly", "v"], monthly: ["stock.monthly", "v"], total: ["stock.total", "v"]},
+  stock:   {rec: ["stock.rec", "va"], out: ["stock.iss", "va"], wst: ["stock.wst", "va"], cat: ["stock.items", "v"], cur: ["stock.cur", "v"], carry: ["stock.carry", "va"], daily: ["stock.daily", "v"], weekly: ["stock.weekly", "v"], monthly: ["stock.monthly", "v"], total: ["stock.total", "v"]},
   payroll: {emp: ["payroll.emp", "va"], pay: ["payroll.pay", "va"], rep: ["payroll.rep", "v"]},
   opex:    {rec: ["opex.rec", "va"], mon: ["opex.rep", "v"], rep: ["opex.rep", "v"]},
   menu:    {rec: ["menu", "v"]},
@@ -1238,10 +1257,10 @@ function showView(sec, sub) {
   SEC = sec; SUB = sub; REQ++;
   buildNav();
   const form = FORMS[sec + "/" + sub], isRec = sec === "records", isMenu = sec === "menu",
-        isUL = sec === "users" && sub === "list", isSet = sec === "settings", isInv = sec === "stock" && sub === "cat";
+        isUL = sec === "users" && sub === "list", isSet = sec === "settings", isInv = sec === "stock" && sub === "cat", isCarry = sec === "stock" && sub === "carry";
   ["f", "fs", "fi", "fw", "fe", "fp", "fo", "fu"].forEach(id => $(id).hidden = id !== form);
-  $("recs").hidden = !isRec; $("menuMgr").hidden = !isMenu; $("ulp").hidden = !isUL; $("setp").hidden = !isSet; $("invMgr").hidden = !isInv;
-  $("rep").hidden = !!form || isRec || isMenu || isUL || isSet || isInv;
+  $("recs").hidden = !isRec; $("menuMgr").hidden = !isMenu; $("ulp").hidden = !isUL; $("setp").hidden = !isSet; $("invMgr").hidden = !isInv; $("carryP").hidden = !isCarry;
+  $("rep").hidden = !!form || isRec || isMenu || isUL || isSet || isInv || isCarry;
   if (form) {
     if (form === "f") { if (!MENU.length) loadMenu(); loadWaiters(); }
     if (form === "fs") loadStockForm();
@@ -1253,6 +1272,7 @@ function showView(sec, sub) {
   } else if (isRec) loadRecs();
   else if (isMenu) loadMenuMgr();
   else if (isInv) loadInvMgr();
+  else if (isCarry) loadCarry();
   else if (isUL) loadUsers();
   else if (isSet) loadSettings();
   else loadReport();
@@ -1714,7 +1734,7 @@ async function delUser(u) {
 /* ===== Settings: Role ፈቃዶች ===== */
 const SETROWS = [
   ["sales", [["sales.rec", "ss_rec"], ["sales.daily", "ss_daily"], ["sales.weekly", "ss_weekly"], ["sales.monthly", "ss_monthly"]]],
-  ["stock", [["stock.rec", "s_buy"], ["stock.iss", "s_out"], ["stock.wst", "s_wst"], ["stock.items", "s_cat"], ["stock.cur", "s_cur"], ["stock.daily", "s_daily"], ["stock.weekly", "s_weekly"], ["stock.monthly", "s_monthly"], ["stock.total", "s_total"]]],
+  ["stock", [["stock.rec", "s_buy"], ["stock.iss", "s_out"], ["stock.wst", "s_wst"], ["stock.items", "s_cat"], ["stock.cur", "s_cur"], ["stock.carry", "s_carry"], ["stock.daily", "s_daily"], ["stock.weekly", "s_weekly"], ["stock.monthly", "s_monthly"], ["stock.total", "s_total"]]],
   ["payroll", [["payroll.emp", "s_emp"], ["payroll.pay", "s_pay"], ["payroll.rep", "s_rep"]]],
   ["opex", [["opex.rec", "s_rec"], ["opex.rep", "s_rep"]]],
   ["menu", [["menu", "sec_menu"]]],
@@ -2247,6 +2267,57 @@ $("dform").addEventListener("submit", async e => {
   finally { $("dsave").disabled = false; }
 });
 
+/* ===== የወር መጨረሻ ማስተላለፍ ===== */
+const CR = {y: TODAY.y, m: TODAY.m, items: [], sel: {}, done: false, close: "", open: ""};
+if (TODAY.d <= 5) { CR.m--; if (CR.m < 1) { CR.m = 13; CR.y--; } }
+function carryMove(k) { CR.m += k; if (CR.m > 13) { CR.m = 1; CR.y++; } if (CR.m < 1) { CR.m = 13; CR.y--; } loadCarry(); }
+async function loadCarry(quiet) {
+  if (!AUTH || !has("stock.carry", "v")) return;
+  if (!quiet) setMsg("m_carry", t("loading"));
+  const my = ++REQ;
+  try {
+    const j = await api("carry_list", {y: CR.y, m: CR.m});
+    if (my !== REQ) return;
+    if (!j.ok) { setMsg("m_carry", errText(j.error), "err"); return; }
+    CR.items = j.items; CR.done = j.done; CR.close = j.close; CR.open = j.open; CR.sel = {};
+    j.items.forEach(i => { CR.sel[i.name] = true; });
+    if (!quiet) setMsg("m_carry", "");
+    renderCarry();
+  } catch (err) { if (err.message !== "AUTH") setMsg("m_carry", t("e_NET"), "err"); }
+}
+function carrySum() {
+  const on = CR.items.filter(i => CR.sel[i.name]), v = on.reduce((s, i) => s + i.value, 0);
+  $("carry_tot").textContent = on.length ? t("carry_total", on.length, fmt(v)) : "";
+  $("carry_go").disabled = CR.done || !on.length;
+  $("carry_all").checked = CR.items.length > 0 && on.length === CR.items.length;
+}
+function renderCarry() {
+  const nv = $("carry_nav"); nv.innerHTML = "";
+  nv.appendChild(nav(mName(CR.m) + " " + CR.y, () => carryMove(-1), () => carryMove(1)));
+  $("carry_info").textContent = t("carry_info", CR.close, CR.open);
+  $("carry_done").hidden = !CR.done; $("carry_allw").hidden = !CR.items.length;
+  const box = $("carry_list"); box.innerHTML = "";
+  if (!CR.items.length) { box.appendChild(el("div", t("carry_empty"), "hint")); carrySum(); return; }
+  const w = el("div", null, "tw"), tb = document.createElement("table");
+  const hr = tb.createTHead().insertRow();
+  [["", ""], [t("c_no"), "rk"], [t("item_name"), ""], [t("category"), ""], [t("qty"), "n"], [t("unit_price"), "n"], [t("c_total_val"), "n"]].forEach(([x, c]) => hr.appendChild(el("th", x, c)));
+  const body = tb.createTBody();
+  CR.items.forEach((it, i) => {
+    const tr = body.insertRow(), td = tr.insertCell(), cb = document.createElement("input");
+    cb.type = "checkbox"; cb.checked = !!CR.sel[it.name]; cb.disabled = CR.done;
+    cb.onchange = () => { CR.sel[it.name] = cb.checked; carrySum(); };
+    td.appendChild(cb);
+    [[i + 1, "rk"], [it.name, ""], [it.category || "·", ""], [fmt(it.qty), "n"], [fmt(it.avg), "n"], [fmt(it.value), "n"]].forEach(([x, c]) => tr.appendChild(el("td", x, c)));
+  });
+  w.appendChild(tb); box.appendChild(w); carrySum();
+}
+$("carry_all").addEventListener("change", e => { CR.items.forEach(i => { CR.sel[i.name] = e.target.checked && !CR.done; }); renderCarry(); });
+$("carry_go").addEventListener("click", async () => {
+  const names = CR.items.filter(i => CR.sel[i.name]).map(i => i.name);
+  if (!names.length || !confirm(t("carry_confirm", names.length, CR.close, CR.open))) return;
+  await post("carry_submit", {y: CR.y, m: CR.m, names, sid: uid()}, "carry_go", "m_carry", () => loadCarry(true));
+});
+
 /* ===== ምናሌ ማስተካከያ ===== */
 let MGR = [], MGRSEL = "";
 function afterMenuChange() { MENU = []; localStorage.removeItem("amana_menu"); loadMenuMgr(true); }
@@ -2369,6 +2440,7 @@ function applyLang() {
     if (!FORMS[SEC + "/" + SUB]) {
       if (SEC === "records") renderRecs();
       else if (SEC === "stock" && SUB === "cat") renderInvMgr();
+      else if (SEC === "stock" && SUB === "carry") renderCarry();
       else if (SEC === "menu") renderMenuMgr();
       else if (SEC === "users") renderUsers();
       else if (SEC === "settings") { if (PM) renderPermTable(); }
